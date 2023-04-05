@@ -1,0 +1,66 @@
+﻿@model IEnumerable<PBL3.Models.NhanVien>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TenNhanVien)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sdt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiaChi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ca)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LoaiNvNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NhanVienQlNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenNhanVien)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sdt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DiaChi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ca.CaId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LoaiNvNavigation.LoaiNv)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NhanVienQlNavigation.NhanVienId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.NhanVienId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.NhanVienId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.NhanVienId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

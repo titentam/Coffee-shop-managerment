@@ -7,8 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PBL3.Models;
 
-namespace PBL3.Controllers
+namespace PBL3.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class LoaiNhanViensController : Controller
     {
         private readonly TamtentoiContext _context;
@@ -18,7 +19,7 @@ namespace PBL3.Controllers
             _context = context;
         }
 
-        // GET: LoaiNhanViens
+        // GET: Admin/LoaiNhanViens
         public async Task<IActionResult> Index()
         {
               return _context.LoaiNhanViens != null ? 
@@ -26,7 +27,7 @@ namespace PBL3.Controllers
                           Problem("Entity set 'TamtentoiContext.LoaiNhanViens'  is null.");
         }
 
-        // GET: LoaiNhanViens/Details/5
+        // GET: Admin/LoaiNhanViens/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.LoaiNhanViens == null)
@@ -44,13 +45,13 @@ namespace PBL3.Controllers
             return View(loaiNhanVien);
         }
 
-        // GET: LoaiNhanViens/Create
+        // GET: Admin/LoaiNhanViens/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: LoaiNhanViens/Create
+        // POST: Admin/LoaiNhanViens/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -66,7 +67,7 @@ namespace PBL3.Controllers
             return View(loaiNhanVien);
         }
 
-        // GET: LoaiNhanViens/Edit/5
+        // GET: Admin/LoaiNhanViens/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.LoaiNhanViens == null)
@@ -82,7 +83,7 @@ namespace PBL3.Controllers
             return View(loaiNhanVien);
         }
 
-        // POST: LoaiNhanViens/Edit/5
+        // POST: Admin/LoaiNhanViens/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -117,7 +118,7 @@ namespace PBL3.Controllers
             return View(loaiNhanVien);
         }
 
-        // GET: LoaiNhanViens/Delete/5
+        // GET: Admin/LoaiNhanViens/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.LoaiNhanViens == null)
@@ -135,7 +136,7 @@ namespace PBL3.Controllers
             return View(loaiNhanVien);
         }
 
-        // POST: LoaiNhanViens/Delete/5
+        // POST: Admin/LoaiNhanViens/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
