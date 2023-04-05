@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PBL3</title>
+    <script src="https://kit.fontawesome.com/61e1e4c667.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PBL3.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <!--====== Scroll To Top Area Start ======-->
+    <div id="scrollUp" title="Scroll To Top" style="display: block;">
+        <svg class="svg-inline--fa fa-arrow-up fa-w-14" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-up" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
+            <path fill="currentColor" d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z">
+            </path>
+        </svg>
+        <script>
+            // When the user scrolls down 500px from the top of the document, show the button
+            let scrollup = document.getElementById("scrollUp");
+            window.onscroll = function() { scrollFunction() };
+            function scrollFunction(){
+                if(document.body.scrollTop>500||document.documentElement.scrollTop > 500)
+                    { scrollup.style.display="block";}
+                else { scrollup.style.display="none";}
+            }
+            // When the user clicks on the button, scroll to the top of the document
+            scrollup.onclick = function() {topFunction()};
+            function topFunction() {
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop = 0;
+                }
+        </script>
+    </div>
+    <header class="header">
+        <div class="container">
+            <div class="header-inner">
+                <a style="max-width: 65px; height: 50%;" id="changeColor" class="logo" href="#">
+                    <img src="https://scontent.fdad3-4.fna.fbcdn.net/v/t1.15752-9/336382153_1333213933921187_6714354234643152329_n.png?_nc_cat=104&ccb=1-7&_nc_sid=ae9488&_nc_ohc=LdvLyk6XJaoAX9zQARe&_nc_ht=scontent.fdad3-4.fna&oh=03_AdR9m5NSDy4MKbYPXpm_NqODb-N7MnwGWN2t765nMzoRzw&oe=6439C3F9" alt="logo" >
+                </a>
+                <div class="Duynavbar" id="Mynavbar">
+                    <a href="javascript:void(0);" class="bar-icon" onclick="myFunction()">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                    <a href="~/admin/home">Trang Chủ</a>
+                    <div class="Duydropdown">
+                        <button class="dropbtn so-xuong" id="changeColor">Quản Lí Nhân Viên 
+                        </button>
+                        <div class="Duydropdown-content">
+                            <a href="~/admin/NhanViens">Danh Sách Nhân Viên</a>
+                            <a href="~/admin/LoaiNhanViens">Loại Nhân Viên</a>
+                            <a href="#">Quản Lí Ca Làm Việc</a>
+                        </div>
+                    </div>
+                    <div class="Duydropdown">
+                        <button class="dropbtn so-xuong" id="changeColor">Quản Lí Đồ Uống 
+                        </button>
+                        <div class="Duydropdown-content">
+                            <div class="content">
+                                <a href="#" class="so-xuong">Danh Sách Đồ Uống</a>
+                                <div class="small-Duydropdown">
+                                    <a href="#">Pricing</a>
+                                    <a href="#">Download</a>
+                                    <a href="#">Newsletter</a>
+                                    <a href="#">Thanks you</a>
+                                    <a href="#">Coming soon</a>
+                                    <a href="#">404</a>
+                                </div>
+                            </div>
+                            <div class="content">
+                                <a href="#" class="so-xuong">Công Thức Chế Biến</a>
+                                <div class="small-Duydropdown">
+                                    <a href="#">Blog- 2 Column</a>
+                                    <a href="#">Blog- 3 Column</a>
+                                    <a href="#">Block- Left Sidebar</a>
+                                    <a href="#">Block- Right Sidebar</a>
+                                </div>
+                            </div>
+                            <div class="content">
+                                <a href="#"class="so-xuong">Block Details</a>
+                                <div class="small-Duydropdown">
+                                    <a href="#">Block- Details Left Sidebar</a>
+                                    <a href="#">Block- Details Right Sidebar</a>
+                                </div>
+                            </div>
+                            <div class="content">
+                                <a href="#"class="so-xuong">Account</a>
+                                <div class="small-Duydropdown">
+                                    <a href="#">login</a>
+                                    <a href="#">sign up</a>
+                                    <a href="#">Reset Password</a>
+                                </div>
+                            </div>
+                            <a href="#" id="changeColor">Reviews</a>
+                            <a href="#" id="changeColor">FAQ</a>
+                            <a href="#" id="changeColor">Contact</a>
+                            <a href="#" id="changeColor">More Coming Soon</a>
+                        </div>
+                    </div>
+                    <div class="Duydropdown">
+                        <button class="dropbtn so-xuong" id="changeColor">Thống Kê Doanh Thu
+                        </button>
+                        <div class="Duydropdown-content">
+                            <a href="#">Thống Kê Theo Ngày</a>
+                            <a href="#">Thống Kê Theo Tháng</a>
+                            <a href="#">Thống Kê Theo Năm</a>
+                        </div>
+                    </div>
+                    <a href="#" id="changeColor">Đăng Nhập <i class="fa-sharp fa-solid fa-arrow-right-to-bracket"></i></a>
+                    <div class=""></div>
+                </div> 
+                </div>
+            </div>
+        </div>
+        <script>
+            function myFunction() {
+            var x = document.getElementById("Mynavbar");
+            if (x.className === "Duynavbar") {
+            x.className += " responsive";
+            //x.style.display = "block";
+            } else {
+            x.className = "Duynavbar";
+            }
+            }        </script>
+    </header>
+
+    <script>
+        const header = document.querySelector("header");
+
+            window.addEventListener ("scroll", function() {
+            header.classList.toggle ("sticky", window.scrollY > 700);
+            });
+            
+    </script>
+
+    <div class="container">
+        <main role="main" style="padding-top:9vw">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2021 - MyWeb <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    @RenderSection("Scripts", false)
+</body>
+</html>
