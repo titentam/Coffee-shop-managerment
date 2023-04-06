@@ -1,0 +1,47 @@
+﻿@model IEnumerable<PBL3.Models.Mon>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+    <h1 class="text-center my-4">Danh Sách Nhân Viên</h1>
+
+    <div class="d-flex justify-content-center mb-4">
+        <a asp-action="Create" class="btn btn-success">Create New</a>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Tên Món</th>
+                        <th>Giá</th>
+                        <th>Công Thức</th>
+                        <th>Loại Món</th>
+                       
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center">@item.TenMon </td>
+                            <td class="text-center">@item.Gia</td>
+                            <td class="text-center">@item.CongThucId</td>
+                            <td class ="text-center">@item.LoaiMonId</td>
+                           
+                            <td>
+                                <div class="d-flex justify-content-center">
+                                    <a asp-action="Edit" asp-route-id="@item.MonId" class="btn btn-sm btn-warning ">Edit</a>
+                                    <a asp-action="Details" asp-route-id="@item.MonId" class="btn btn-sm btn-primary mx-2">Details</a>
+                                    <a asp-action="Delete" asp-route-id="@item.MonId" class="btn btn-sm btn-danger">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
