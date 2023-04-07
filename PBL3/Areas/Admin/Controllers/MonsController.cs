@@ -49,8 +49,8 @@ namespace PBL3.Areas.Admin.Controllers
         // GET: Admin/Mons/Create
         public IActionResult Create()
         {
-            ViewData["CongThucId"] = new SelectList(_context.CongThucs, "CongThucId", "CongThucId");
-            ViewData["LoaiMonId"] = new SelectList(_context.LoaiMons, "LoaiMonId", "LoaiMonId");
+            ViewData["CongThucId"] = new SelectList(_context.CongThucs, "CongThucId", "TenCongThuc");
+            ViewData["LoaiMonId"] = new SelectList(_context.LoaiMons, "LoaiMonId", "TenLoaiMon");
             return View();
         }
 
@@ -67,8 +67,8 @@ namespace PBL3.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CongThucId"] = new SelectList(_context.CongThucs, "CongThucId", "CongThucId", mon.CongThucId);
-            ViewData["LoaiMonId"] = new SelectList(_context.LoaiMons, "LoaiMonId", "LoaiMonId", mon.LoaiMonId);
+            ViewData["CongThucId"] = new SelectList(_context.CongThucs, "CongThucId", "TenCongThuc", mon.CongThucId);
+            ViewData["LoaiMonId"] = new SelectList(_context.LoaiMons, "LoaiMonId", "TenLoaiMon", mon.LoaiMonId);
             return View(mon);
         }
 
@@ -85,8 +85,8 @@ namespace PBL3.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["CongThucId"] = new SelectList(_context.CongThucs, "CongThucId", "CongThucId", mon.CongThucId);
-            ViewData["LoaiMonId"] = new SelectList(_context.LoaiMons, "LoaiMonId", "LoaiMonId", mon.LoaiMonId);
+            ViewData["CongThucId"] = new SelectList(_context.CongThucs, "CongThucId", "TenCongThuc", mon.CongThucId);
+            ViewData["LoaiMonId"] = new SelectList(_context.LoaiMons, "LoaiMonId", "TenLoaiMon", mon.LoaiMonId);
             return View(mon);
         }
 
@@ -122,8 +122,8 @@ namespace PBL3.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CongThucId"] = new SelectList(_context.CongThucs, "CongThucId", "CongThucId", mon.CongThucId);
-            ViewData["LoaiMonId"] = new SelectList(_context.LoaiMons, "LoaiMonId", "LoaiMonId", mon.LoaiMonId);
+            ViewData["CongThucId"] = new SelectList(_context.CongThucs, "CongThucId", "TenCongThuc", mon.CongThucId);
+            ViewData["LoaiMonId"] = new SelectList(_context.LoaiMons, "LoaiMonId", "TenLoaiMon", mon.LoaiMonId);
             return View(mon);
         }
 

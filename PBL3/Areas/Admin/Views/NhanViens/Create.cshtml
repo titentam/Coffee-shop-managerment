@@ -41,6 +41,17 @@
                 <select asp-for="CaId" class ="form-control" asp-items="ViewBag.CaId"></select>
             </div>
             <div class="form-group">
+                <label class="control-label">Tài khoản</label>
+                <label class="text-danger" for="TaiKhoan1" style="display:block">@ViewBag.TrungTaiKhoan</label>
+                <input id="TaiKhoan1" name="TaiKhoan1" value="@ViewBag.TaiKhoan.TaiKhoan1" class="form-control" />
+                
+            </div>
+            <div class="form-group">
+                <label class="control-label">Mật khẩu</label>
+                <input name="MatKhau" value="@ViewBag.TaiKhoan.MatKhau" class="form-control" />
+            </div>
+
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>

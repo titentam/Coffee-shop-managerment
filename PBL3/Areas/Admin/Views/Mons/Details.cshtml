@@ -27,13 +27,20 @@
             @Html.DisplayNameFor(model => model.CongThuc)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CongThuc.CongThucId)
+            @if (Model.CongThuc != null)
+            {
+                @Html.DisplayFor(model => model.CongThuc.TenCongThuc)
+            }
+            
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.LoaiMon)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LoaiMon.LoaiMonId)
+            @if (Model.LoaiMon != null)
+            {
+                @Html.DisplayFor(model => model.LoaiMon.TenLoaiMon)
+            }
         </dd>
     </dl>
 </div>

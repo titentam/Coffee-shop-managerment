@@ -55,7 +55,7 @@ namespace PBL3.Areas.Admin.Controllers
             var nvQl = _context.NhanViens.Include(nv => nv.LoaiNvNavigation)
                                          .Where(nv => nv.LoaiNvNavigation.TenLoai.Contains("Quản lý"));
             ViewData["NhanVienQl"] = new SelectList(nvQl, "NhanVienId", "TenNhanVien");
-
+            ViewData["TaiKhoan"] = new TaiKhoan();
             return View();
         }
 
@@ -64,19 +64,33 @@ namespace PBL3.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("NhanVienId,TenNhanVien,Sdt,DiaChi,LoaiNv,NhanVienQl,CaId")] NhanVien nhanVien)
+        public async Task<IActionResult> Create([Bind("NhanVienId,TenNhanVien,Sdt,DiaChi,LoaiNv,NhanVienQl,CaId")] NhanVien nhanVien, TaiKhoan acc)
         {
-            if (ModelState.IsValid)
+            ViewBag.TrungTaiKhoan = "";
+            // check tk
+            var valid = _context.TaiKhoans.Find(acc.TaiKhoan1);
+            if (valid == null)
             {
-                _context.Add(nhanVien);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    acc.NhanVienId = _context.NhanViens.ToList().OrderByDescending(nv => nv.NhanVienId).FirstOrDefault().NhanVienId + 1;
+                    _context.Add(nhanVien);
+                    await _context.SaveChangesAsync();
+                    _context.Add(acc);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            else
+            {
+                ViewBag.TrungTaiKhoan = "Tài khoản này đã tồn tại";
             }
             var nvQl = _context.NhanViens.Include(nv => nv.LoaiNvNavigation)
                                          .Where(nv => nv.LoaiNvNavigation.TenLoai.Contains("Quản lý"));
             ViewData["CaId"] = new SelectList(_context.CaLams, "CaId", "TenCa", nhanVien.CaId);
             ViewData["LoaiNv"] = new SelectList(_context.LoaiNhanViens, "LoaiNv", "TenLoai", nhanVien.LoaiNv);
             ViewData["NhanVienQl"] = new SelectList(nvQl, "NhanVienId", "TenNhanVien", nhanVien.NhanVienQl);
+            ViewData["TaiKhoan"] = acc;
             return View(nhanVien);
         }
 
@@ -174,16 +188,25 @@ namespace PBL3.Areas.Admin.Controllers
             var nhanVien = await _context.NhanViens.FindAsync(id);
             if (nhanVien != null)
             {
+                var listNv = _context.NhanViens.Where(nv=>nv.NhanVienQl==id).ToList();
+                if (listNv != null)
+                {
+                    foreach(var item in listNv)
+                    {
+                        item.NhanVienQl = null;
+                    }
+                    await _context.SaveChangesAsync();
+                } 
                 _context.NhanViens.Remove(nhanVien);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool NhanVienExists(int id)
         {
-          return (_context.NhanViens?.Any(e => e.NhanVienId == id)).GetValueOrDefault();
+            return (_context.NhanViens?.Any(e => e.NhanVienId == id)).GetValueOrDefault();
         }
     }
 }

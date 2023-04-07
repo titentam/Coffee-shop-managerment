@@ -15,6 +15,7 @@ namespace PBL3.Models
         public decimal? Gia { get; set; }
         public int? LoaiMonId { get; set; }
         public int? CongThucId { get; set; }
+        public string? HinhAnh { get; set; }
 
         public virtual CongThuc? CongThuc { get; set; }
         public virtual LoaiMon? LoaiMon { get; set; }
