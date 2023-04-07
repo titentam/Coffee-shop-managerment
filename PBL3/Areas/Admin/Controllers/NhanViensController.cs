@@ -20,10 +20,23 @@ namespace PBL3.Areas.Admin.Controllers
         }
 
         // GET: Admin/NhanViens
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string ?search, int option =0)
         {
-            var tamtentoiContext = _context.NhanViens.Include(n => n.Ca).Include(n => n.LoaiNvNavigation).Include(n => n.NhanVienQlNavigation);
-            return View(await tamtentoiContext.ToListAsync());
+
+            ViewData["CurrentSearch"] = search;
+			ViewData["DsLoaiNV"] = new SelectList(_context.LoaiNhanViens, "LoaiNv", "TenLoai", option);
+            var listNv = _context.NhanViens.Include(n => n.Ca)
+                                           .Include(n => n.LoaiNvNavigation)
+                                           .Include(n => n.NhanVienQlNavigation).ToList();
+            if (!string.IsNullOrEmpty(search))
+            {
+                listNv = listNv.Where(nv => nv.TenNhanVien.Contains(search)).ToList();
+			}
+            if (option != 0)
+            {
+                listNv = listNv.Where(nv => nv.LoaiNv == option).ToList();
+            }
+            return View(listNv);
         }
 
         // GET: Admin/NhanViens/Details/5
@@ -53,7 +66,7 @@ namespace PBL3.Areas.Admin.Controllers
             ViewData["CaId"] = new SelectList(_context.CaLams, "CaId", "TenCa");
             ViewData["LoaiNv"] = new SelectList(_context.LoaiNhanViens, "LoaiNv", "TenLoai");
             var nvQl = _context.NhanViens.Include(nv => nv.LoaiNvNavigation)
-                                         .Where(nv => nv.LoaiNvNavigation.TenLoai.Contains("Quản lý"));
+                                         .Where(nv => nv.LoaiNvNavigation.TenLoai.Contains("Quản lý")).ToList();
             ViewData["NhanVienQl"] = new SelectList(nvQl, "NhanVienId", "TenNhanVien");
             ViewData["TaiKhoan"] = new TaiKhoan();
             return View();
@@ -64,7 +77,7 @@ namespace PBL3.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("NhanVienId,TenNhanVien,Sdt,DiaChi,LoaiNv,NhanVienQl,CaId")] NhanVien nhanVien, TaiKhoan acc)
+        public IActionResult Create([Bind("NhanVienId,TenNhanVien,Sdt,DiaChi,LoaiNv,NhanVienQl,CaId")] NhanVien nhanVien, TaiKhoan acc)
         {
             ViewBag.TrungTaiKhoan = "";
             // check tk
@@ -73,11 +86,12 @@ namespace PBL3.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    acc.NhanVienId = _context.NhanViens.ToList().OrderByDescending(nv => nv.NhanVienId).FirstOrDefault().NhanVienId + 1;
+                    if (nhanVien.NhanVienQl == 0) nhanVien.NhanVienQl = null;
                     _context.Add(nhanVien);
-                    await _context.SaveChangesAsync();
+                    _context.SaveChanges();
+                    acc.NhanVienId = _context.NhanViens.ToList().OrderByDescending(nv => nv.NhanVienId).FirstOrDefault().NhanVienId;
                     _context.Add(acc);
-                    await _context.SaveChangesAsync();
+                    _context.SaveChanges();
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -131,6 +145,7 @@ namespace PBL3.Areas.Admin.Controllers
             {
                 try
                 {
+                    if (nhanVien.NhanVienQl == 0) nhanVien.NhanVienQl = null;
                     _context.Update(nhanVien);
                     await _context.SaveChangesAsync();
                 }

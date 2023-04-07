@@ -36,7 +36,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="NhanVienQl" class="control-label"></label>
-                <select asp-for="NhanVienQl" class="form-control" asp-items="ViewBag.NhanVienQl"></select>
+                <select asp-for="NhanVienQl" class="form-control" asp-items="ViewBag.NhanVienQl">
+                    <option value="0">Không có</option>
+                </select>
                 <span asp-validation-for="NhanVienQl" class="text-danger"></span>
             </div>
             <div class="form-group">

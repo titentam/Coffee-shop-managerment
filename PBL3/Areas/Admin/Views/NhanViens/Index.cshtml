@@ -5,20 +5,26 @@
 	Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-    <h1 class="text-center my-4">Danh Sách Nhân Viên</h1>
-    
-    <div class="d-flex justify-content-between mb-4">
-        <a asp-action="Create" class="btn btn-success">Create New</a>
-        <select id="myComboBox">
-            <option value="TenNhanVien">Tên Nhân Viên</option>
-            <option value="LoaiNhanVien">Loại Nhân Viên</option>
-             <option value="TenNhanVienQuanLy">Nhân Viên Quản Lí</option>
-        </select>
-        <div>
-        <a class="btn btn-success" onclick="console.log(getSearchText())"> Search</a>
-        <input type="text" id="search-input" placeholder="Tìm Kiếm Nhân Viên">
-        </div>
-    </div>
+<h1 class="text-center my-4">Danh Sách Nhân Viên</h1>
+
+<div class="d-flex justify-content-between mb-4">
+	<a asp-action="Create" class="btn btn-success">Create New</a>
+	<div>
+		<form method="get" asp-action="index">
+			<div class="dropdown">
+				<select id="myComboBox" asp-items="@ViewBag.DsLoaiNV" class="btn btn-info dropdown-toggle" name="option">
+					<option value="-1" disabled selected>Chọn loại nhân viên</option>
+					<option value="0" selected>Tất cả</option>
+				</select>
+				<input type="submit" value="Lọc" class="btn btn-primary" />
+			</div>
+			<div>
+				<input type="text" id="search-input" placeholder="Tìm theo tên" value="@ViewBag.CurrentSearch" name="search">
+				<input type="submit" value="Tìm kiếm" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
+</div>
 
 <div class="row justify-content-center">
 	<div class="col-lg-10">
@@ -49,7 +55,7 @@
 						{
 							<td class="text-center"></td>
 						}
-						
+
 						@if (item.LoaiNvNavigation != null)
 						{
 							<td class="text-center">@item.LoaiNvNavigation.TenLoai</td>
@@ -79,3 +85,4 @@
 		</table>
 	</div>
 </div>
+
