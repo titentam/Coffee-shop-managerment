@@ -1,5 +1,5 @@
-﻿@model IEnumerable<PBL3.Models.NhanVien>
-
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<PBL3.Models.NhanVien>
 @{
 	ViewData["Title"] = "Index";
 	Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -31,6 +31,7 @@
 		<table class="table table-bordered">
 			<thead>
 				<tr>
+					<th>ID</th>
 					<th>Tên Nhân Viên</th>
 					<th>Số Điện Thoại</th>
 					<th>Địa Chỉ</th>
@@ -44,6 +45,7 @@
 				@foreach (var item in Model)
 				{
 					<tr>
+						<td class="text-center">@item.NhanVienId </td>
 						<td class="text-center">@item.TenNhanVien </td>
 						<td class="text-center">@item.Sdt</td>
 						<td class="text-center">@item.DiaChi</td>
@@ -83,6 +85,9 @@
 				}
 			</tbody>
 		</table>
+		<div>
+			<pager class="page-container" list="@Model" asp-area="Admin" asp-controller="NhanViens" asp-action="Index"></pager>
+		</div>
 	</div>
 </div>
 

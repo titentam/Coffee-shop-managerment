@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PBL3.Models;
+using PagedList.Core;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace PBL3.Areas.Admin.Controllers
 {
@@ -13,21 +15,25 @@ namespace PBL3.Areas.Admin.Controllers
     public class NhanViensController : Controller
     {
         private readonly TamtentoiContext _context;
+		public INotyfService _notifyService { get; }
 
-        public NhanViensController(TamtentoiContext context)
+		public NhanViensController(TamtentoiContext context, INotyfService notifyService)
         {
             _context = context;
-        }
+			_notifyService = notifyService;
+		}
 
         // GET: Admin/NhanViens
-        public async Task<IActionResult> Index(string ?search, int option =0)
+        public async Task<IActionResult> Index(int? page, string ?search, int option =0)
         {
-
-            ViewData["CurrentSearch"] = search;
+			var pageNumber = page == null || page < 0 ? 1 : page.Value;
+			var pageSize = 10;
+			ViewData["CurrentSearch"] = search;
 			ViewData["DsLoaiNV"] = new SelectList(_context.LoaiNhanViens, "LoaiNv", "TenLoai", option);
             var listNv = _context.NhanViens.Include(n => n.Ca)
                                            .Include(n => n.LoaiNvNavigation)
-                                           .Include(n => n.NhanVienQlNavigation).ToList();
+                                           .Include(n => n.NhanVienQlNavigation)
+                                           .OrderByDescending(n=>n.NhanVienId).ToList();
             if (!string.IsNullOrEmpty(search))
             {
                 listNv = listNv.Where(nv => nv.TenNhanVien.Contains(search)).ToList();
@@ -36,7 +42,8 @@ namespace PBL3.Areas.Admin.Controllers
             {
                 listNv = listNv.Where(nv => nv.LoaiNv == option).ToList();
             }
-            return View(listNv);
+            PagedList<NhanVien> models = new PagedList<NhanVien>(listNv.AsQueryable(), pageNumber, pageSize);  
+            return View(models);
         }
 
         // GET: Admin/NhanViens/Details/5
@@ -92,7 +99,8 @@ namespace PBL3.Areas.Admin.Controllers
                     acc.NhanVienId = _context.NhanViens.ToList().OrderByDescending(nv => nv.NhanVienId).FirstOrDefault().NhanVienId;
                     _context.Add(acc);
                     _context.SaveChanges();
-                    return RedirectToAction(nameof(Index));
+					_notifyService.Success("Thêm thành công!");
+					return RedirectToAction(nameof(Index));
                 }
             }
             else
@@ -148,7 +156,8 @@ namespace PBL3.Areas.Admin.Controllers
                     if (nhanVien.NhanVienQl == 0) nhanVien.NhanVienQl = null;
                     _context.Update(nhanVien);
                     await _context.SaveChangesAsync();
-                }
+					_notifyService.Success("Cập nhật thành công!");
+				}
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!NhanVienExists(nhanVien.NhanVienId))
@@ -213,10 +222,12 @@ namespace PBL3.Areas.Admin.Controllers
                     await _context.SaveChangesAsync();
                 } 
                 _context.NhanViens.Remove(nhanVien);
+
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+			_notifyService.Success("Xoá thành công!");
+			return RedirectToAction(nameof(Index));
         }
 
         private bool NhanVienExists(int id)

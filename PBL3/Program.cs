@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PBL3.Models;
+using AspNetCoreHero.ToastNotification;
 
 namespace PBL3
 {
@@ -17,8 +18,10 @@ namespace PBL3
 
             // DI
             builder.Services.AddDbContext<TamtentoiContext>(options => options.UseSqlServer(stringCon));
+			builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+			builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; });
 
-            var app = builder.Build();
+			var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
