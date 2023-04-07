@@ -5,11 +5,20 @@
 	Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="text-center my-4">Danh Sách Nhân Viên</h1>
-
-<div class="d-flex justify-content-center mb-4">
-	<a asp-action="Create" class="btn btn-success">Create New</a>
-</div>
+    <h1 class="text-center my-4">Danh Sách Nhân Viên</h1>
+    
+    <div class="d-flex justify-content-between mb-4">
+        <a asp-action="Create" class="btn btn-success">Create New</a>
+        <select id="myComboBox">
+            <option value="TenNhanVien">Tên Nhân Viên</option>
+            <option value="LoaiNhanVien">Loại Nhân Viên</option>
+             <option value="TenNhanVienQuanLy">Nhân Viên Quản Lí</option>
+        </select>
+        <div>
+        <a class="btn btn-success" onclick="console.log(getSearchText())"> Search</a>
+        <input type="text" id="search-input" placeholder="Tìm Kiếm Nhân Viên">
+        </div>
+    </div>
 
 <div class="row justify-content-center">
 	<div class="col-lg-10">
