@@ -5,31 +5,31 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<h1>Tạo Ca Làm</h1>
 
-<h4>CaLam</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="TenCa" class="control-label"></label>
+                <label asp-for="TenCa" class="control-label">Tên Ca</label>
                 <input asp-for="TenCa" class="form-control" />
                 <span asp-validation-for="TenCa" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ThoiGianBatDau" class="control-label"></label>
+                <label asp-for="ThoiGianBatDau" class="control-label">Thời Gian Bắt Đầu</label>
                 <input asp-for="ThoiGianBatDau" class="form-control" />
                 <span asp-validation-for="ThoiGianBatDau" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ThoiGianKetThuc" class="control-label"></label>
+                <label asp-for="ThoiGianKetThuc" class="control-label">Thời Gian Kết Thúc</label>
                 <input asp-for="ThoiGianKetThuc" class="form-control" />
                 <span asp-validation-for="ThoiGianKetThuc" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Tạo" class="btn btn-primary" />
             </div>
         </form>
     </div>
