@@ -1,92 +1,114 @@
 ﻿@using PagedList.Core.Mvc
 @model PagedList.Core.IPagedList<PBL3.Models.NhanVien>
 @{
-	ViewData["Title"] = "Index";
+	ViewData["Title"] = "Danh sách nhân viên";
 	Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="text-center my-4">Danh Sách Nhân Viên</h1>
 
-<div class="d-flex justify-content-between mb-4">
-	<a asp-action="Create" class="btn btn-success">Create New</a>
-	<div>
-		<form method="get" asp-action="index">
-			<div class="dropdown">
-				<select id="myComboBox" asp-items="@ViewBag.DsLoaiNV" class="btn btn-info dropdown-toggle" name="option">
-					<option value="-1" disabled selected>Chọn loại nhân viên</option>
-					<option value="0" selected>Tất cả</option>
-				</select>
-				<input type="submit" value="Lọc" class="btn btn-primary" />
-			</div>
-			<div>
-				<input type="text" id="search-input" placeholder="Tìm theo tên" value="@ViewBag.CurrentSearch" name="search">
-				<input type="submit" value="Tìm kiếm" class="btn btn-primary" />
-			</div>
-		</form>
+<div class="page-header">
+	<div class="header-sub-title">
+		<nav class="breadcrumb breadcrumb-dash">
+			<a asp-area="Admin" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+			<a class="breadcrumb-item" asp-area="Admin" asp-controller="NhanViens" asp-action="Index">Quản lí nhân viên</a>
+			<span class="breadcrumb-item active">Danh sách nhân viên</span>
+		</nav>
 	</div>
 </div>
-
-<div class="row justify-content-center">
-	<div class="col-lg-10">
-		<table class="table table-bordered">
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>Tên Nhân Viên</th>
-					<th>Số Điện Thoại</th>
-					<th>Địa Chỉ</th>
-					<th>Ca làm việc</th>
-					<th>Loại Nhân Viên</th>
-					<th>Người Quản Lý</th>
-					<th>#</th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach (var item in Model)
-				{
+<div class="card">
+	<div class="card-body">
+		<div class="row m-b-30">
+			<div class="col-lg-8">
+				<form method="get" asp-action="index" class="d-md-flex">
+					<div class="m-b-10 m-r-15">
+						<select asp-items="@ViewBag.DsLoaiNV" class="custom-select" style="min-width: 180px;" name="option">
+							<option value="-1" disabled selected>Chọn loại nhân viên</option>
+							<option value="0" selected>Tất cả</option>
+						</select>
+					</div>
+					<div class="m-b-10 m-r-30">
+						<button class="btn btn-info btn-tone m-r-5">Lọc</button>
+					</div>
+					<div class="input-affix m-b-10 m-r-15">
+						<input type="text" class="form-control" placeholder="Tìm theo tên" value="@ViewBag.CurrentSearch" name="search">
+					</div>
+					<div class="m-b-10">
+						<input type="submit" value="Tìm kiếm" class="btn btn-info btn-tone" />
+					</div>
+				</form>
+			</div>
+			<div class="col-lg-4 text-right">
+				<a asp-area="Admin" asp-controller="NhanViens" asp-action="Create" class="btn btn-primary">
+					<i class="anticon anticon-plus-circle m-r-5"></i>
+					<span>Thêm nhân viên</span>
+				</a>
+			</div>
+		</div>
+		<div class="table-responsive">
+			<table class="table table-hover e-commerce-table">
+				<thead>
 					<tr>
-						<td class="text-center">@item.NhanVienId </td>
-						<td class="text-center">@item.TenNhanVien </td>
-						<td class="text-center">@item.Sdt</td>
-						<td class="text-center">@item.DiaChi</td>
-						@if (item.Ca != null)
-						{
-							<td class="text-center">@item.Ca.TenCa</td>
-						}
-						else
-						{
-							<td class="text-center"></td>
-						}
-
-						@if (item.LoaiNvNavigation != null)
-						{
-							<td class="text-center">@item.LoaiNvNavigation.TenLoai</td>
-						}
-						else
-						{
-							<td class="text-center"></td>
-						}
-						@if (item.NhanVienQlNavigation != null)
-						{
-							<td class="text-center">@item.NhanVienQlNavigation.TenNhanVien</td>
-						}
-						else
-						{
-							<td class="text-center"></td>
-						}
-						<td>
-							<div class="d-flex justify-content-center">
-								<a asp-action="Edit" asp-route-id="@item.NhanVienId" class="btn btn-sm btn-warning ">Edit</a>
-								<a asp-action="Details" asp-route-id="@item.NhanVienId" class="btn btn-sm btn-primary mx-2">Details</a>
-								<a asp-action="Delete" asp-route-id="@item.NhanVienId" class="btn btn-sm btn-danger">Delete</a>
-							</div>
-						</td>
+						<th>ID</th>
+						<th>Tên Nhân Viên</th>
+						<th>Số Điện Thoại</th>
+						<th>Địa Chỉ</th>
+						<th>Ca làm việc</th>
+						<th>Loại Nhân Viên</th>
+						<th>Người Quản Lý</th>
+						<th></th>
 					</tr>
-				}
-			</tbody>
-		</table>
-		<div>
-			<pager class="page-container" list="@Model" asp-area="Admin" asp-controller="NhanViens" asp-action="Index"></pager>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>
+								<a asp-action="Details" asp-route-id="@item.NhanVienId">#@item.NhanVienId</a>	
+							</td>
+							<td >@item.TenNhanVien </td>
+							<td >@item.Sdt</td>
+							<td >@item.DiaChi</td>
+							@if (item.Ca != null)
+							{
+								<td >@item.Ca.TenCa</td>
+							}
+							else
+							{
+								<td ></td>
+							}
+
+							@if (item.LoaiNvNavigation != null)
+							{
+								<td >@item.LoaiNvNavigation.TenLoai</td>
+							}
+							else
+							{
+								<td ></td>
+							}
+							@if (item.NhanVienQlNavigation != null)
+							{
+								<td >@item.NhanVienQlNavigation.TenNhanVien</td>
+							}
+							else
+							{
+								<td ></td>
+							}
+							<td class="text-right">
+								<a asp-action="Edit" asp-route-id="@item.NhanVienId" class="btn btn-icon btn-hover btn-sm btn-rounded pull-right">
+									<i class="anticon anticon-edit"></i>
+								</a>
+								<a asp-action="Delete" asp-route-id="@item.NhanVienId" class="btn btn-icon btn-hover btn-sm btn-rounded">
+									<i class="anticon anticon-delete"></i>
+								</a>
+							</td>
+
+						</tr>
+					}
+				</tbody>
+			</table>
+			<div>
+				<pager class="page-container" list="@Model" asp-area="Admin" asp-controller="NhanViens" asp-action="Index"></pager>
+			</div>
 		</div>
 	</div>
 </div>

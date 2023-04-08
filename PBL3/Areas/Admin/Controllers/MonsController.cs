@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
+using DiChoSaiGon.Helpper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using PagedList.Core;
 using PBL3.Models;
 
 namespace PBL3.Areas.Admin.Controllers
@@ -13,17 +16,34 @@ namespace PBL3.Areas.Admin.Controllers
     public class MonsController : Controller
     {
         private readonly TamtentoiContext _context;
+        public INotyfService _notifyService { get; }
 
-        public MonsController(TamtentoiContext context)
+        public MonsController(TamtentoiContext context, INotyfService notifyService)
         {
             _context = context;
+            _notifyService = notifyService;
         }
 
         // GET: Admin/Mons
-        public async Task<IActionResult> Index()
+        public IActionResult Index(int? page, string? search, int option = 0)
         {
-            var tamtentoiContext = _context.Mons.Include(m => m.CongThuc).Include(m => m.LoaiMon);
-            return View(await tamtentoiContext.ToListAsync());
+            var pageNumber = page == null || page < 0 ? 1 : page.Value;
+            var pageSize = 10;
+            ViewData["CurrentSearch"] = search;
+            ViewData["DsLoaiMon"] = new SelectList(_context.LoaiMons, "LoaiMonId", "TenLoaiMon", option);
+            var list = _context.Mons.Include(n => n.LoaiMon)
+                                           .Include(n => n.CongThuc)
+                                           .OrderByDescending(n => n.MonId).ToList();
+            if (!string.IsNullOrEmpty(search))
+            {
+                list = list.Where(nv => nv.TenMon.Contains(search)).ToList();
+            }
+            if (option != 0)
+            {
+                list = list.Where(nv => nv.LoaiMonId == option).ToList();
+            }
+            PagedList<Mon> models = new PagedList<Mon>(list.AsQueryable(), pageNumber, pageSize);
+            return View(models);
         }
 
         // GET: Admin/Mons/Details/5
@@ -59,10 +79,19 @@ namespace PBL3.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MonId,TenMon,Gia,LoaiMonId,CongThucId")] Mon mon)
+        public async Task<IActionResult> Create([Bind("MonId,TenMon,Gia,LoaiMonId,CongThucId,HinhAnh")] Mon mon, IFormFile? fThumb)
         {
             if (ModelState.IsValid)
             {
+                mon.TenMon = Utilities.ToTitleCase(mon.TenMon);
+                if (fThumb != null)
+                {
+                    string extention = Path.GetExtension(fThumb.FileName);
+                    string image = Utilities.SEOUrl(mon.TenMon) + extention;
+                    mon.HinhAnh = await Utilities.UploadFile(fThumb, @"mons", image.ToLower());
+
+                }
+                if (string.IsNullOrEmpty(mon.HinhAnh)) mon.HinhAnh = "default.jpg";
                 _context.Add(mon);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -95,7 +124,7 @@ namespace PBL3.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MonId,TenMon,Gia,LoaiMonId,CongThucId")] Mon mon)
+        public async Task<IActionResult> Edit(int id, [Bind("MonId,TenMon,Gia,LoaiMonId,CongThucId,HinhAnh")] Mon mon , IFormFile? fThumb)
         {
             if (id != mon.MonId)
             {
@@ -106,7 +135,16 @@ namespace PBL3.Areas.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(mon);
+					mon.TenMon = Utilities.ToTitleCase(mon.TenMon);
+					if (fThumb != null)
+					{
+						string extention = Path.GetExtension(fThumb.FileName);
+						string image = Utilities.SEOUrl(mon.TenMon) + extention;
+						mon.HinhAnh = await Utilities.UploadFile(fThumb, @"mons", image.ToLower());
+
+					}
+					if (string.IsNullOrEmpty(mon.HinhAnh)) mon.HinhAnh = "default.jpg";
+					_context.Update(mon);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

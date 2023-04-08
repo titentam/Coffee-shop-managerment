@@ -1,19 +1,25 @@
 ﻿@model PBL3.Models.Mon
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Chỉnh sửa món";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
 
-<h4>Mon</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a class="breadcrumb-item" asp-area="Admin" asp-controller="Mons" asp-action="Index">Quản lí món</a>
+            <span class="breadcrumb-item active">Chỉnh sửa món</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <input type="hidden" asp-for="MonId" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="TenMon" class="control-label"></label>
                 <input asp-for="TenMon" class="form-control" />
@@ -27,24 +33,22 @@
             <div class="form-group">
                 <label asp-for="LoaiMonId" class="control-label"></label>
                 <select asp-for="LoaiMonId" class="form-control" asp-items="ViewBag.LoaiMonId"></select>
-                <span asp-validation-for="LoaiMonId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CongThucId" class="control-label"></label>
                 <select asp-for="CongThucId" class="form-control" asp-items="ViewBag.CongThucId"></select>
-                <span asp-validation-for="CongThucId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <label asp-for="HinhAnh" class="control-label"></label>
+                <input type="file" name="fthumb" asp-for="HinhAnh" class="form-control" />
+                <span asp-validation-for="HinhAnh" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+

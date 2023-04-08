@@ -24,27 +24,26 @@
             @Html.DisplayFor(model => model.Gia)
         </dd>
         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HinhAnh)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HinhAnh)
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CongThuc)
         </dt>
         <dd class = "col-sm-10">
-            @if (Model.CongThuc != null)
-            {
-                @Html.DisplayFor(model => model.CongThuc.TenCongThuc)
-            }
-            
+            @Html.DisplayFor(model => model.CongThuc.CongThucId)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.LoaiMon)
         </dt>
         <dd class = "col-sm-10">
-            @if (Model.LoaiMon != null)
-            {
-                @Html.DisplayFor(model => model.LoaiMon.TenLoaiMon)
-            }
+            @Html.DisplayFor(model => model.LoaiMon.LoaiMonId)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.MonId">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.MonId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

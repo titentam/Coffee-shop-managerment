@@ -1,18 +1,40 @@
 ﻿@model PBL3.Models.NhanVien
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Thêm nhân viên";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
-
-<h4>NhanVien</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="page-header">
+	<div class="header-sub-title">
+		<nav class="breadcrumb breadcrumb-dash">
+			<a asp-area="Admin" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+			<a class="breadcrumb-item" asp-area="Admin" asp-controller="NhanViens" asp-action="Index">Quản lí nhân viên</a>
+			<span class="breadcrumb-item active">Thêm nhân viên</span>
+		</nav>
+	</div>
+</div>
+<div class="card">
+	<div class="card-body">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    @*<label for="inputEmail4">Email</label>
+                    <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+                    *@
+                    <label for="TaiKhoan1">Tài khoản</label>
+                    <label class="text-danger" for="TaiKhoan1" style="display:block">@ViewBag.TrungTaiKhoan</label>
+                    <input id="TaiKhoan1" name="TaiKhoan1" value="@ViewBag.TaiKhoan.TaiKhoan1" class="form-control" placeholder="Nhập tài khoản" />
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Mật khẩu</label>
+                    <input type="password" name="MatKhau" value="@ViewBag.TaiKhoan.MatKhau" class="form-control" id="inputPassword4" placeholder="Nhập mật khẩu" />
+
+                    @*<label for="inputPassword4">Password</label>
+                    <input type="password" class="form-control" id="inputPassword4" placeholder="Password">*@
+                </div>
+            </div>
             <div class="form-group">
                 <label asp-for="TenNhanVien" class="control-label"></label>
                 <input asp-for="TenNhanVien" class="form-control" />
@@ -28,41 +50,28 @@
                 <input asp-for="DiaChi" class="form-control" />
                 <span asp-validation-for="DiaChi" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="LoaiNv" class="control-label"></label>
-                <select asp-for="LoaiNv" class ="form-control" asp-items="ViewBag.LoaiNv"></select>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label asp-for="LoaiNv" class="control-label"></label>
+                    <select asp-for="LoaiNv" class="form-control" asp-items="ViewBag.LoaiNv"></select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="NhanVienQl" class="control-label"></label>
+                    <select asp-for="NhanVienQl" class="form-control" asp-items="ViewBag.NhanVienQl">
+                        <option value="0">Không có</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="CaId" class="control-label"></label>
+                    <select asp-for="CaId" class="form-control" asp-items="ViewBag.CaId"></select>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="NhanVienQl" class="control-label"></label>
-                <select asp-for="NhanVienQl" class ="form-control" asp-items="ViewBag.NhanVienQl">
-                    <option value="0">Không có</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="CaId" class="control-label"></label>
-                <select asp-for="CaId" class ="form-control" asp-items="ViewBag.CaId"></select>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Tài khoản</label>
-                <label class="text-danger" for="TaiKhoan1" style="display:block">@ViewBag.TrungTaiKhoan</label>
-                <input id="TaiKhoan1" name="TaiKhoan1" value="@ViewBag.TaiKhoan.TaiKhoan1" class="form-control" />
-                
-            </div>
-            <div class="form-group">
-                <label class="control-label">Mật khẩu</label>
-                <input name="MatKhau" value="@ViewBag.TaiKhoan.MatKhau" class="form-control" />
-            </div>
-
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
+            <button type="submit" class="btn btn-primary">Thêm</button>
         </form>
-    </div>
+	</div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

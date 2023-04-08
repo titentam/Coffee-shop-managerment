@@ -1,55 +1,94 @@
 ﻿@model PBL3.Models.NhanVien
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Thông tin nhân viên";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a class="breadcrumb-item" asp-area="Admin" asp-controller="NhanViens" asp-action="Index">Quản lí nhân viên</a>
+            <span class="breadcrumb-item active">Thông tin nhân viên</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="product-info-table m-t-20">
+                <tbody>
+                    <tr>
+                        <td>ID:</td>
+                        <td class="text-dark font-weight-semibold">#@Model.NhanVienId</td>
+                    </tr>
+                    <tr>
+                        <td>Tên nhân viên:</td>
+                        <td class="text-dark font-weight-semibold">@Model.TenNhanVien</td>
+                    </tr>
+                    <tr>
+                        <td>Số điện thoại:</td>
+                        <td class="text-dark font-weight-semibold">@Model.Sdt</td>
+                    </tr>
+                    <tr>
+                        <td>Địa chỉ:</td>
+                        <td class="text-dark font-weight-semibold">@Model.DiaChi</td>
+                    </tr>
+                    <tr>
+                        <td>Loại nhân viên:</td>
+                        @if (Model.LoaiNvNavigation != null)
+                        {
+                            <td class="text-dark font-weight-semibold">@Model.LoaiNvNavigation.TenLoai</td>
+                        }
+                        else
+                        {
+                            <td class="text-dark font-weight-semibold"></td>
+                        }
+                    </tr>
+                    <tr>
+                        <td>Nhân viên quản lí:</td>
+                        @if (Model.NhanVienQlNavigation != null)
+                        {
+                            <td class="text-dark font-weight-semibold">@Model.NhanVienQlNavigation.TenNhanVien</td>
+                        }
+                        else
+                        {
+                            <td class="text-dark font-weight-semibold"></td>
+                        }
+                    </tr>
+                    <tr>
+                        <td>Ca làm:</td>
+                        @if (Model.Ca != null)
+                        {
+                            <td class="text-dark font-weight-semibold">@Model.Ca.TenCa</td>
+                        }
+                        else
+                        {
+                            <td class="text-dark font-weight-semibold"></td>
+                        }
+                    </tr>
+                    <tr>
+                        <td>Tài khoản:</td>
+                        @if (Model.TaiKhoans.Count>0)
+                        {
+                            <td class="text-dark font-weight-semibold">@Model.TaiKhoans.ToList()[0].TaiKhoan1</td>
+                        }
+                        else
+                        {
+                            <td class="text-dark font-weight-semibold"></td>
+                        }
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-<div>
-    <h4>NhanVien</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TenNhanVien)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TenNhanVien)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Sdt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Sdt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DiaChi)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DiaChi)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ca)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ca.CaId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LoaiNvNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LoaiNvNavigation.LoaiNv)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NhanVienQlNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NhanVienQlNavigation.NhanVienId)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.NhanVienId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
