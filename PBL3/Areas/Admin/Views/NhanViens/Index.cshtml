@@ -7,10 +7,10 @@
 
 <h1 class="text-center my-4">Danh Sách Nhân Viên</h1>
 
-<div class="d-flex justify-content-between mb-4">
-	<a asp-action="Create" class="btn btn-success">Create New</a>
-	<div>
-		<form method="get" asp-action="index">
+<div class="d-flex justify-content-around mb-4">
+	<a asp-action="Create" class="btn btn-success ">Create New</a>
+	<div class="w-50">
+		<form method="get" asp-action="index" class="d-flex justify-content-around">
 			<div class="dropdown">
 				<select id="myComboBox" asp-items="@ViewBag.DsLoaiNV" class="btn btn-info dropdown-toggle" name="option">
 					<option value="-1" disabled selected>Chọn loại nhân viên</option>
@@ -35,10 +35,10 @@
 					<th>Tên Nhân Viên</th>
 					<th>Số Điện Thoại</th>
 					<th>Địa Chỉ</th>
-					<th>Ca làm việc</th>
+					<th>Ca Làm Việc</th>
 					<th>Loại Nhân Viên</th>
 					<th>Người Quản Lý</th>
-					<th>#</th>
+					<th>Tùy chỉnh</th>
 				</tr>
 			</thead>
 			<tbody>

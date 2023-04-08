@@ -2,5 +2,19 @@
 	ViewData["Title"] = "Index";
 	Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
-
-<h2> home ccc</h2>
+<body>
+    <div style="display: flex;">
+        <div class="line-chart-container">
+            <div class="line-chart" style="width:75%">
+                <h2 class="text-center">Biểu đồ lợi nhuận</h2>
+                <canvas id="myLineChart"></canvas>
+            </div>
+        </div>
+        <div class="line-chart-container">
+            <div class="line-chart">
+                <h2 class="text-center">Tỉ lệ các loại món ăn</h2>
+                <canvas id="myDonutChart"></canvas>
+            </div>
+        </div>
+    </div>
+</body>

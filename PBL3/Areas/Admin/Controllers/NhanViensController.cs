@@ -27,7 +27,7 @@ namespace PBL3.Areas.Admin.Controllers
         public async Task<IActionResult> Index(int? page, string ?search, int option =0)
         {
 			var pageNumber = page == null || page < 0 ? 1 : page.Value;
-			var pageSize = 10;
+			var pageSize = 7;
 			ViewData["CurrentSearch"] = search;
 			ViewData["DsLoaiNV"] = new SelectList(_context.LoaiNhanViens, "LoaiNv", "TenLoai", option);
             var listNv = _context.NhanViens.Include(n => n.Ca)
