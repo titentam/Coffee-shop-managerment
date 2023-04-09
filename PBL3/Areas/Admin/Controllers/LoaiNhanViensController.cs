@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using PagedList.Core;
 using PBL3.Models;
 
 namespace PBL3.Areas.Admin.Controllers
@@ -13,20 +15,25 @@ namespace PBL3.Areas.Admin.Controllers
     public class LoaiNhanViensController : Controller
     {
         private readonly TamtentoiContext _context;
+		public INotyfService _notifyService { get; }
 
-        public LoaiNhanViensController(TamtentoiContext context)
+		public LoaiNhanViensController(TamtentoiContext context, INotyfService notifyService)
         {
             _context = context;
+            _notifyService = notifyService; 
         }
 
         // GET: Admin/LoaiNhanViens
-        public async Task<IActionResult> Index()
+        public IActionResult Index(string? search)
         {
-              return _context.LoaiNhanViens != null ? 
-                          View(await _context.LoaiNhanViens.ToListAsync()) :
-                          Problem("Entity set 'TamtentoiContext.LoaiNhanViens'  is null.");
+            ViewData["CurrentSearch"] = search;
+            var list = _context.LoaiNhanViens.OrderByDescending(n => n.LoaiNv).ToList();
+            if (!string.IsNullOrEmpty(search))
+            {
+                list = list.Where(nv => nv.TenLoai.Contains(search)).ToList();
+            }
+            return View(list);
         }
-
         // GET: Admin/LoaiNhanViens/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -62,7 +69,8 @@ namespace PBL3.Areas.Admin.Controllers
             {
                 _context.Add(loaiNhanVien);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+				_notifyService.Success("Thêm thành công!");
+				return RedirectToAction(nameof(Index));
             }
             return View(loaiNhanVien);
         }
@@ -101,7 +109,8 @@ namespace PBL3.Areas.Admin.Controllers
                 {
                     _context.Update(loaiNhanVien);
                     await _context.SaveChangesAsync();
-                }
+					_notifyService.Success("Cập nhật thành công!");
+				}
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!LoaiNhanVienExists(loaiNhanVien.LoaiNv))
@@ -152,7 +161,8 @@ namespace PBL3.Areas.Admin.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+			_notifyService.Success("Xoá thành công!");
+			return RedirectToAction(nameof(Index));
         }
 
         private bool LoaiNhanVienExists(int id)

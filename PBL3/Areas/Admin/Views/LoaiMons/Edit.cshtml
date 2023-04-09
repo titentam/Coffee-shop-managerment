@@ -1,16 +1,15 @@
-﻿@model PBL3.Models.LoaiNhanVien
+﻿@model PBL3.Models.LoaiMon
 
 @{
-    ViewData["Title"] = "Chỉnh sửa loại nhân viên";
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Chỉnh sửa loại món";
 }
 
 <div class="page-header">
     <div class="header-sub-title">
         <nav class="breadcrumb breadcrumb-dash">
             <a asp-area="Admin" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
-            <a class="breadcrumb-item" asp-area="Admin" asp-controller="LoaiNhanViens" asp-action="Index">Quản lí loại nhân viên</a>
-            <span class="breadcrumb-item active">Chỉnh sửa loại nhân viên</span>
+            <a class="breadcrumb-item" asp-area="Admin" asp-controller="LoaiMons" asp-action="Index">Quản lí loại món</a>
+            <span class="breadcrumb-item active">Chỉnh sửa loại món</span>
         </nav>
     </div>
 </div>
@@ -18,11 +17,11 @@
     <div class="card-body">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="LoaiNv" />
+            <input type="hidden" asp-for="LoaiMonId" />
             <div class="form-group">
-                <label asp-for="TenLoai" class="control-label"></label>
-                <input asp-for="TenLoai" class="form-control" />
-                <span asp-validation-for="TenLoai" class="text-danger"></span>
+                <label asp-for="TenLoaiMon" class="control-label"></label>
+                <input asp-for="TenLoaiMon" class="form-control" />
+                <span asp-validation-for="TenLoaiMon" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-primary">Cập nhật</button>
         </form>

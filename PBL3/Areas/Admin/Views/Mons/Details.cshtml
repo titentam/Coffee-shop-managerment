@@ -1,49 +1,147 @@
 ﻿@model PBL3.Models.Mon
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Chi tiết món";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a class="breadcrumb-item" asp-area="Admin" asp-controller="Mons" asp-action="Index">Quản lí món</a>
+            <span class="breadcrumb-item active">Chi tiết sửa món</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div>
+            <div class="page-header no-gutters has-tab">
+                <div class="d-md-flex m-b-15 align-items-center justify-content-between">
+                    <div class="media align-items-center m-b-15">
+                        <div class="avatar avatar-image rounded" style="height: 70px; width: 70px">
+                            <img src="~/images/mons/@Model.HinhAnh" alt="@Model.HinhAnh">
+                        </div>
+                        <div class="m-l-15">
+                            <h4 class="m-b-0">@Model.TenMon</h4>
+                            <p class="text-muted m-b-0">ID: #@Model.MonId</p>
+                        </div>
+                    </div>
+                </div>
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#product-edit-basic">Thông tin đồ uống</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="container-fluid">
+                <div class="tab-content m-t-15">
+                    <div class="tab-pane fade show active" id="product-overview">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="media align-items-center">
+                                            <i class="font-size-40 text-success anticon anticon-smile"></i>
+                                            <div class="m-l-15">
+                                                <p class="m-b-0 text-muted">10 ratings</p>
+                                                <div class="star-rating m-t-5">
+                                                    <input type="radio" id="star3-5" name="rating-3" value="5" checked disabled /><label for="star3-5" title="5 star"></label>
+                                                    <input type="radio" id="star3-4" name="rating-3" value="4" disabled /><label for="star3-4" title="4 star"></label>
+                                                    <input type="radio" id="star3-3" name="rating-3" value="3" disabled /><label for="star3-3" title="3 star"></label>
+                                                    <input type="radio" id="star3-2" name="rating-3" value="2" disabled /><label for="star3-2" title="2 star"></label>
+                                                    <input type="radio" id="star3-1" name="rating-3" value="1" disabled /><label for="star3-1" title="1 star"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="media align-items-center">
+                                            <i class="font-size-40 text-primary anticon anticon-shopping-cart"></i>
+                                            <div class="m-l-15">
+                                                <p class="m-b-0 text-muted">Sales</p>
+                                                <h3 class="m-b-0 ls-1">1,521</h3> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="media align-items-center">
+                                            <i class="font-size-40 text-primary anticon anticon-message"></i>
+                                            <div class="m-l-15">
+                                                <p class="m-b-0 text-muted">Reviews</p>
+                                                <h3 class="m-b-0 ls-1">27</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="media align-items-center">
+                                            <i class="font-size-40 text-primary anticon anticon-stock"></i>
+                                            <div class="m-l-15">
+                                                <p class="m-b-0 text-muted">Available Stock</p>
+                                                <h3 class="m-b-0 ls-1">152</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>*@
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Thông tin cơ bản</h4>
+                                <div class="table-responsive">
+                                    <table class="product-info-table m-t-20">
+                                        <tbody>
+                                            <tr>
+                                                <td>Giá:</td>
+                                                <td class="text-dark font-weight-semibold">@Model.Gia</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Loại món:</td>
+                                                @if (Model.LoaiMon != null)
+                                                {
+                                                    <td>@Model.LoaiMon.TenLoaiMon</td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
 
-<div>
-    <h4>Mon</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TenMon)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TenMon)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Gia)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Gia)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HinhAnh)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HinhAnh)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CongThuc)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CongThuc.CongThucId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LoaiMon)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LoaiMon.LoaiMonId)
-        </dd>
-    </dl>
+                                            </tr>
+                                            <tr>
+                                                <td>Công thức:</td>
+                                                @if (Model.CongThuc != null)
+                                                {
+                                                    <td>@Model.CongThuc.TenCongThuc</td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.MonId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+

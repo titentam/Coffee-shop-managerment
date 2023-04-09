@@ -1,7 +1,7 @@
-﻿@model PBL3.Models.LoaiNhanVien
+﻿@model PBL3.Models.LoaiMon
 
 @{
-    ViewData["Title"] = "Thêm loại nhân viên";
+    ViewData["Title"] = "Thêm loại món";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
@@ -9,8 +9,8 @@
     <div class="header-sub-title">
         <nav class="breadcrumb breadcrumb-dash">
             <a asp-area="Admin" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
-            <a class="breadcrumb-item" asp-area="Admin" asp-controller="LoaiNhanViens" asp-action="Index">Quản lí nhân viên</a>
-            <span class="breadcrumb-item active">Thêm loại nhân viên</span>
+            <a class="breadcrumb-item" asp-area="Admin" asp-controller="LoaiMons" asp-action="Index">Quản lí loại món</a>
+            <span class="breadcrumb-item active">Thêm loại món</span>
         </nav>
     </div>
 </div>
@@ -19,9 +19,9 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="TenLoai" class="control-label"></label>
-                <input asp-for="TenLoai" class="form-control" />
-                <span asp-validation-for="TenLoai" class="text-danger"></span>
+                <label asp-for="TenLoaiMon" class="control-label"></label>
+                <input asp-for="TenLoaiMon" class="form-control" />
+                <span asp-validation-for="TenLoaiMon" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-primary">Thêm</button>
         </form>
@@ -30,5 +30,7 @@
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

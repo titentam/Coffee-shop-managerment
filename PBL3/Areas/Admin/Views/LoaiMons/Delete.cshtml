@@ -1,15 +1,15 @@
-﻿@model PBL3.Models.LoaiNhanVien
+﻿@model PBL3.Models.LoaiMon
 
 @{
-    ViewData["Title"] = "Xoá loại nhân viên";
+    ViewData["Title"] = "Xoá loại món";
 }
 
 <div class="page-header">
     <div class="header-sub-title">
         <nav class="breadcrumb breadcrumb-dash">
             <a asp-area="Admin" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
-            <a class="breadcrumb-item" asp-area="Admin" asp-controller="LoaiNhanViens" asp-action="Index">Quản lí loại nhân viên</a>
-            <span class="breadcrumb-item active">Xoá loại nhân viên</span>
+            <a class="breadcrumb-item" asp-area="Admin" asp-controller="LoaiMons" asp-action="Index">Quản lí loại món</a>
+            <span class="breadcrumb-item active">Xoá loại món</span>
         </nav>
     </div>
 </div>
@@ -20,16 +20,16 @@
                 <tbody>
                     <tr>
                         <td>ID:</td>
-                        <td class="text-dark font-weight-semibold">#@Model.LoaiNv</td>
+                        <td class="text-dark font-weight-semibold">#@Model.LoaiMonId</td>
                     </tr>
                     <tr>
                         <td>Tên Loại:</td>
-                        <td class="text-dark font-weight-semibold">@Model.TenLoai</td>
+                        <td class="text-dark font-weight-semibold">@Model.TenLoaiMon</td>
                     </tr>
                 </tbody>
             </table>
             <form asp-action="Delete">
-                <input type="hidden" asp-for="LoaiNv" />
+                <input type="hidden" asp-for="LoaiMonId" />
                 <input type="submit" value="Xoá" class="btn btn-danger" />
             </form>
         </div>

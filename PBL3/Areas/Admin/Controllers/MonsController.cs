@@ -94,6 +94,7 @@ namespace PBL3.Areas.Admin.Controllers
                 if (string.IsNullOrEmpty(mon.HinhAnh)) mon.HinhAnh = "default.jpg";
                 _context.Add(mon);
                 await _context.SaveChangesAsync();
+                _notifyService.Success("Thêm thành công");
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CongThucId"] = new SelectList(_context.CongThucs, "CongThucId", "TenCongThuc", mon.CongThucId);
@@ -143,9 +144,17 @@ namespace PBL3.Areas.Admin.Controllers
 						mon.HinhAnh = await Utilities.UploadFile(fThumb, @"mons", image.ToLower());
 
 					}
-					if (string.IsNullOrEmpty(mon.HinhAnh)) mon.HinhAnh = "default.jpg";
+                    else
+                    {
+                        string? hinhAnh = _context.Mons.AsNoTracking().Where(m => m.MonId == mon.MonId).SingleOrDefault().HinhAnh;
+
+                        if (string.IsNullOrEmpty(hinhAnh)) mon.HinhAnh = "default.jpg";
+                        else mon.HinhAnh = hinhAnh;
+                    }
 					_context.Update(mon);
                     await _context.SaveChangesAsync();
+                    _notifyService.Success("Cập nhật thành công");
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -201,6 +210,7 @@ namespace PBL3.Areas.Admin.Controllers
             }
             
             await _context.SaveChangesAsync();
+            _notifyService.Success("Xoá thành công");
             return RedirectToAction(nameof(Index));
         }
 
