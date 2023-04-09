@@ -19,9 +19,8 @@ namespace PBL3.Areas.Admin.Controllers
         public IActionResult Index()
         {
             if (HttpContext.Session.GetInt32("user") == null) return RedirectToAction("index", "Login", new {area=""});
-            var nv = _context.NhanViens.Include(n => n.LoaiNvNavigation)
-                                       .Where(n => n.NhanVienId == HttpContext.Session.GetInt32("user")).SingleOrDefault();
-            return View(nv);
+            
+            return View();
         }
     }
 }
