@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
+﻿using DiChoSaiGon.Extension;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Session;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using PBL3.AccountModel;
@@ -17,15 +18,14 @@ namespace PBL3.Controllers
             _context = context;
         }
 
-        public IActionResult Index(TaiKhoan? _acc)
+        public IActionResult Index()
         {
-            if( _acc == null ) _acc= new TaiKhoan();
-            return View(_acc);
+            return View();
         }
         [HttpPost]
-        public IActionResult Login(TaiKhoan _acc)
+        public IActionResult Index(TaiKhoan acc)
         {
-            //var acc  = _context.TaiKhoans.Where(m=> m.TaiKhoan1 == _acc.TaiKhoan1 && m.MatKhau == _acc.MatKhau).FirstOrDefault();
+            //var acc  = _context.TaiKhoans.Where(m=> m.TaiKhoan1 == acc.TaiKhoan1 && m.MatKhau == acc.MatKhau).FirstOrDefault();
             //if (acc == null)
             //{
             //    ViewBag.LoginStatus = 0;
@@ -41,20 +41,27 @@ namespace PBL3.Controllers
             //}
             //return RedirectToAction("index");
 
-            var role = _context.LoaiNhanViens.FromSqlRaw($"GetLoaiNV '{_acc.TaiKhoan1}', '{_acc.MatKhau}'").ToList().SingleOrDefault();
+            var role = _context.LoaiNhanViens.FromSqlRaw($"GetLoaiNV '{acc.TaiKhoan1}', '{acc.MatKhau}'").ToList().SingleOrDefault();
             if (role == null)
             {
-                ViewBag.LoginStatus = 0;
-                    
+                ViewBag.error = "Tài khoản và mật khẩu không đúng"; 
             }
             else
             {
                 if(role.TenLoai=="Quản lý")
                 {
+                    var id = _context.TaiKhoans.Find(acc.TaiKhoan1).NhanVienId;
+                    HttpContext.Session.SetInt32("user", (int)id);
                     return RedirectToAction("index", "Home", new { area = "Admin" });
                 }
             }
-            return RedirectToAction("index");
+            return View(acc);
+        }
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("user");
+            return RedirectToAction("Index");
         }
     }
 }

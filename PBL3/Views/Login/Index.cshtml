@@ -34,16 +34,33 @@
                                 <div class="card-body">
                                     <h2 class="m-t-20">Sign In</h2>
                                     <p class="m-b-30">Enter your credential to get access</p>
-                                    @using (Html.BeginForm("Login", "Login"))
+                                    <form asp-action="index">
+                                        <div class="form-group">
+                                            <label class="font-weight-semibold" asp-for="TaiKhoan1">Tài khoản:</label>
+                                            <div class="input-affix">
+                                                <i class="prefix-icon anticon anticon-user"></i>
+                                                <input asp-for="TaiKhoan1" class="form-control" placeholder="Username">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="MatKhau" class="font-weight-semibold" for="password">Mật khẩu:</label>
+                                            <div class="input-affix m-b-10">
+                                                <i class="prefix-icon anticon anticon-lock" ></i>
+                                                <input type="password" class="form-control" asp-for="MatKhau" placeholder="Password">
+                                            </div>
+                                            <div>
+                                                <label class="font-weight-semibold text-danger">@ViewBag.error</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <button class="btn btn-primary">Sign In</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                   @* @using (Html.BeginForm("Login", "Login"))
                                     {
-
-                                        if (ViewBag.LoginStatus != null)
-                                        {
-                                            if (ViewBag.LoginStatus == 0)
-                                            {
-                                                <div class="alert alert-danger">Invalid Information!</div>
-                                            }
-                                        }
+                                        <div class="alert alert-danger">@ViewBag.LoginStatus</div>
                                         <div class="form-group">
                                             <label class="font-weight-semibold" for="userName">Username</label>
                                             <div class="input-affix">
@@ -66,7 +83,7 @@
                                                 <button class="btn btn-primary">Sign In</button>
                                             </div>
                                         </div>
-                                    }
+                                    }*@
                                 </div>
                             </div>
                         </div>
