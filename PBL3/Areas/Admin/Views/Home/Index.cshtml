@@ -4,14 +4,15 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 <body>
+    
     <div style="display: flex;">
         <div class="line-chart-container">
-            <div class="line-chart" style="width:75%">
+            <div class="line-chart" style="width:100%">
                 <h2 class="text-center">Biểu đồ lợi nhuận</h2>
                 <canvas id="myLineChart"></canvas>
             </div>
         </div>
-        <div class="line-chart-container">
+        <div class="line-chart-container" style="width:100%">
             <div class="line-chart">
                 <h2 class="text-center">Tỉ lệ các loại món ăn</h2>
                 <canvas id="myDonutChart"></canvas>
@@ -25,17 +26,17 @@
         var myChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['1/2020', '2/2020', '3/2020', '4/2020', '5/2020', '6/2020'],
+                labels: ['1/2020', '2/2020', '3/2020', '4/2020', '5/2020', '6/2020','7/2020'],
                 datasets: [{
                     label: 'Doanh thu',
-                    data: [1200, 1400, 1300, 1600, 1800, 2000],
-                    backgroundColor: 'blue',
+                    data: [1200, 1400, 1300, 1600, 1800, 2000,1900],
+                    backgroundColor: 'transparent',
                     borderColor: 'red'
                 },
                 {
                     label: 'vốn',
-                    data: [1020, 1200, 1700, 1100, 1600, 1000],
-                    backgroundColor: 'black',
+                    data: [1020, 1200, 1700, 1100, 1600, 1000,1500],
+                    backgroundColor: 'transparent',
                     borderColor: 'yellow'
 
                 }]
