@@ -1,9 +1,64 @@
-﻿
+﻿@using System.Web;
+@model List<PBL3.Models.SpMonth>
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    List<string> tenLoaiMon = ViewBag.tenLoaiMon;
+    int count = ((List<int>)ViewBag.soLuong).Count();
+    var random = new Random();
+
 }
 <body>
+
+    <div class="row">   
+        <div class="col-md-6 col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="media align-items-center">
+                        <div class="avatar avatar-icon avatar-lg avatar-gold">
+                            <i class="anticon anticon-profile"></i>
+                        </div>
+                        <div class="m-l-15">
+                            <h2 class="m-b-0">@ViewBag.totalItem</h2>
+                            <p class="m-b-0 text-muted">Món</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="media align-items-center">
+                        <div class="avatar avatar-icon avatar-lg avatar-purple">
+                            <i class="anticon anticon-user"></i>
+                        </div>
+                        <div class="m-l-15">
+                            <h2 class="m-b-0">@ViewBag.totalStaff</h2>
+                            <p class="m-b-0 text-muted">Nhân viên</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="media align-items-center">
+                        <div class="avatar avatar-icon avatar-lg avatar-blue">
+                            <i class="anticon anticon-dollar"></i>
+                        </div>
+                        <div class="m-l-15">
+                            <h2 class="m-b-0">@ViewBag.currentRevenue VNĐ</h2>
+                            <p class="m-b-0 text-muted">Doanh thu tháng hiện tại</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <div style="display: flex;">
         <div class="line-chart-container">
@@ -22,20 +77,39 @@
 </body>
 @section Scripts{
     <script>
+        var years = [];
+        var yearData = [];
+        var yearFund =[];
+        @if (Model.Count > 0)
+        {
+            foreach (var item in Model)
+            {
+                @:years.push('@item.Month/@item.Year');
+                @:yearData.push('@item.Total');
+
+                decimal von = item.Total * (decimal)0.3;
+                @:yearFund.push('@von');
+            }
+        }
+
+
         var ctx = document.getElementById('myLineChart').getContext('2d');
         var myChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['1/2020', '2/2020', '3/2020', '4/2020', '5/2020', '6/2020','7/2020'],
+                //labels: ['1/2020', '2/2020', '3/2020', '4/2020', '5/2020', '6/2020','7/2020'],
+                labels: years,
                 datasets: [{
                     label: 'Doanh thu',
-                    data: [1200, 1400, 1300, 1600, 1800, 2000,1900],
+                    //data: [1200, 1400, 1300, 1600, 1800, 2000,1900],
+                    data: yearData,
                     backgroundColor: 'transparent',
                     borderColor: 'red'
                 },
                 {
                     label: 'vốn',
-                    data: [1020, 1200, 1700, 1100, 1600, 1000,1500],
+                    //data: [1020, 1200, 1700, 1100, 1600, 1000,1500],
+                    data: yearFund,
                     backgroundColor: 'transparent',
                     borderColor: 'yellow'
 
@@ -51,7 +125,7 @@
                         ticks: {
                             beginAtZero: true,
                             callback: function (value, index, values) {
-                                return value.toLocaleString() + ' triệu VNĐ'; // định dạng chuỗi nhãn trục y
+                                return value.toLocaleString() + ' VNĐ'; // định dạng chuỗi nhãn trục y
                             }
                         },
                         scaleLabel: {
@@ -71,26 +145,68 @@
                 }
             }
         });
+
+
+        var listLoaiMon = [];
+        var dataLoaiMon = [];
+        var bgColor = [];
+        @if (count > 0)
+        {
+            foreach (var item in tenLoaiMon)
+            {
+                @:listLoaiMon.push(`@Html.Raw(HttpUtility.JavaScriptStringEncode(item))`);   
+            }
+            foreach (var item in ViewBag.soLuong)
+            {
+
+                @:dataLoaiMon.push('@item');
+            }
+
+            for (int i = 0; i < count; i++)
+            {
+                int red = random.Next(0, 256);
+                int green = random.Next(0, 256);
+                int blue = random.Next(0, 256);
+
+                @:bgColor.push('rgb(@red, @green, @blue)');
+            }
+        }
+     
         var donut = document.getElementById('myDonutChart').getContext('2d');
         var myDonutChart = new Chart(donut, {
             type: 'doughnut',
             data: {
-                labels: [
-                    'Red',
-                    'Blue',
-                    'Yellow'
-                ],
+                labels: listLoaiMon,
                 datasets: [{
                     label: 'My First Dataset',
-                    data: [300, 50, 100],
-                    backgroundColor: [
-                        'rgb(255, 99, 132)',
-                        'rgb(54, 162, 235)',
-                        'rgb(255, 205, 86)'
-                    ],
-                    hoverOffset: 4
+                    data: dataLoaiMon,
+                    backgroundColor: bgColor,
+                    hoverOffset: @count +1
                 }]
             }
         })
+
+        //var donut = document.getElementById('myDonutChart').getContext('2d');
+        //var myDonutChart = new Chart(donut, {
+        //    type: 'doughnut',
+        //    data: {
+        //        labels: [
+        //            'Red',
+        //            'Blue',
+        //            'Yellow'
+        //        ],
+        //        datasets: [{
+        //            label: 'My First Dataset',
+        //            data: [300, 50, 100],
+        //            backgroundColor: [
+        //                'rgb(255, 99, 132)',
+        //                'rgb(54, 162, 235)',
+        //                'rgb(255, 205, 86)'
+        //            ],
+        //            hoverOffset: 4
+        //        }]
+        //    }
+        //})
+        
     </script>
 }
