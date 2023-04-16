@@ -1,40 +1,60 @@
 ﻿@model PBL3.Models.CaLam
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Xoá ca làm việc";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Delete</h1>
-
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>CaLam</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TenCa)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TenCa)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ThoiGianBatDau)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ThoiGianBatDau)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ThoiGianKetThuc)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ThoiGianKetThuc)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="CaId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+<div class="page-header">
+	<div class="header-sub-title">
+		<nav class="breadcrumb breadcrumb-dash">
+			<a asp-area="Admin" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+			<a class="breadcrumb-item" asp-area="Admin" asp-controller="Calams" asp-action="Index">Quản lí ca làm việc</a>
+			<span class="breadcrumb-item active">Xoá ca làm việc #@Model.CaId</span>
+		</nav>
+	</div>
 </div>
+<div class="card">
+	<div class="card-body">
+		<div>
+			<div class="container-fluid">
+				<div class="tab-content m-t-15">
+					<div class="tab-pane fade show active" id="product-overview">
+						<div class="card">
+							<div class="card-body">
+								<h4 class="card-title">Thông tin cơ bản</h4>
+								<div class="table-responsive">
+									<table class="product-info-table m-t-20">
+										<tbody>
+											<tr>
+												<td>Tên ca</td>
+												<td class="text-dark font-weight-semibold">@Model.TenCa</td>
+											</tr>
+											<tr>
+												<td>Thời gian bắt đầu</td>
+												<td class="text-dark font-weight-semibold">@Model.ThoiGianBatDau</td>
+											</tr>
+											<tr>
+												<td>Thời gian kết thúc</td>
+												<td class="text-dark font-weight-semibold">@Model.ThoiGianKetThuc</td>
+											</tr>
+											<tr>
+												<td>
+													<form asp-action="Delete">
+														<input type="hidden" asp-for="CaId" />
+														<input type="submit" value="Delete" class="btn btn-danger" /> 	
+													</form>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

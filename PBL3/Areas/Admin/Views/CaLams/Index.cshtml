@@ -1,48 +1,74 @@
 ﻿@model IEnumerable<PBL3.Models.CaLam>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Danh sách ca làm việc";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.TenCa)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ThoiGianBatDau)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ThoiGianKetThuc)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TenCa)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ThoiGianBatDau)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ThoiGianKetThuc)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.CaId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CaId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CaId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="page-header">
+	<div class="header-sub-title">
+		<nav class="breadcrumb breadcrumb-dash">
+			<a asp-area="Admin" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+			<a class="breadcrumb-item" asp-area="Admin" asp-controller="Calams" asp-action="Index">Quản lí ca làm việc</a>
+			<span class="breadcrumb-item active">Danh sách ca làm việc</span>
+		</nav>
+	</div>
+</div>
+<div class="card">
+	<div class="card-body">
+		<div class="row m-b-30">
+			<div class="col-lg-8">
+				<form method="get" asp-action="index" class="d-md-flex">
+					<div class="input-affix m-b-10 m-r-15">
+						<input type="text" class="form-control" placeholder="Tìm theo tên" value="@ViewBag.CurrentSearch" name="search">
+					</div>
+					<div class="m-b-10">
+						<input type="submit" value="Tìm kiếm" class="btn btn-info btn-tone" />
+					</div>
+				</form>
+			</div>
+			<div class="col-lg-4 text-right">
+				<a asp-area="Admin" asp-controller="Calams" asp-action="Create" class="btn btn-primary">
+					<i class="anticon anticon-plus-circle m-r-5"></i>
+					<span>Thêm ca làm việc</span>
+				</a>
+			</div>
+		</div>
+		<div class="table-responsive">
+			<table class="table table-hover e-commerce-table">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Tên ca</th>
+						<th>Thời gian bắt đầu</th>
+						<th>Thời gian kết thúc</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>
+								<a asp-action="Details" asp-route-id="@item.CaId">#@item.CaId</a>
+							</td>
+							<td>@item.TenCa</td>
+							<td>@item.ThoiGianBatDau</td>
+							<td>@item.ThoiGianKetThuc</td>
+							<td class="text-right">
+								<a asp-action="Edit" asp-route-id="@item.CaId" class="btn btn-icon btn-hover btn-sm btn-rounded pull-right">
+									<i class="anticon anticon-edit"></i>
+								</a>
+								<a asp-action="Delete" asp-route-id="@item.CaId" class="btn btn-icon btn-hover btn-sm btn-rounded">
+									<i class="anticon anticon-delete"></i>
+								</a>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
