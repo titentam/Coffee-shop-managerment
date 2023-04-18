@@ -16,7 +16,18 @@ namespace PBL3.Models
         {
         }
 
-        public virtual DbSet<Ban> Bans { get; set; } = null!;
+        public List<SpYear> StatisticByYear()
+        {
+            return this.SpYears.FromSqlRaw("exec StatisticByYear").ToList();
+        }
+        public List<SpMonth> StatisticByMonth()
+        {
+            return this.SpMonths.FromSqlRaw("exec StatisticByMonth").ToList();
+        }
+
+        public virtual DbSet<SpMonth> SpMonths { get; set; } = null!;
+        public virtual DbSet<SpYear> SpYears { get; set; } = null!;
+		public virtual DbSet<Ban> Bans { get; set; } = null!;
         public virtual DbSet<CaLam> CaLams { get; set; } = null!;
         public virtual DbSet<CongThuc> CongThucs { get; set; } = null!;
         public virtual DbSet<CongThucNguyenLieu> CongThucNguyenLieus { get; set; } = null!;
@@ -37,13 +48,23 @@ namespace PBL3.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=LAPTOP-CUA-DUY\\SQLEXPRESS02;Database=Tamtentoi;Trusted_Connection=True;Integrated Security=True;");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=msi\\sqlexpress01;Database=Tamtentoi;Trusted_Connection=True;Integrated Security=True;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<SpMonth>(entity =>
+            {
+                entity.HasNoKey();
+            });
+
+            modelBuilder.Entity<SpYear>(entity =>
+            {
+                entity.HasNoKey();
+            });
+
             modelBuilder.Entity<Ban>(entity =>
             {
                 entity.ToTable("Ban");
@@ -54,7 +75,7 @@ namespace PBL3.Models
             modelBuilder.Entity<CaLam>(entity =>
             {
                 entity.HasKey(e => e.CaId)
-                    .HasName("PK__CaLam__A679D9A085B25305");
+                    .HasName("PK__CaLam__A679D9A0C614A674");
 
                 entity.ToTable("CaLam");
 
@@ -79,7 +100,7 @@ namespace PBL3.Models
             modelBuilder.Entity<CongThucNguyenLieu>(entity =>
             {
                 entity.HasKey(e => new { e.NguyenLieuId, e.CongThucId })
-                    .HasName("PK__CongThuc__99C3BD5944E54055");
+                    .HasName("PK__CongThuc__99C3BD59F04DC226");
 
                 entity.ToTable("CongThuc_NguyenLieu");
 
@@ -120,7 +141,7 @@ namespace PBL3.Models
             modelBuilder.Entity<DatHangNguyenLieu>(entity =>
             {
                 entity.HasKey(e => new { e.NguyenLieuId, e.DathangId })
-                    .HasName("PK__DatHang___F309F0923294BAEB");
+                    .HasName("PK__DatHang___F309F092D82FE58C");
 
                 entity.ToTable("DatHang_NguyenLieu");
 
@@ -205,7 +226,7 @@ namespace PBL3.Models
             modelBuilder.Entity<LoaiNhanVien>(entity =>
             {
                 entity.HasKey(e => e.LoaiNv)
-                    .HasName("PK__LoaiNhan__4824B97A2A111614");
+                    .HasName("PK__LoaiNhan__4824B97A6305B31A");
 
                 entity.ToTable("LoaiNhanVien");
 
@@ -224,7 +245,7 @@ namespace PBL3.Models
 
                 entity.Property(e => e.Gia).HasColumnType("money");
 
-                entity.Property(e => e.HinhAnh).HasMaxLength(50);
+                entity.Property(e => e.HinhAnh).HasMaxLength(255);
 
                 entity.Property(e => e.LoaiMonId).HasColumnName("LoaiMonID");
 
@@ -246,7 +267,7 @@ namespace PBL3.Models
             modelBuilder.Entity<MonDonDatMon>(entity =>
             {
                 entity.HasKey(e => new { e.MonId, e.DonDatMonId })
-                    .HasName("PK__Mon_DonD__BDD713DCE43CA309");
+                    .HasName("PK__Mon_DonD__BDD713DC014BF0AC");
 
                 entity.ToTable("Mon_DonDatMon");
 
@@ -348,7 +369,7 @@ namespace PBL3.Models
             modelBuilder.Entity<TaiKhoan>(entity =>
             {
                 entity.HasKey(e => e.TaiKhoan1)
-                    .HasName("PK__TaiKhoan__D5B8C7F1797BF08F");
+                    .HasName("PK__TaiKhoan__D5B8C7F1422EFD3B");
 
                 entity.ToTable("TaiKhoan");
 
@@ -375,5 +396,7 @@ namespace PBL3.Models
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+        
     }
 }

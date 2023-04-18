@@ -94,6 +94,7 @@ namespace PBL3.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     if (nhanVien.NhanVienQl == 0) nhanVien.NhanVienQl = null;
+                    if (nhanVien.CaId == 0) nhanVien.CaId = null;
                     _context.Add(nhanVien);
                     _context.SaveChanges();
                     acc.NhanVienId = _context.NhanViens.ToList().OrderByDescending(nv => nv.NhanVienId).FirstOrDefault().NhanVienId;
@@ -154,6 +155,7 @@ namespace PBL3.Areas.Admin.Controllers
                 try
                 {
                     if (nhanVien.NhanVienQl == 0) nhanVien.NhanVienQl = null;
+                    if (nhanVien.CaId == 0) nhanVien.CaId = null;
                     _context.Update(nhanVien);
                     await _context.SaveChangesAsync();
 					_notifyService.Success("Cập nhật thành công!");

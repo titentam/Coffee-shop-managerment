@@ -1,0 +1,75 @@
+﻿@model List<PBL3.Models.NhanVien>
+@{
+    ViewData["Title"] = "Thêm nhân viên vào ca làm việc";
+}
+
+<div class="page-header">
+	<div class="header-sub-title">
+		<nav class="breadcrumb breadcrumb-dash">
+			<a asp-area="Admin" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+			<a class="breadcrumb-item" asp-area="Admin" asp-controller="Calams" asp-action="Index">Quản lí ca làm</a>
+			<a class="breadcrumb-item" asp-area="Admin" asp-controller="Calams" asp-action="Details" asp-route-id="@ViewBag.id">Chi tiết ca làm #@ViewBag.id</a>
+			<span class="breadcrumb-item active">Thêm nhân viên vào ca làm việc</span>
+		</nav>
+	</div>
+</div>
+
+<div class="card">
+	<div class="card-header">
+		<h4 class="card-title text-dark font-weight-semibold">Danh sách nhân viên chưa có ca làm việc!</h4>
+	</div>
+	<div class="card-body">
+		<div class="table-responsive">
+			<table class="table table-hover e-commerce-table">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Tên Nhân Viên</th>
+						<th>Số Điện Thoại</th>
+						<th>Địa Chỉ</th>
+						<th>Loại Nhân Viên</th>
+						<th>Người Quản Lý</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>
+								<a asp-action="Details" asp-route-id="@item.NhanVienId">#@item.NhanVienId</a>
+							</td>
+							<td>@item.TenNhanVien </td>
+							<td>@item.Sdt</td>
+							<td>@item.DiaChi</td>
+							@if (item.LoaiNvNavigation != null)
+							{
+								<td>@item.LoaiNvNavigation.TenLoai</td>
+							}
+							else
+							{
+								<td></td>
+							}
+							@if (item.NhanVienQlNavigation != null)
+							{
+								<td>@item.NhanVienQlNavigation.TenNhanVien</td>
+							}
+							else
+							{
+								<td></td>
+							}
+							<td class="text-right">
+								<form asp-action="AddNv" asp-route-idNv="@item.NhanVienId" asp-route-id="@ViewBag.id">
+									<button type="submit" class="btn btn-icon btn-hover btn-sm btn-rounded pull-right"><i class="fas fa-plus-circle"></i></button>
+								</form>
+							</td>
+
+						</tr>
+					}
+				</tbody>
+			</table>
+			
+		</div>
+	</div>
+</div>
+

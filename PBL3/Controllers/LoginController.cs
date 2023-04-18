@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Session;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using PBL3.AccountModel;
-
 using PBL3.Models;
 using System.Security.Principal;
 namespace PBL3.Controllers
@@ -54,6 +52,13 @@ namespace PBL3.Controllers
                     HttpContext.Session.SetInt32("user", (int)id);
                     return RedirectToAction("index", "Home", new { area = "Admin" });
                 }
+                if(role.TenLoai=="Phục vụ")
+                {
+                    var id = _context.TaiKhoans.Find(acc.TaiKhoan1).NhanVienId;
+                    HttpContext.Session.SetInt32("user", (int)id);
+                    return RedirectToAction("index", "Home", new { area = "Serve" });
+                }
+
             }
             return View(acc);
         }

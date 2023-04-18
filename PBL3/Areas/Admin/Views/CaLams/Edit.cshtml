@@ -1,19 +1,24 @@
 ﻿@model PBL3.Models.CaLam
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Create";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
-
-<h4>CaLam</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a class="breadcrumb-item" asp-area="Admin" asp-controller="Calams" asp-action="Index">Quản lí ca làm việc</a>
+            <span class="breadcrumb-item active">Cập nhật ca làm việc</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="CaId" />
+            <input asp-for="CaId" type="hidden" />
             <div class="form-group">
                 <label asp-for="TenCa" class="control-label"></label>
                 <input asp-for="TenCa" class="form-control" />
@@ -30,13 +35,9 @@
                 <span asp-validation-for="ThoiGianKetThuc" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Cập nhật" class="btn btn-primary" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 

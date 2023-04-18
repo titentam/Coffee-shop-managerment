@@ -144,6 +144,10 @@ namespace DiChoSaiGon.Helpper
                 string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", sDirectory);
                 CreateIfMissing(path);
                 string pathFile = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", sDirectory, newname);
+                if (File.Exists(pathFile))
+                {
+                    File.Delete(pathFile);
+                }
                 var supportedTypes = new[] { "jpg", "jpeg", "png", "gif" };
                 var fileExt = System.IO.Path.GetExtension(file.FileName).Substring(1);
                 if (!supportedTypes.Contains(fileExt.ToLower())) /// Khác các file định nghĩa
@@ -164,5 +168,5 @@ namespace DiChoSaiGon.Helpper
                 return null;
             }
         }
-    }
+	}
 }
