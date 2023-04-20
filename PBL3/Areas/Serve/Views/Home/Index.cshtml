@@ -220,55 +220,69 @@
     let GiamGia = document.getElementById("GiamGia");
 
     function addToCart(id, name, price) {
-        
         const tableBody = document.getElementById("table-body");
-        const row = document.createElement("tr");
-        updateTotal(row, price);
-        const cell1 = document.createElement("td");
-        cell1.innerText = name;
+        const rows = document.querySelectorAll("#table-body tr");
+        let isNewItem = true;
 
-        const cell2 = document.createElement("td");
-        const quantityInput = document.createElement("input");
-        quantityInput.type = "number";
-        quantityInput.value = "1";
-        quantityInput.classList.add("form-control");
-        quantityInput.addEventListener("input", function () {
+        // Kiểm tra xem món đã có trong bảng hay chưa
+        rows.forEach(function (row) {
+            if (row.cells[0].innerText === name) {
+                const quantityInput = row.cells[1].children[0];
+                let quantity = parseInt(quantityInput.value) + 1;
+                quantityInput.value = quantity;
+                updateTotal(row, price * quantity);
+                isNewItem = false;
+            }
+        });
+
+        // Nếu món chưa có trong bảng thì tạo row mới
+        if (isNewItem) {
+            const row = document.createElement("tr");
+
+            const cell1 = document.createElement("td");
+            cell1.innerText = name;
+
+            const cell2 = document.createElement("td");
+            const quantityInput = document.createElement("input");
+            quantityInput.type = "number";
+            quantityInput.value = "1";
+            quantityInput.classList.add("form-control");
+            quantityInput.addEventListener("input", function () {
+                updateTotal(row, price);
+            });
+            cell2.appendChild(quantityInput);
+
+            const cell3 = document.createElement("td");
+            cell3.innerText = price;
+
+            const cell4 = document.createElement("td");
+            cell4.innerText = price;
+
+            const cell5 = document.createElement("td");
+            const deleteButton = document.createElement("button");
+            deleteButton.innerText = "Xóa";
+            deleteButton.classList.add("btn", "btn-danger");
+            deleteButton.addEventListener("click", function () {
+                row.remove();
+                updateTotal();
+            });
+
+            cell5.appendChild(deleteButton);
+
+            row.appendChild(cell1);
+            row.appendChild(cell2);
+            row.appendChild(cell3);
+            row.appendChild(cell4);
+            row.appendChild(cell5);
+
+            tableBody.appendChild(row);
             updateTotal(row, price);
-        });
-        cell2.appendChild(quantityInput);
-
-        const cell3 = document.createElement("td");
-        cell3.innerText = parseFloat(price);
-
-        const cell4 = document.createElement("td");
-        cell4.innerText = parseFloat(price);
-        
-        const cell5 = document.createElement("td");
-        const deleteButton = document.createElement("button");
-        deleteButton.innerText = "Xóa";
-        deleteButton.classList.add("btn", "btn-danger");
-        deleteButton.addEventListener("click", function () {
-            row.remove();
-            updateTotal();
-        });
-        cell5.appendChild(deleteButton);
-
-        row.appendChild(cell1);
-        row.appendChild(cell2);
-        row.appendChild(cell3);
-        row.appendChild(cell4);
-        row.appendChild(cell5);
-
-        tableBody.appendChild(row);
-        updateTotal();
+        }
 
         count++;
-
-        GiamGia.addEventListener("input", function () {
-            updateTotal(row, price);
-        });
+        document.getElementById("cart-count").innerText = count;
     }
-   
+
    
     function updateTotal(row, price) {
         let total = 0;
