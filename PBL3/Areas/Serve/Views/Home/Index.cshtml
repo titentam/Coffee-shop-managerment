@@ -22,9 +22,7 @@
           rel="stylesheet">
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;1,100;1,200&display=swap" rel="stylesheet">
+    
     <title>Document</title>
     <script >
         let showTK = function () {
@@ -195,15 +193,15 @@
                         <div class="text-center">HÓA ĐƠN THANH TOÁN</div>
                         <div  class="TongTien">
                             <p>Tổng tiền</p>
-                            <p id="TongTien">20000</p>
+                            <p id="TongTien">0</p>
                         </div>
                         <div class="GiamGia d-flex justify-content-between">
-                            <p>Giảm giá</p>
-                            <input id="GiamGia" type="text">
+                            <p>Giảm giá(%)</p>
+                            <input id="GiamGia" type="number" placeholder="%">
                         </div>
                         <div  class="KhachCanTra">
                             <p>Khách cần trả</p>
-                            <p id="TienKhachTra">20000</p>
+                            <p id="TienKhachTra">0</p>
                         </div>
                         <div class="btnThanhToan">
                             <button>Thanh toán</button>
@@ -220,6 +218,7 @@
     let GiamGia = document.getElementById("GiamGia");
 
     function addToCart(id, name, price) {
+        
         const tableBody = document.getElementById("table-body");
         const rows = document.querySelectorAll("#table-body tr");
         let isNewItem = true;
@@ -233,6 +232,9 @@
                 updateTotal(row, price * quantity);
                 isNewItem = false;
             }
+            GiamGia.addEventListener("input", function () {
+                updateTotal(row, price);
+            });
         });
 
         // Nếu món chưa có trong bảng thì tạo row mới
@@ -277,12 +279,13 @@
 
             tableBody.appendChild(row);
             updateTotal(row, price);
+            GiamGia.addEventListener("input", function () {
+                updateTotal(row, price);
+            });
         }
 
-        count++;
-        document.getElementById("cart-count").innerText = count;
     }
-
+   
    
     function updateTotal(row, price) {
         let total = 0;
@@ -291,13 +294,10 @@
             const price = row.cells[2].innerText;
             const quantity = row.cells[1].children[0].value;
             row.cells[3].innerText = price * quantity;
-
             total += price * quantity;
         });
         document.getElementById("total-price").innerText = total;
         document.getElementById("TongTien").innerText = total; 
-        
-
-        document.getElementById("TienKhachTra").innerText = total - GiamGia.value*total;
+        document.getElementById("TienKhachTra").innerText = total - GiamGia.value/100*total;
     }
 </script>
