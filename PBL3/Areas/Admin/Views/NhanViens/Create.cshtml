@@ -36,33 +36,33 @@
                 </div>
             </div>
             <div class="form-group">
-                <label asp-for="TenNhanVien" class="control-label"></label>
+                <label for="TenNhanVien" class="control-label">Tên nhân viên</label>
                 <input asp-for="TenNhanVien" class="form-control" />
                 <span asp-validation-for="TenNhanVien" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Sdt" class="control-label"></label>
+                <label asp-for="Sdt" class="control-label">Số điện thoại</label>
                 <input asp-for="Sdt" class="form-control" />
                 <span asp-validation-for="Sdt" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DiaChi" class="control-label"></label>
+                <label asp-for="DiaChi" class="control-label">Địa chỉ</label>
                 <input asp-for="DiaChi" class="form-control" />
                 <span asp-validation-for="DiaChi" class="text-danger"></span>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-4">
-                    <label asp-for="LoaiNv" class="control-label"></label>
+                    <label asp-for="LoaiNv" class="control-label">Loại nhân viên</label>
                     <select asp-for="LoaiNv" class="form-control" asp-items="ViewBag.LoaiNv"></select>
                 </div>
                 <div class="form-group col-md-4">
-                    <label asp-for="NhanVienQl" class="control-label"></label>
+                    <label asp-for="NhanVienQl" class="control-label">Nhân viên quản lí</label>
                     <select asp-for="NhanVienQl" class="form-control" asp-items="ViewBag.NhanVienQl">
                         <option value="0">Không có</option>
                     </select>
                 </div>
                 <div class="form-group col-md-4">
-                    <label asp-for="CaId" class="control-label"></label>
+                    <label asp-for="CaId" class="control-label">Ca làm</label>
                     <select asp-for="CaId" class="form-control" asp-items="ViewBag.CaId">
                         <option value="0">Chưa xác định</option>
                     </select>

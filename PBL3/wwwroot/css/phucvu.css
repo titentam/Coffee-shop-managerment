@@ -1,0 +1,247 @@
+﻿body {
+    /*background: url(~/images/background/bg.png);*/
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.95;
+    background-color: aqua;
+    font-family: 'Poppins', sans-serif;
+}
+
+input {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 4px 10px;
+    height: 50%;
+}
+a{
+    text-decoration: none
+}
+.text-center {
+    text-align: center;
+    font-size: 20px;
+}
+/* Định dạng header */
+header {
+    color: black;
+    padding: 10px;
+}
+
+.logo img {
+    width: 160px;
+    border-radius: 10%;
+}
+
+.title {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.show {
+    display: block !important;
+}
+
+.TaiKhoan_Detail {
+    position: absolute;
+    padding: 20px 10px 10px 10px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    top: 90px;
+    right: 70px;
+    background-color: #333;
+}
+
+
+.dangXuat span {
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    background-color: #d35400;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.2s ease-in-out;
+}
+
+    .dangXuat span:hover {
+        background-color: #e67e22;
+    }
+
+/* Định dạng menu */
+.myMenu_container {
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+    width: 48%;
+    background-color: #333;
+    color: #fff;
+    border-radius: 5%;
+    opacity: 1;
+}
+
+    .myMenu_container select {
+        padding: 4px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 16px;
+    }
+
+.myMenu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 10px;
+    justify-content: space-around;
+}
+
+.Menu-Search {
+    position: relative;
+}
+
+    .Menu-Search input[type=text] {
+        padding: 4px 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        height: 100%;
+    }
+
+    .Menu-Search a {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 4px 15px;
+        color: #232323;
+        border-radius: 4px;
+        text-decoration: none;
+        transition: all 0.2s ease-in-out;
+    }
+
+.Mon {
+    width: 30%;
+    background-color: #863f3f;
+    border: 1px solid #ccc;
+    padding: 25px 10px;
+    border-radius: 5px;
+    text-align: center;
+    position: relative;
+    opacity: 1;
+}
+
+    .Mon img {
+        width: 80%;
+        height: 65%;
+        object-fit: cover;
+        margin-bottom: 8px;
+        border: 1px solid #ddd;
+        border-radius: 5%;
+    }
+
+    .Mon .add-btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+    .Mon p{
+        margin-bottom: 0;    }
+
+.add-btn i {
+    font-size: 24px;
+    color: #5cb85c;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.add-btn:hover i {
+    transform: scale(1.5);
+    color: #cc632e;
+}
+
+/* Định dạng chi tiết đơn hàng */
+.Receipt_Order {
+    margin-top: 32px;
+    width: 48%;
+    background-color: #5d5d5d;
+    padding: 10px;
+    border-radius: 5%;
+}
+
+.Order-Area {
+    margin-bottom: 32px;
+    background-color: #252525;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5%;
+    border: 1px solid #ccc;
+}
+
+    .Order-Area select {
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 16px;
+        height: 50%;
+    }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+    table th,
+    table td {
+        border: 1px solid rgb(252, 252, 252);
+        padding: 10px;
+        text-align: center;
+        background-color: #fff;
+        color: #333;
+    }
+
+    table th {
+        font-weight: bold;
+        background-color: #ea8;
+        color: #333;
+    }
+
+    table td:first-child {
+        font-weight: bold;
+        text-align: left;
+    }
+
+.Receipt-Area {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 16px;
+    border-radius: 5%;
+    background-color: #232323;
+    color: #fff;
+}
+
+.TongTien,
+.KhachCanTra {
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.TongTien,
+.KhachCanTra,
+.tienThua p:first-child {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.btnThanhToan {
+    display: flex;
+    justify-content: center;
+}
+
+    .btnThanhToan button {
+        background-color: #2ecc71;
+        color: #fff;
+        padding: 8px 5px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+    }
