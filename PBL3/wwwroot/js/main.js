@@ -44,3 +44,12 @@ function myFunction() {
         x.className = "Duynavbar";
     }
 }
+// nhan vien phuc vu
+let showTK = function () {
+    let detailTK = document.getElementById('TaiKhoan_Detail');
+    if (detailTK.className === "TaiKhoan_Detail") {
+        detailTK.className += ' show';
+    }
+    else
+        detailTK.className = "TaiKhoan_Detail";
+}
