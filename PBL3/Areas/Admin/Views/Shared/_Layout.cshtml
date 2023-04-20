@@ -2,6 +2,12 @@
 @using Microsoft.EntityFrameworkCore;
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
+    if (HttpContextAccessor.HttpContext.Session.GetInt32("user") == null)
+    {
+        HttpContextAccessor.HttpContext.Response.Redirect(Url.Action("index", "Login", new { area = "" }));
+        HttpContextAccessor.HttpContext.Response.Body.Flush();
+        return;
+    }
     TamtentoiContext _context = new TamtentoiContext();
     var nv = _context.NhanViens.Include(n => n.LoaiNvNavigation)
                                        .Where(n => n.NhanVienId == HttpContextAccessor.HttpContext.Session.GetInt32("user")).SingleOrDefault();
@@ -12,7 +18,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">l
     <title>@ViewData["Title"] - PBL3</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Favicon -->
@@ -157,7 +163,7 @@
                                         <i class="anticon font-size-10 anticon-right"></i>
                                     </div>
                                 </a>
-                                <a asp-area="" asp-controller="Login" asp-action="index" class="dropdown-item d-block p-h-15 p-v-10">
+                                <a asp-area="" asp-controller="Login" asp-action="Logout" class="dropdown-item d-block p-h-15 p-v-10" >
                                     <div class="d-flex align-items-center justify-content-between">
                                         <div>
                                             <i class="anticon opacity-04 font-size-16 anticon-logout"></i>

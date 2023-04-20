@@ -43,6 +43,7 @@ namespace PBL3.Areas.Admin.Controllers
                 list = list.Where(nv => nv.LoaiMonId == option).ToList();
             }
             PagedList<Mon> models = new PagedList<Mon>(list.AsQueryable(), pageNumber, pageSize);
+
             return View(models);
         }
 
