@@ -1,0 +1,99 @@
+﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.EntityFrameworkCore;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    if (HttpContextAccessor.HttpContext.Session.GetInt32("user") == null)
+    {
+        HttpContextAccessor.HttpContext.Response.Redirect(Url.Action("index", "Login", new { area = "" }));
+        HttpContextAccessor.HttpContext.Response.Body.Flush();
+        return;
+    }
+    TamtentoiContext _context = new TamtentoiContext();
+    var nv = _context.NhanViens.Include(n => n.LoaiNvNavigation)
+                                       .Where(n => n.NhanVienId == HttpContextAccessor.HttpContext.Session.GetInt32("user")).SingleOrDefault();
+
+}
+@model List<PBL3.Models.Mon>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/phucvu.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <script src="https://kit.fontawesome.com/61e1e4c667.js"
+            crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+          rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    <title>Document</title>
+    <script>
+        let showTK = function () {
+            let detailTK = document.getElementById('TaiKhoan_Detail');
+            if (detailTK.className === "TaiKhoan_Detail") {
+                detailTK.className += ' show';
+            } z
+            detailTK.className = "TaiKhoan_Detail";
+        }
+    </script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+</head>
+<body style="background: url(https://img.freepik.com/free-vector/realistic-coffee-time-background-with-coffee-cup_79603-1560.jpg?w=1060&t=st=1681786106~exp=1681786706~hmac=610b0eae9066a422522c4d3cd2779cecfaa874682eff7754db84b0e9670de61e) no-repeat; background-size:cover;">
+    <header>
+        <div class="container">
+            <div class="d-flex justify-content-between">
+                <div class="logo">
+                    <img src="~/Adminassets/images/logo/logoCoffee.jpg" alt="logo">
+                </div>
+                <div class="title d-flex justify-content-center
+                        align-items-center border-bottom border-danger">
+                    Menu Phục Vụ
+                </div>
+
+                <div class="TaiKhoan ">
+                    <a onclick="showTK()" id="My-user">
+                        <img class=" float-end rounded-pill " style="width:
+                                40px;" src="~/Adminassets/images/avatars/user.png" alt="">
+                    </a>
+
+                    <div class="TaiKhoan_Detail" id="TaiKhoan_Detail">
+                        <div class="ten">
+                            <p>@nv.TenNhanVien</p>
+                            @if (nv.LoaiNvNavigation != null)
+                            {
+                                <p class="m-b-0 opacity-07">@nv.LoaiNvNavigation.TenLoai</p>
+                            }
+                            else
+                            {
+                                <p class="m-b-0 opacity-07">Chưa có chưc vụ</p>
+                            }
+                        </div>
+                        <a asp-area="" asp-controller="Login" asp-action="logout">
+                            <div class="dangXuat">
+                                <span>Đăng Xuất</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div>
+        <div class="container">
+            <div class="d-flex justify-content-around">
+               @RenderBody()
+            </div>
+        </div>
+    </div>
+    @await Component.InvokeAsync("Notyf")
+    @await RenderSectionAsync("Scripts",required:false)
+    
+</body>
+</html>
+
+

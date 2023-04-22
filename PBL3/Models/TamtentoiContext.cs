@@ -15,7 +15,6 @@ namespace PBL3.Models
             : base(options)
         {
         }
-
         public List<SpYear> StatisticByYear()
         {
             return this.SpYears.FromSqlRaw("exec StatisticByYear").ToList();
@@ -27,6 +26,7 @@ namespace PBL3.Models
 
         public virtual DbSet<SpMonth> SpMonths { get; set; } = null!;
         public virtual DbSet<SpYear> SpYears { get; set; } = null!;
+
         public virtual DbSet<Ban> Bans { get; set; } = null!;
         public virtual DbSet<CaLam> CaLams { get; set; } = null!;
         public virtual DbSet<CongThuc> CongThucs { get; set; } = null!;
@@ -55,15 +55,6 @@ namespace PBL3.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<SpMonth>(entity =>
-            {
-                entity.HasNoKey();
-            });
-
-            modelBuilder.Entity<SpYear>(entity =>
-            {
-                entity.HasNoKey();
-            });
 
             modelBuilder.Entity<Ban>(entity =>
             {
@@ -396,7 +387,5 @@ namespace PBL3.Models
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
-
     }
 }

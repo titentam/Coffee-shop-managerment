@@ -1,0 +1,17 @@
+﻿@model List<Tuple<Mon, int>>;
+@if (Model != null)
+{
+	foreach(var item in Model)
+	{
+		<tr>
+			<td>@item.Item1.TenMon</td>
+			<td>
+				<input type="number" class="form-control" value="@item.Item2">
+			</td>
+			<td>@item.Item1.Gia.Value.ToString("#.##0")</td>
+			<td>@(item.Item1.Gia * item.Item2)</td>
+			<td><button class="btn btn-danger">Xóa</button></td>
+		</tr>
+	}
+}
+
