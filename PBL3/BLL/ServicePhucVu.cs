@@ -1,4 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.CodeAnalysis.Operations;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
 using PBL3.Models;
@@ -128,6 +129,11 @@ namespace PBL3.BLL
                 };
 
                 db.Add(invoice);
+                db.SaveChanges();
+
+                var invoiceId = db.HoaDons.AsNoTracking().ToList().MaxBy(x => x.HoaDonId).HoaDonId;
+                var order = db.DonDatMons.Where(x => x.DonDatMonId == orderId).SingleOrDefault();
+                order.HoaDonId = invoiceId;
                 db.SaveChanges();
             }
         }
