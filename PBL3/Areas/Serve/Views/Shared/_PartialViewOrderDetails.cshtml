@@ -1,17 +1,28 @@
 ﻿@model List<Tuple<Mon, int>>;
 @if (Model != null)
 {
-	foreach(var item in Model)
-	{
-		<tr>
-			<td>@item.Item1.TenMon</td>
-			<td>
-				<input type="number" class="form-control" value="@item.Item2">
-			</td>
-			<td>@item.Item1.Gia.Value.ToString("#.##0")</td>
-			<td>@(item.Item1.Gia * item.Item2)</td>
-			<td><button class="btn btn-danger">Xóa</button></td>
-		</tr>
-	}
+    foreach (var item in Model)
+    {
+        <tr id="hang_canXoa">
+            <td>@item.Item1.TenMon</td>
+            <td>
+                <input type="number" class="form-control" value="@item.Item2">
+            </td>
+            <td>@item.Item1.Gia.Value.ToString("#.##0")</td>
+            <td>@(item.Item1.Gia * item.Item2)</td>
+            <td><button onclick="deleteRow('hang_canXoa')" class="btn btn-danger">Xóa</button></td>
+        </tr>
+    }
 }
 
+
+<script>
+    function deleteRow(id) {
+        var row = document.getElementById(id);
+        if (row) {
+            row.remove();
+            updateTotal();
+        }
+    }
+
+</script>
