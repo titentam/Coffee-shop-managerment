@@ -1,0 +1,88 @@
+﻿@{
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/bartender-style.css">
+
+    <title>Bartender Menu</title>
+</head>
+
+<body style="background: url(https://img.freepik.com/free-vector/realistic-coffee-time-background-with-coffee-cup_79603-1560.jpg?w=1060&t=st=1681786106~exp=1681786706~hmac=610b0eae9066a422522c4d3cd2779cecfaa874682eff7754db84b0e9670de61e) no-repeat; background-size:cover;">
+    <header>
+        <div class="container">
+            <div class="d-flex justify-content-between">
+                <div class="logo">
+                    <img src="~/Adminassets/images/others/logo.png" alt="logo">
+                </div>
+                <div class="title d-flex justify-content-center
+                align-items-center border-bottom border-danger">
+                    Menu Pha Chế
+                </div>
+
+                <div class="TaiKhoan">
+                    <a id="My-user">
+                        <img style="width: 40px; text-align: center;" src="https://icons.veryicon.com/png/o/miscellaneous/two-color-icon-library/user-286.png" alt="">
+                    </a>
+
+                    <div class="TaiKhoan_Detail" id="TaiKhoan_Detail">
+                        <div class="ten">
+                            <p>Phạm Thị B</p>
+                            <p class="m-b-0 opacity-07">Pha chế</p>
+                        </div>
+                        <a href="~/images/logout/logout.png">
+                            <div class="dangXuat">
+                                <span>Đăng Xuất</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div>
+        <div class="container">
+            <div class="d-flex justify-content-around">
+
+                <div class="DanhSachMon">
+                    <div class="text-center p-3">Danh Sách Món</div>
+
+                </div>
+
+                <div class="BartendFunctions">
+                    <div class="tab">
+                        <button class="tablinks" onclick="openTab(event, 'Status')" style="color: white;">Tình Trạng</button>
+                        <button class="tablinks" onclick="openTab(event, 'Igredients')" style="color: white;">Nguyên liệu</button>
+                        <button class="tablinks" onclick="openTab(event, 'Recipes')" style="color: white;">Công Thức</button>
+                    </div>
+
+                    <!-- Tab content -->
+                    <div id="Status" class="tabcontent">
+                        <h3>Tình trạng</h3>
+                        <p>Tình trạng món đang làm</p>
+                    </div>
+
+                    <div id="Igredients" class="tabcontent">
+                        <h3>Nguyên liệu</h3>
+                        <p>Danh sách và số lượng nguyên liệu</p>
+                    </div>
+
+                    <div id="Recipes" class="tabcontent">
+                        <h3>Công thức</h3>
+                        <p>Công thức món đang làm</p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="~/Adminassets/js/tabs.js"></script>
+</body>
+
+</html>
