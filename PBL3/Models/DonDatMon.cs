@@ -15,6 +15,7 @@ namespace PBL3.Models
         public int? HoaDonId { get; set; }
         public int? BanId { get; set; }
         public int? NhanVienId { get; set; }
+        public bool? TinhTrang { get; set; }
 
         public virtual Ban? Ban { get; set; }
         public virtual HoaDon? HoaDon { get; set; }

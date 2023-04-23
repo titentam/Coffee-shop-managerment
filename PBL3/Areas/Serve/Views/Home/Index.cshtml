@@ -1,303 +1,341 @@
 ﻿@using Microsoft.AspNetCore.Http
 @using Microsoft.EntityFrameworkCore;
+@model List<PBL3.Models.Mon>
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
-    TamtentoiContext _context = new TamtentoiContext();
-    var nv = _context.NhanViens.Include(n => n.LoaiNvNavigation)
-                                       .Where(n => n.NhanVienId == HttpContextAccessor.HttpContext.Session.GetInt32("user")).SingleOrDefault();
+	if (HttpContextAccessor.HttpContext.Session.GetInt32("user") == null)
+	{
+		HttpContextAccessor.HttpContext.Response.Redirect(Url.Action("index", "Login", new { area = "" }));
+		HttpContextAccessor.HttpContext.Response.Body.Flush();
+		return;
+	}
+	TamtentoiContext _context = new TamtentoiContext();
+	var nv = _context.NhanViens.Include(n => n.LoaiNvNavigation)
+												.Where(n => n.NhanVienId == HttpContextAccessor.HttpContext.Session.GetInt32("user")).SingleOrDefault();
+
 }
-@model List<PBL3.Models.Mon>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="~/css/phucvu.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
-    <script src="https://kit.fontawesome.com/61e1e4c667.js"
-            crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
-          rel="stylesheet">
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    
-    <title>Document</title>
-    <script >
-        let showTK = function () {
-            let detailTK = document.getElementById('TaiKhoan_Detail');
-            if (detailTK.className === "TaiKhoan_Detail") {
-                detailTK.className += ' show';
-            }
-            else
-                detailTK.className = "TaiKhoan_Detail";
-        }
-    </script>
-</head>
-<body style="background: url(https://img.freepik.com/free-vector/realistic-coffee-time-background-with-coffee-cup_79603-1560.jpg?w=1060&t=st=1681786106~exp=1681786706~hmac=610b0eae9066a422522c4d3cd2779cecfaa874682eff7754db84b0e9670de61e) no-repeat; background-size:cover;">
-    <header>
-        <div class="container">
-            <div class="d-flex justify-content-between">
-                <div class="logo">
-                    <img src="~/Adminassets/images/logo/logoCoffee.jpg" alt="logo">
-                </div>
-                <div class="title d-flex justify-content-center
-                        align-items-center border-bottom border-danger">
-                    Menu Phục Vụ
-                </div>
+<div class="myMenu_container">
+	<div class="text-center p-3">MENU</div>
+	<div class="d-flex justify-content-around ">
+		<form asp-area="Serve" asp-controller="Home" asp-action="index" method="get">
+			<select name="cbbSortMon" class="mx-2 " id="" asp-items="@ViewBag.listLoaiMon">
+				<option value="-1">Tất cả</option>
+			</select>
 
-                <div class="TaiKhoan ">
-                    <a  onclick="showTK()" id="My-user">
-                        <img class=" float-end rounded-pill " style="width:
-                                40px;" src="~/Adminassets/images/avatars/user.png" alt="">
-                    </a>
-                    
-                    <div class="TaiKhoan_Detail" id="TaiKhoan_Detail">
-                        <div class="ten">
-                            <p>@nv.TenNhanVien</p>
-                            @if (nv.LoaiNvNavigation != null)
-                            {
-                                <p class="m-b-0 opacity-07">@nv.LoaiNvNavigation.TenLoai</p>
-                            }
-                            else
-                            {
-                                <p class="m-b-0 opacity-07">Chưa có chưc vụ</p>
-                            }
-                        </div>
-                        <a asp-area="" asp-controller="Login" asp-action="index">
-                            <div class="dangXuat">
-                                <span>Đăng Xuất</span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-    <div>
-        <div class="container">
-            <div class="d-flex justify-content-around">
-                <div class="myMenu_container">
-                    <div class="text-center p-3">MENU</div>
-                    <div class="d-flex justify-content-around ">
-                        <select name="cbbSortMon" class="mx-2 " id="">
-                            <option value="-1">Chọn món</option>
-                            <option value="0">Món ăn</option>
-                            <option value="1">Món nước</option>
-                        </select>
-                        <div class="Menu-Search">
-                            <input type="text" id="searchBox" placeholder="Tìm kiếm...">
-                            <a href="" class="Search-btn">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="myMenu">
-                        @foreach( var mymmon in Model)
-                        {
-                            <div class="Mon">
-                                <div class="add-btn">
-                                    <a onclick="addToCart(@mymmon.MonId, '@mymmon.TenMon', '@mymmon.Gia')"><i class="fa-regular fa-plus"></i></a>
-                                </div>
-                                <img src="~/images/mons/@mymmon.HinhAnh" alt="@mymmon.TenMon">
-                                <p>@mymmon.TenMon</p>
-                                <p>@mymmon.Gia</p>
-                            </div>
-						}
-                        @*<div class="Mon">
-                            <div class="add-btn">
-                                <i class="fa-regular fa-plus"></i>
-                            </div>
-                            <img src="~/images/mons/ga.jpg" alt="">
-                            <p>Tra Sữa</p>
-                            <p>10000</p>
-                        </div>
-                        <div class="Mon">
-                            <div class="add-btn">
-                                <i class="fa-regular fa-plus"></i>
-                            </div>
-                            <img src="~/images/mons/ga.jpg" alt="">
-                            <p>Sữa</p>
-                            <p>12000</p>
-                        </div>
-                        <div class="Mon">
-                            <div class="add-btn">
-                                <i class="fa-regular fa-plus"></i>
-                            </div>
-                            <img src="~/images/mons/ga.jpg" alt="">
-                            <p>Nước cam</p>
-                            <p>15000</p>
-                        </div>
-                        <div class="Mon">
-                            <div class="add-btn">
-                                <i class="fa-regular fa-plus"></i>
-                            </div>
-                            <img src="~/images/mons/ga.jpg" alt="">
-                            <p>Nước cam</p>
-                            <p>15000</p>
-                        </div>
-                        <div class="Mon">
-                            <div class="add-btn">
-                                <i class="fa-regular fa-plus"></i>
-                            </div>
-                            <img src="~/images/mons/ga.jpg" alt="">
-                            <p>Nước cam</p>
-                            <p>15000</p>
-                        </div>
-                        <div class="Mon">
-                            <div class="add-btn">
-                                <i class="fa-regular fa-plus"></i>
-                            </div>
-                            <img src="~/images/mons/ga.jpg" alt="">
-                            <p>Nước cam</p>
-                            <p>15000</p>
-                        </div>*@
-                    </div>
-                </div>
-                <div class="Receipt_Order">
-                    <div class="Order-Area">
-                        <div class="text-center p-3">CHI TIẾT ĐƠN HÀNG</div>
-                        <div class="d-flex justify-content-around">
-                            <select name="cbbChon_Ban" id="">
-                                <option value="-1">Chọn bàn</option>
-                                <option value="0">Bàn 1</option>
-                                <option value="1">Bàn 2</option>
-                            </select>
-                            <div class="btnThanhToan">
-                                <button> Thông báo pha chế</button>
-                            </div>
-                        </div>
-                        <table >
-                            <thead>
-                                <tr>
-                                    <th>Tên món</th>
-                                    <th>Số lượng</th>
-                                    <th>Đơn giá</th>
-                                    <th>Thành tiền</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-body">
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="3" class="text-end"><strong>Tổng cộng</strong></td>
-                                    <td><strong id="total-price">0</strong></td>
-                                    <td></td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                    <div class="Receipt-Area">
-                        <div class="text-center">HÓA ĐƠN THANH TOÁN</div>
-                        <div  class="TongTien">
-                            <p>Tổng tiền</p>
-                            <p id="TongTien">0</p>
-                        </div>
-                        <div class="GiamGia d-flex justify-content-between">
-                            <p>Giảm giá(%)</p>
-                            <input id="GiamGia" type="number" placeholder="%">
-                        </div>
-                        <div  class="KhachCanTra">
-                            <p>Khách cần trả</p>
-                            <p id="TienKhachTra">0</p>
-                        </div>
-                        <div class="btnThanhToan">
-                            <button>Thanh toán</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
-<script>
-    let count = 0;
-    let GiamGia = document.getElementById("GiamGia");
+			<div class="Menu-Search">
+				<input type="text" id="searchBox" placeholder="Tìm kiếm..." name="search" value="@ViewBag.search">
+				<button type="submit" class="Search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+			</div>
+		</form>
+	</div>
+	<div class="myMenu">
+		@foreach (var mymmon in Model)
+		{
+			<div class="Mon">
+				<div class="add-btn">
+					<a onclick="addToCart(@mymmon.MonId, '@mymmon.TenMon', '@mymmon.Gia')"><i class="fa-regular fa-plus"></i></a>
+				</div>
+				<img src="~/images/mons/@mymmon.HinhAnh" alt="@mymmon.TenMon">
+				<p>@mymmon.TenMon</p>
+				<p>@((int)mymmon.Gia.Value)</p>
+			</div>
+		}
+	</div>
+</div>
+<div class="Receipt_Order">
+	<div class="Order-Area">
+		<div class="text-center p-3">CHI TIẾT ĐƠN HÀNG</div>
+		<div class="d-flex justify-content-around">
 
-    function addToCart(id, name, price) {
-        
-        const tableBody = document.getElementById("table-body");
-        const rows = document.querySelectorAll("#table-body tr");
-        let isNewItem = true;
+			<select name="banId" id="banSelected" asp-items="@ViewBag.listBan">
+				<option value="-1">Chọn bàn</option>
+			</select>
+			<div class="btnThanhToan">
+				<a onclick="ChuyenPhaChe()"> Thông báo pha chế</a>
+			</div>
 
-        // Kiểm tra xem món đã có trong bảng hay chưa
-        rows.forEach(function (row) {
-            if (row.cells[0].innerText === name) {
-                const quantityInput = row.cells[1].children[0];
-                let quantity = parseInt(quantityInput.value) + 1;
-                quantityInput.value = quantity;
-                updateTotal(row, price * quantity);
-                isNewItem = false;
-            }
-            GiamGia.addEventListener("input", function () {
-                updateTotal(row, price);
-            });
-        });
+		</div>
+		<table id="main-table">
+			<thead>
+				<tr>
+					<th>Tên món</th>
+					<th>Số lượng</th>
+					<th>Đơn giá</th>
+					<th>Thành tiền</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody id="table-body"></tbody>
+			<tfoot>
+				<tr>
+					<td colspan="3" class="text-end"><strong>Tổng cộng</strong></td>
+					<td><strong id="total-price">0</strong></td>
+					<td></td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+	<div class="Receipt-Area" id="Receipt-Area">
+		<div class="text-center">HÓA ĐƠN THANH TOÁN</div>
+		<div class="TongTien">
+			<p>Tổng tiền</p>
+			<p id="TongTien">0</p>
+		</div>
+		<div class="GiamGia d-flex justify-content-between">
+			<p>Giảm giá(%)</p>
+			<input id="GiamGia" type="number" placeholder="%">
+		</div>
+		<div class="KhachCanTra">
+			<p>Khách cần trả</p>
+			<p id="TienKhachTra">0</p>
+		</div>
+		<div class="btnThanhToan">
+			<button id="payTheBill">Thanh toán</button>
+		</div>
+	</div>
+</div>
+@section Scripts{
+	<script>
 
-        // Nếu món chưa có trong bảng thì tạo row mới
-        if (isNewItem) {
-            const row = document.createElement("tr");
+		function ResetOrderDetail(){
+			var banDetails = document.getElementById('table-body');
+			banDetails.innerHTML = "";
 
-            const cell1 = document.createElement("td");
-            cell1.innerText = name;
+			var total_price = document.getElementById('total-price');
+			total_price.innerHTML = "0";
 
-            const cell2 = document.createElement("td");
-            const quantityInput = document.createElement("input");
-            quantityInput.type = "number";
-            quantityInput.value = "1";
-            quantityInput.classList.add("form-control");
-            quantityInput.addEventListener("input", function () {
-                updateTotal(row, price);
-            });
-            cell2.appendChild(quantityInput);
+			var TongTien = document.getElementById('TongTien');
+			TongTien.innerHTML = "0";
 
-            const cell3 = document.createElement("td");
-            cell3.innerText = price;
+			var TienKhachTra = document.getElementById('TienKhachTra');
+			TienKhachTra.innerHTML = "0";
 
-            const cell4 = document.createElement("td");
-            cell4.innerText = price;
+		}
+		function PayTheBill() {
+			// Lấy giá trị của select box
+			var banId = document.getElementById("banSelected").value;
 
-            const cell5 = document.createElement("td");
-            const deleteButton = document.createElement("button");
-            deleteButton.innerText = "Xóa";
-            deleteButton.classList.add("btn", "btn-danger");
-            deleteButton.addEventListener("click", function () {
-                row.remove();
-                updateTotal();
-            });
+			// Tạo đối tượng XMLHttpRequest
+			var xhr = new XMLHttpRequest();
 
-            cell5.appendChild(deleteButton);
+			// Đặt phương thức và URL cho yêu cầu
+			xhr.open("POST", "/Serve/Home/PayTheBill?banId=" + encodeURIComponent(banId) + "&nvId=" + encodeURIComponent(@nv.NhanVienId), true);
 
-            row.appendChild(cell1);
-            row.appendChild(cell2);
-            row.appendChild(cell3);
-            row.appendChild(cell4);
-            row.appendChild(cell5);
+			// Đặt tiêu đề Content-Type để đảm bảo rằng đối tượng được gửi dưới dạng JSON
+			xhr.setRequestHeader("Content-Type", "application/json");
 
-            tableBody.appendChild(row);
-            updateTotal(row, price);
-            GiamGia.addEventListener("input", function () {
-                updateTotal(row, price);
-            });
-        }
+			// Đăng ký hàm xử lý khi yêu cầu hoàn thành
+			xhr.onload = function () {
+				if (xhr.status === 200) {
+					// Xử lý phản hồi từ server
+					console.log(xhr.responseText);
+				} else {
+					// Xử lý lỗi
+					console.log("Error: " + xhr.statusText);
+				}
+			};
 
-    }
-   
-   
-    function updateTotal(row, price) {
-        let total = 0;
-        const rows = document.querySelectorAll("#table-body tr");
-        rows.forEach(function (row) {
-            const price = row.cells[2].innerText;
-            const quantity = row.cells[1].children[0].value;
-            row.cells[3].innerText = price * quantity;
-            total += price * quantity;
-        });
-        document.getElementById("total-price").innerText = total;
-        document.getElementById("TongTien").innerText = total; 
-        document.getElementById("TienKhachTra").innerText = total - GiamGia.value/100*total;
-    }
-</script>
+			// Đăng ký hàm xử lý khi yêu cầu thất bại
+			xhr.onerror = function () {
+				console.log("Error: " + xhr.statusText);
+			};
+
+			// Gửi yêu cầu POST với dữ liệu truyền vào là một đối tượng JSON
+			xhr.send();
+			ResetOrderDetail();
+		}
+
+
+		function ChuyenPhaChe() {
+			var select = document.getElementById('banSelected');
+			var banSelected = select.options[select.selectedIndex].value;
+			$.ajax({
+				url: "/api/LoadOrderDetails",
+				contentType: 'application/json; charset=utf-8',
+				type: 'POST',
+				data: JSON.stringify({ banId: banSelected }),
+				dataType: 'html'
+			})
+				.done(function (result) {
+					$('#main-table').html(result);
+				})
+				.fail(function (xhr, status, error) {
+					alert(status);
+				});
+
+			$.ajax({
+				url: "/api/LoadInvoice",
+				contentType: 'application/json; charset=utf-8',
+				type: 'POST',
+				data: JSON.stringify({ banId: banSelected }),
+				dataType: 'html'
+			})
+				.done(function (result) {
+					$('#Receipt-Area').html(result);
+				})
+				.fail(function (xhr, status, error) {
+					alert(status);
+				});
+
+		}
+
+		$(document).ready(function () {
+			$("#banSelected").change(ChuyenPhaChe);
+		});
+
+		let count = 0;
+		let GiamGia = document.getElementById("GiamGia");
+
+
+
+		function addToCart(id, name, price) {
+			var select = document.getElementById('banSelected');
+			var banSelected = select.options[select.selectedIndex].value;
+
+			const tableBody = document.getElementById("table-body");
+			const rows = document.querySelectorAll("#table-body tr");
+			let isNewItem = true;
+
+			// Kiểm tra xem món đã có trong bảng hay chưa
+			rows.forEach(function (row) {
+				if (row.cells[0].innerText === name) {
+					const quantityInput = row.cells[1].children[0];
+					let quantity = parseInt(quantityInput.value) + 1;
+					quantityInput.value = quantity;
+					updateTotal(row, price * quantity);
+					isNewItem = false;
+
+					// Tạo request HTTP đến endpoint để thêm id vào listItem
+					fetch("/api/UpdateToCart", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json"
+						},
+						body: JSON.stringify({ id: id, banId: banSelected })
+					})
+						.then(response => response.json())
+						.then(data => console.log("ID added to cart: ", data.id))
+						.catch(error => console.error("Error adding ID to cart: ", error));
+				}
+				GiamGia.addEventListener("input", function () {
+					updateTotal(row, price);
+				});
+			});
+
+			// Nếu món chưa có trong bảng thì tạo row mới
+			if (isNewItem) {
+
+				// Tạo request HTTP đến endpoint để thêm id vào listItem
+				fetch("/api/AddToCart", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify({ id: id, banId: banSelected, nvId: @nv.NhanVienId })
+				})
+					.then(response => response.json())
+					.then(data => console.log("ID added to cart: ", data.id))
+					.catch(error => console.error("Error adding ID to cart: ", error));
+
+				const row = document.createElement("tr");
+
+				const cell1 = document.createElement("td");
+				cell1.innerText = name;
+
+				const cell2 = document.createElement("td");
+				const quantityInput = document.createElement("input");
+				quantityInput.type = "number";
+				quantityInput.value = "1";
+				quantityInput.classList.add("form-control");
+				quantityInput.addEventListener("input", function () {
+					updateTotal(row, price);
+				});
+				cell2.appendChild(quantityInput);
+
+				const cell3 = document.createElement("td");
+				cell3.innerText = price;
+
+				const cell4 = document.createElement("td");
+				cell4.innerText = price;
+
+				const cell5 = document.createElement("td");
+				const deleteButton = document.createElement("button");
+				deleteButton.innerText = "Xóa";
+				deleteButton.classList.add("btn", "btn-danger");
+				deleteButton.addEventListener("click", function () {
+					DeleteItem(id);
+					row.remove();
+					updateTotal();
+				});
+
+				cell5.appendChild(deleteButton);
+
+				row.appendChild(cell1);
+				row.appendChild(cell2);
+				row.appendChild(cell3);
+				row.appendChild(cell4);
+				row.appendChild(cell5);
+
+				tableBody.appendChild(row);
+				updateTotal(row, price);
+				GiamGia.addEventListener("input", function () {
+					updateTotal(row, price);
+				});
+			}
+
+		}
+		function deleteElement(id) {
+
+			var row = document.getElementById('id');
+			row.remove();
+			updateTotal()
+		}
+		function updateTotal(row, price) {
+			let total = 0;
+			const rows = document.querySelectorAll("#table-body tr");
+			rows.forEach(function (row) {
+				const price = row.cells[2].innerText;
+				const quantity = row.cells[1].children[0].value;
+				row.cells[3].innerText = price * quantity;
+				total += price * quantity;
+			});
+			document.getElementById("total-price").innerText = total;
+			document.getElementById("TongTien").innerText = total;
+			document.getElementById("TienKhachTra").innerText = total - GiamGia.value / 100 * total;
+		}
+		function DeleteItem(monId) {
+			// Lấy giá trị của select box
+			var banId = document.getElementById("banSelected").value;
+
+			// Tạo đối tượng XMLHttpRequest
+			var xhr = new XMLHttpRequest();
+
+			// Đặt phương thức và URL cho yêu cầu
+			xhr.open("POST", "/Serve/Home/DeleteItem?banId=" + encodeURIComponent(banId) + "&monId=" + encodeURIComponent(monId), true);
+
+			// Đặt tiêu đề Content-Type để đảm bảo rằng đối tượng được gửi dưới dạng JSON
+			xhr.setRequestHeader("Content-Type", "application/json");
+
+			// Đăng ký hàm xử lý khi yêu cầu hoàn thành
+			xhr.onload = function () {
+				if (xhr.status === 200) {
+					// Xử lý phản hồi từ server
+					console.log(xhr.responseText);
+				} else {
+					// Xử lý lỗi
+					console.log("Error: " + xhr.statusText);
+				}
+			};
+
+			// Đăng ký hàm xử lý khi yêu cầu thất bại
+			xhr.onerror = function () {
+				console.log("Error: " + xhr.statusText);
+			};
+
+			// Gửi yêu cầu POST với dữ liệu truyền vào là một đối tượng JSON
+			xhr.send();
+		}
+
+
+	</script>
+}

@@ -62,11 +62,11 @@ namespace PBL3.Controllers
             }
             return View(acc);
         }
-        [HttpPost]
         public IActionResult Logout()
         {
             HttpContext.Session.Remove("user");
             return RedirectToAction("Index");
+            
         }
     }
 }

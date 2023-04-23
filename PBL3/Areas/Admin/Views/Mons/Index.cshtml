@@ -72,7 +72,8 @@
 								</div>
 							</td>
 							<td>@item.TenMon</td>
-							<td>@item.Gia</td>
+							<td>@item.Gia.Value.ToString("#,##0") VNĐ</td>
+
 							@if (item.LoaiMon != null)
 							{
 								<td>@item.LoaiMon.TenLoaiMon</td>

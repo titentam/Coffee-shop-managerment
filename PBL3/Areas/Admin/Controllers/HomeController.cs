@@ -17,7 +17,7 @@ namespace PBL3.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            if (HttpContext.Session.GetInt32("user") == null) return RedirectToAction("index", "Login", new { area = "" });
+            if (HttpContext.Session.GetInt32("user")==null) return RedirectToAction("index", "Login", new { area = "" });
 
             var statistic = _context.StatisticByMonth().Where(x => x.Year == 2023).ToList();
 

@@ -1,0 +1,52 @@
+﻿@model List<Tuple<Mon, int>>;
+@{
+    decimal totalPrice = 0;
+}
+
+<thead>
+    <tr>
+        <th>Tên món</th>
+        <th>Số lượng</th>
+        <th>Đơn giá</th>
+        <th>Thành tiền</th>
+        <th></th>
+    </tr>
+</thead>
+<tbody id="table-body">
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            totalPrice += (item.Item1.Gia ?? 0) * item.Item2;
+            <tr id="hang_canXoa">
+                <td>@item.Item1.TenMon</td>
+                <td>
+                    <input type="number" class="form-control" value="@item.Item2">
+                </td>
+                <td>@((int)(item.Item1.Gia.Value))</td>
+                <td>@((int)(item.Item1.Gia * item.Item2))</td>
+                <td><button onclick="deleteRow('hang_canXoa',@item.Item1.MonId)" class="btn btn-danger">Xóa</button></td>
+            </tr>
+            
+        }
+    }
+</tbody>
+<tfoot>
+    <tr>
+        <td colspan="3" class="text-end"><strong>Tổng cộng</strong></td>
+        <td><strong id="total-price">@((int)(totalPrice))</strong></td>
+        <td></td>
+    </tr>
+</tfoot>
+
+<script>
+    function deleteRow(id, monId) {
+        DeleteItem(monId);
+        var row = document.getElementById(id);
+        if (row) {
+            row.remove();
+            updateTotal();
+        }
+    }
+    
+</script>
