@@ -16,15 +16,15 @@
 }
 <div class="myMenu_container">
     <div class="text-center p-3">MENU</div>
-    <div class="d-flex justify-content-around ">
-        <form asp-area="Serve" asp-controller="Home" asp-action="index" method="get">
+    <div >
+        <form class="d-flex justify-content-around " asp-area="Serve" asp-controller="Home" asp-action="index" method="get">
             <select name="cbbSortMon" class="mx-2 " id="" asp-items="@ViewBag.listLoaiMon">
                 <option value="-1">Tất cả</option>
             </select>
 
             <div class="Menu-Search">
                 <input type="text" id="searchBox" placeholder="Tìm kiếm..." name="search" value="@ViewBag.search">
-                <button type="submit" class="Search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <button type="submit" class="Search-btn" style="scale:1.2; border-radius:5px"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
         </form>
     </div>
@@ -48,10 +48,11 @@
         <div class="d-flex justify-content-around">
 
             <select name="banId" id="banSelected" asp-items="@ViewBag.listBan">
-                <option value="-1">Chọn bàn</option>
+                @*<option value="-2">Chọn bàn</option>*@
+                <option value="-1">Khách mang đi</option>
             </select>
             <div class="btnThanhToan">
-                <a onclick="ChuyenPhaChe()"> Thông báo pha chế</a>
+                <button onclick="ChuyenPhaChe()"> Thông báo pha chế</button>
             </div>
 
         </div>
@@ -124,7 +125,6 @@
                     console.log("Error: " + xhr.statusText);
                 }
             };
-
             // Đăng ký hàm xử lý khi yêu cầu thất bại
             xhr.onerror = function () {
                 console.log("Error: " + xhr.statusText);
@@ -135,6 +135,11 @@
 
             var tmp = document.getElementById('table-body');
             tmp.innerHTML = "";
+            document.getElementById("total-price").innerText = '0';
+            document.getElementById("TongTien").innerText = '0';
+            document.getElementById("TienKhachTra").innerText = '0';
+
+
         });
 
         function ChuyenPhaChe() {
@@ -278,7 +283,5 @@
             document.getElementById("TongTien").innerText = total;
             document.getElementById("TienKhachTra").innerText = total - GiamGia.value / 100 * total;
         }
-
-
     </script>
 }

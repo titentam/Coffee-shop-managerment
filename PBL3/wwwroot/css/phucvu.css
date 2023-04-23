@@ -14,7 +14,7 @@ input {
     height: 50%;
 }
 a{
-    text-decoration: none
+    text-decoration: none !important
 }
 .text-center {
     text-align: center;
@@ -48,7 +48,9 @@ header {
     justify-content: center;
     top: 90px;
     right: 70px;
-    background-color: #333;
+    background-color: sandybrown;
+    border-radius:10px;
+
 }
 
 
@@ -56,14 +58,14 @@ header {
     font-weight: 600;
     color: #fff;
     text-decoration: none;
-    background-color: #d35400;
+    background-color: saddlebrown;
     padding: 8px 12px;
     border-radius: 4px;
     transition: all 0.2s ease-in-out;
 }
 
     .dangXuat span:hover {
-        background-color: #e67e22;
+        background-color: brown;
     }
 
 /* Định dạng menu */
