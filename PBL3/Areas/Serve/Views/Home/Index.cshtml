@@ -83,7 +83,7 @@
 		</div>
 		<div class="GiamGia d-flex justify-content-between">
 			<p>Giảm giá(%)</p>
-			<input id="GiamGia" type="number" placeholder="%">
+			<input id="GiamGia" type="number" placeholder="%" oninput="UpdateGiamGia()">
 		</div>
 		<div class="KhachCanTra">
 			<p>Khách cần trả</p>
@@ -217,9 +217,7 @@
 						.then(data => console.log("ID added to cart: ", data.id))
 						.catch(error => console.error("Error adding ID to cart: ", error));
 				}
-				GiamGia.addEventListener("input", function () {
-					updateTotal(row, price);
-				});
+				
 			});
 
 			// Nếu món chưa có trong bảng thì tạo row mới
@@ -278,11 +276,14 @@
 
 				tableBody.appendChild(row);
 				updateTotal(row, price);
-				GiamGia.addEventListener("input", function () {
-					updateTotal(row, price);
-				});
+				
 			}
 
+		}
+		function UpdateGiamGia(){
+			var giamgiahaha = document.getElementById('GiamGia');
+			var tongtienn = document.getElementById('TongTien').innerText;
+			document.getElementById("TienKhachTra").innerText = tongtienn - giamgiahaha.value / 100 * tongtienn;
 		}
 		function deleteElement(id) {
 
