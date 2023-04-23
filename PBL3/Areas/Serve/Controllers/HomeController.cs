@@ -2,6 +2,7 @@
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using PBL3.BLL;
 using PBL3.Models;
@@ -134,6 +135,31 @@ namespace PBL3.Areas.Serve.Controllers
             var items = ServicePhucVu.GetOrderDetails(orderId);
             return PartialView("_PartialViewOrderDetails", items);
         }
+
+        [HttpPost]
+        [Route("api/LoadInvoice")]
+        public IActionResult LoadInvoice([FromBody] BanSelected model)
+        {
+            if (model == null)
+            {
+                return BadRequest("Invalid data");
+            }
+
+            int banId = model.BanId;
+            decimal totalPrice = 0;
+            var banDetail = BanDetails.FirstOrDefault(x => x.Item1 == banId);
+            if (banDetail != null)
+            {
+                int orderId = banDetail.Item2;
+                var items = ServicePhucVu.GetOrderDetails(orderId);
+
+                foreach (var item in items)
+                {
+                    totalPrice += (item.Item1.Gia ?? 0) * item.Item2;
+                }
+            }  
+            return PartialView("_PartialViewLoadReceive", totalPrice);
+        }
         [HttpPost]
         public IActionResult PayTheBill(int banId, int nvId)
         {
@@ -145,6 +171,19 @@ namespace PBL3.Areas.Serve.Controllers
                 _notifyService.Success("Thanh toán thành công");
                 return Ok();
             }
+            return BadRequest();
+        }
+        [HttpPost]
+        public IActionResult DeleteItem(int banId, int monId)
+        {
+            var banDetails = BanDetails.Where(x => x.Item1 == banId).SingleOrDefault();
+            if (banDetails != null)
+            {
+                var orderId = banDetails.Item2;
+                ServicePhucVu.DeleteItem(orderId, monId);
+                return Ok();    
+            }
+
             return BadRequest();
         }
     }

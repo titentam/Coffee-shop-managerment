@@ -50,6 +50,7 @@ namespace PBL3.BLL
                     db.Add(order);
                     db.SaveChanges();
 
+
                     int orderId = db.DonDatMons.AsNoTracking().ToList().MaxBy(x => x.DonDatMonId).DonDatMonId;
                     var item = new MonDonDatMon()
                     {
@@ -135,6 +136,18 @@ namespace PBL3.BLL
                 var order = db.DonDatMons.Where(x => x.DonDatMonId == orderId).SingleOrDefault();
                 order.HoaDonId = invoiceId;
                 db.SaveChanges();
+            }
+        }
+        public static void DeleteItem(int orderId, int monId)
+        {
+            using (TamtentoiContext db = new TamtentoiContext())
+            {
+                var item = db.MonDonDatMons.Where(x=>x.MonId == monId && x.DonDatMonId==orderId).SingleOrDefault();
+                if (item != null)
+                {
+                    db.Remove(item);
+                    db.SaveChanges();
+                }
             }
         }
     }
