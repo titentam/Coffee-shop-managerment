@@ -3,282 +3,305 @@
 @model List<PBL3.Models.Mon>
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
-    if (HttpContextAccessor.HttpContext.Session.GetInt32("user") == null)
-    {
-        HttpContextAccessor.HttpContext.Response.Redirect(Url.Action("index", "Login", new { area = "" }));
-        HttpContextAccessor.HttpContext.Response.Body.Flush();
-        return;
-    }
-    TamtentoiContext _context = new TamtentoiContext();
-    var nv = _context.NhanViens.Include(n => n.LoaiNvNavigation)
-                                       .Where(n => n.NhanVienId == HttpContextAccessor.HttpContext.Session.GetInt32("user")).SingleOrDefault();
+	if (HttpContextAccessor.HttpContext.Session.GetInt32("user") == null)
+	{
+		HttpContextAccessor.HttpContext.Response.Redirect(Url.Action("index", "Login", new { area = "" }));
+		HttpContextAccessor.HttpContext.Response.Body.Flush();
+		return;
+	}
+	TamtentoiContext _context = new TamtentoiContext();
+	var nv = _context.NhanViens.Include(n => n.LoaiNvNavigation)
+												.Where(n => n.NhanVienId == HttpContextAccessor.HttpContext.Session.GetInt32("user")).SingleOrDefault();
 
 }
 <div class="myMenu_container">
-    <div class="text-center p-3">MENU</div>
-    <div class="d-flex justify-content-around ">
-        <form asp-area="Serve" asp-controller="Home" asp-action="index" method="get">
-            <select name="cbbSortMon" class="mx-2 " id="" asp-items="@ViewBag.listLoaiMon">
-                <option value="-1">Tất cả</option>
-            </select>
+	<div class="text-center p-3">MENU</div>
+	<div class="d-flex justify-content-around ">
+		<form asp-area="Serve" asp-controller="Home" asp-action="index" method="get">
+			<select name="cbbSortMon" class="mx-2 " id="" asp-items="@ViewBag.listLoaiMon">
+				<option value="-1">Tất cả</option>
+			</select>
 
-            <div class="Menu-Search">
-                <input type="text" id="searchBox" placeholder="Tìm kiếm..." name="search" value="@ViewBag.search">
-                <button type="submit" class="Search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
-            </div>
-        </form>
-    </div>
-    <div class="myMenu">
-        @foreach (var mymmon in Model)
-        {
-            <div class="Mon">
-                <div class="add-btn">
-                    <a onclick="addToCart(@mymmon.MonId, '@mymmon.TenMon', '@mymmon.Gia')"><i class="fa-regular fa-plus"></i></a>
-                </div>
-                <img src="~/images/mons/@mymmon.HinhAnh" alt="@mymmon.TenMon">
-                <p>@mymmon.TenMon</p>
-                <p>@mymmon.Gia.Value.ToString("#,##0") VNĐ</p>
-            </div>
-        }
-    </div>
+			<div class="Menu-Search">
+				<input type="text" id="searchBox" placeholder="Tìm kiếm..." name="search" value="@ViewBag.search">
+				<button type="submit" class="Search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+			</div>
+		</form>
+	</div>
+	<div class="myMenu">
+		@foreach (var mymmon in Model)
+		{
+			<div class="Mon">
+				<div class="add-btn">
+					<a onclick="addToCart(@mymmon.MonId, '@mymmon.TenMon', '@mymmon.Gia')"><i class="fa-regular fa-plus"></i></a>
+				</div>
+				<img src="~/images/mons/@mymmon.HinhAnh" alt="@mymmon.TenMon">
+				<p>@mymmon.TenMon</p>
+				<p>@((int)mymmon.Gia.Value)</p>
+			</div>
+		}
+	</div>
 </div>
 <div class="Receipt_Order">
-    <div class="Order-Area">
-        <div class="text-center p-3">CHI TIẾT ĐƠN HÀNG</div>
-        <div class="d-flex justify-content-around">
+	<div class="Order-Area">
+		<div class="text-center p-3">CHI TIẾT ĐƠN HÀNG</div>
+		<div class="d-flex justify-content-around">
 
-            <select name="banId" id="banSelected" asp-items="@ViewBag.listBan">
-                <option value="-1">Chọn bàn</option>
-            </select>
-            <div class="btnThanhToan">
-                <a onclick="ChuyenPhaChe()"> Thông báo pha chế</a>
-            </div>
+			<select name="banId" id="banSelected" asp-items="@ViewBag.listBan">
+				<option value="-1">Chọn bàn</option>
+			</select>
+			<div class="btnThanhToan">
+				<a onclick="ChuyenPhaChe()"> Thông báo pha chế</a>
+			</div>
 
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Tên món</th>
-                    <th>Số lượng</th>
-                    <th>Đơn giá</th>
-                    <th>Thành tiền</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody id="table-body"></tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="3" class="text-end"><strong>Tổng cộng</strong></td>
-                    <td><strong id="total-price">0</strong></td>
-                    <td></td>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
-    <div class="Receipt-Area">
-        <div class="text-center">HÓA ĐƠN THANH TOÁN</div>
-        <div class="TongTien">
-            <p>Tổng tiền</p>
-            <p id="TongTien">0</p>
-        </div>
-        <div class="GiamGia d-flex justify-content-between">
-            <p>Giảm giá(%)</p>
-            <input id="GiamGia" type="number" placeholder="%">
-        </div>
-        <div class="KhachCanTra">
-            <p>Khách cần trả</p>
-            <p id="TienKhachTra">0</p>
-        </div>
-        <div class="btnThanhToan">
-            <button id="payTheBill">Thanh toán</button>
-        </div>
-    </div>
+		</div>
+		<table id="main-table">
+			<thead>
+				<tr>
+					<th>Tên món</th>
+					<th>Số lượng</th>
+					<th>Đơn giá</th>
+					<th>Thành tiền</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody id="table-body"></tbody>
+			<tfoot>
+				<tr>
+					<td colspan="3" class="text-end"><strong>Tổng cộng</strong></td>
+					<td><strong id="total-price">0</strong></td>
+					<td></td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+	<div class="Receipt-Area" id="Receipt-Area">
+		<div class="text-center">HÓA ĐƠN THANH TOÁN</div>
+		<div class="TongTien">
+			<p>Tổng tiền</p>
+			<p id="TongTien">0</p>
+		</div>
+		<div class="GiamGia d-flex justify-content-between">
+			<p>Giảm giá(%)</p>
+			<input id="GiamGia" type="number" placeholder="%">
+		</div>
+		<div class="KhachCanTra">
+			<p>Khách cần trả</p>
+			<p id="TienKhachTra">0</p>
+		</div>
+		<div class="btnThanhToan">
+			<button id="payTheBill">Thanh toán</button>
+		</div>
+	</div>
 </div>
 @section Scripts{
-    <script>
+	<script>
 
-        // Lấy tham chiếu đến button
-        var payButton = document.getElementById("payTheBill");
+		function ResetOrderDetail(){
+			var banDetails = document.getElementById('table-body');
+			banDetails.innerHTML = "";
 
-        // Đăng ký sự kiện click cho button
-        payButton.addEventListener("click", function () {
-            // Lấy giá trị của select box
-            var banId = document.getElementById("banSelected").value;
+			var total_price = document.getElementById('total-price');
+			total_price.innerHTML = "0";
 
-            // Tạo đối tượng XMLHttpRequest
-            var xhr = new XMLHttpRequest();
+			var TongTien = document.getElementById('TongTien');
+			TongTien.innerHTML = "0";
 
-            // Đặt phương thức và URL cho yêu cầu
-            xhr.open("POST", "/Serve/Home/PayTheBill?banId=" + encodeURIComponent(banId) + "&nvId=" + encodeURIComponent(@nv.NhanVienId), true);
+			var TienKhachTra = document.getElementById('TienKhachTra');
+			TienKhachTra.innerHTML = "0";
 
-            // Đặt tiêu đề Content-Type để đảm bảo rằng đối tượng được gửi dưới dạng JSON
-            xhr.setRequestHeader("Content-Type", "application/json");
+		}
+		function PayTheBill() {
+			// Lấy giá trị của select box
+			var banId = document.getElementById("banSelected").value;
 
-            // Đăng ký hàm xử lý khi yêu cầu hoàn thành
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    // Xử lý phản hồi từ server
-                    console.log(xhr.responseText);
-                } else {
-                    // Xử lý lỗi
-                    console.log("Error: " + xhr.statusText);
-                }
-            };
+			// Tạo đối tượng XMLHttpRequest
+			var xhr = new XMLHttpRequest();
 
-            // Đăng ký hàm xử lý khi yêu cầu thất bại
-            xhr.onerror = function () {
-                console.log("Error: " + xhr.statusText);
-            };
+			// Đặt phương thức và URL cho yêu cầu
+			xhr.open("POST", "/Serve/Home/PayTheBill?banId=" + encodeURIComponent(banId) + "&nvId=" + encodeURIComponent(@nv.NhanVienId), true);
 
-            // Gửi yêu cầu POST với dữ liệu truyền vào là một đối tượng JSON
-            xhr.send();
+			// Đặt tiêu đề Content-Type để đảm bảo rằng đối tượng được gửi dưới dạng JSON
+			xhr.setRequestHeader("Content-Type", "application/json");
 
-            var tmp = document.getElementById('table-body');
-            tmp.innerHTML = "";
-        });
+			// Đăng ký hàm xử lý khi yêu cầu hoàn thành
+			xhr.onload = function () {
+				if (xhr.status === 200) {
+					// Xử lý phản hồi từ server
+					console.log(xhr.responseText);
+				} else {
+					// Xử lý lỗi
+					console.log("Error: " + xhr.statusText);
+				}
+			};
 
-        function ChuyenPhaChe() {
-            var select = document.getElementById('banSelected');
-            var banSelected = select.options[select.selectedIndex].value;
-            $.ajax({
-                url: "/api/LoadOrderDetails",
-                contentType: 'application/json; charset=utf-8',
-                type: 'POST',
-                data: JSON.stringify({ banId: banSelected }),
-                dataType: 'html'
-            })
-                .done(function (result) {
-                    $('#table-body').html(result);
-                })
-                .fail(function (xhr, status, error) {
-                    alert(status);
-                });
-        }
+			// Đăng ký hàm xử lý khi yêu cầu thất bại
+			xhr.onerror = function () {
+				console.log("Error: " + xhr.statusText);
+			};
 
-        $(document).ready(function () {
-            $("#banSelected").change(ChuyenPhaChe);
-        });
-
-        let count = 0;
-        let GiamGia = document.getElementById("GiamGia");
-
-        
-
-        function addToCart(id, name, price) {
-            var select = document.getElementById('banSelected');
-            var banSelected = select.options[select.selectedIndex].value;
-
-            const tableBody = document.getElementById("table-body");
-            const rows = document.querySelectorAll("#table-body tr");
-            let isNewItem = true;
-
-            // Kiểm tra xem món đã có trong bảng hay chưa
-            rows.forEach(function (row) {
-                if (row.cells[0].innerText === name) {
-                    const quantityInput = row.cells[1].children[0];
-                    let quantity = parseInt(quantityInput.value) + 1;
-                    quantityInput.value = quantity;
-                    updateTotal(row, price * quantity);
-                    isNewItem = false;
-
-                    // Tạo request HTTP đến endpoint để thêm id vào listItem
-                    fetch("/api/UpdateToCart", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({ id: id, banId: banSelected })
-                    })
-                        .then(response => response.json())
-                        .then(data => console.log("ID added to cart: ", data.id))
-                        .catch(error => console.error("Error adding ID to cart: ", error));
-                }
-                GiamGia.addEventListener("input", function () {
-                    updateTotal(row, price);
-                });
-            });
-
-            // Nếu món chưa có trong bảng thì tạo row mới
-            if (isNewItem) {
-
-                // Tạo request HTTP đến endpoint để thêm id vào listItem
-                fetch("/api/AddToCart", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ id: id, banId: banSelected, nvId: @nv.NhanVienId })
-                })
-                    .then(response => response.json())
-                    .then(data => console.log("ID added to cart: ", data.id))
-                    .catch(error => console.error("Error adding ID to cart: ", error));
-
-                const row = document.createElement("tr");
-
-                const cell1 = document.createElement("td");
-                cell1.innerText = name;
-
-                const cell2 = document.createElement("td");
-                const quantityInput = document.createElement("input");
-                quantityInput.type = "number";
-                quantityInput.value = "1";
-                quantityInput.classList.add("form-control");
-                quantityInput.addEventListener("input", function () {
-                    updateTotal(row, price);
-                });
-                cell2.appendChild(quantityInput);
-
-                const cell3 = document.createElement("td");
-                cell3.innerText = price;
-
-                const cell4 = document.createElement("td");
-                cell4.innerText = price;
-
-                const cell5 = document.createElement("td");
-                const deleteButton = document.createElement("button");
-                deleteButton.innerText = "Xóa";
-                deleteButton.classList.add("btn", "btn-danger");
-                deleteButton.addEventListener("click", function () {
-                    row.remove();
-                    updateTotal();
-                });
-
-                cell5.appendChild(deleteButton);
-
-                row.appendChild(cell1);
-                row.appendChild(cell2);
-                row.appendChild(cell3);
-                row.appendChild(cell4);
-                row.appendChild(cell5);
-
-                tableBody.appendChild(row);
-                updateTotal(row, price);
-                GiamGia.addEventListener("input", function () {
-                    updateTotal(row, price);
-                });
-            }
-
-        }
-        function deleteElement(id)
-        {
-            var row=document.getElementById('id');
-            row.remove();
-            updateTotal()
-        }
-        function updateTotal(row, price) {
-            let total = 0;
-            const rows = document.querySelectorAll("#table-body tr");
-            rows.forEach(function (row) {
-                const price = row.cells[2].innerText;
-                const quantity = row.cells[1].children[0].value;
-                row.cells[3].innerText = price * quantity;
-                total += price * quantity;
-            });
-            document.getElementById("total-price").innerText = total;
-            document.getElementById("TongTien").innerText = total;
-            document.getElementById("TienKhachTra").innerText = total - GiamGia.value / 100 * total;
-        }
+			// Gửi yêu cầu POST với dữ liệu truyền vào là một đối tượng JSON
+			xhr.send();
+			ResetOrderDetail();
+		}
 
 
-    </script>
+		function ChuyenPhaChe() {
+			var select = document.getElementById('banSelected');
+			var banSelected = select.options[select.selectedIndex].value;
+			$.ajax({
+				url: "/api/LoadOrderDetails",
+				contentType: 'application/json; charset=utf-8',
+				type: 'POST',
+				data: JSON.stringify({ banId: banSelected }),
+				dataType: 'html'
+			})
+				.done(function (result) {
+					$('#main-table').html(result);
+				})
+				.fail(function (xhr, status, error) {
+					alert(status);
+				});
+
+			$.ajax({
+				url: "/api/LoadInvoice",
+				contentType: 'application/json; charset=utf-8',
+				type: 'POST',
+				data: JSON.stringify({ banId: banSelected }),
+				dataType: 'html'
+			})
+				.done(function (result) {
+					$('#Receipt-Area').html(result);
+				})
+				.fail(function (xhr, status, error) {
+					alert(status);
+				});
+
+		}
+
+		$(document).ready(function () {
+			$("#banSelected").change(ChuyenPhaChe);
+		});
+
+		let count = 0;
+		let GiamGia = document.getElementById("GiamGia");
+
+
+
+		function addToCart(id, name, price) {
+			var select = document.getElementById('banSelected');
+			var banSelected = select.options[select.selectedIndex].value;
+
+			const tableBody = document.getElementById("table-body");
+			const rows = document.querySelectorAll("#table-body tr");
+			let isNewItem = true;
+
+			// Kiểm tra xem món đã có trong bảng hay chưa
+			rows.forEach(function (row) {
+				if (row.cells[0].innerText === name) {
+					const quantityInput = row.cells[1].children[0];
+					let quantity = parseInt(quantityInput.value) + 1;
+					quantityInput.value = quantity;
+					updateTotal(row, price * quantity);
+					isNewItem = false;
+
+					// Tạo request HTTP đến endpoint để thêm id vào listItem
+					fetch("/api/UpdateToCart", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json"
+						},
+						body: JSON.stringify({ id: id, banId: banSelected })
+					})
+						.then(response => response.json())
+						.then(data => console.log("ID added to cart: ", data.id))
+						.catch(error => console.error("Error adding ID to cart: ", error));
+				}
+				GiamGia.addEventListener("input", function () {
+					updateTotal(row, price);
+				});
+			});
+
+			// Nếu món chưa có trong bảng thì tạo row mới
+			if (isNewItem) {
+
+				// Tạo request HTTP đến endpoint để thêm id vào listItem
+				fetch("/api/AddToCart", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify({ id: id, banId: banSelected, nvId: @nv.NhanVienId })
+				})
+					.then(response => response.json())
+					.then(data => console.log("ID added to cart: ", data.id))
+					.catch(error => console.error("Error adding ID to cart: ", error));
+
+				const row = document.createElement("tr");
+
+				const cell1 = document.createElement("td");
+				cell1.innerText = name;
+
+				const cell2 = document.createElement("td");
+				const quantityInput = document.createElement("input");
+				quantityInput.type = "number";
+				quantityInput.value = "1";
+				quantityInput.classList.add("form-control");
+				quantityInput.addEventListener("input", function () {
+					updateTotal(row, price);
+				});
+				cell2.appendChild(quantityInput);
+
+				const cell3 = document.createElement("td");
+				cell3.innerText = price;
+
+				const cell4 = document.createElement("td");
+				cell4.innerText = price;
+
+				const cell5 = document.createElement("td");
+				const deleteButton = document.createElement("button");
+				deleteButton.innerText = "Xóa";
+				deleteButton.classList.add("btn", "btn-danger");
+				deleteButton.addEventListener("click", function () {
+					row.remove();
+					updateTotal();
+				});
+
+				cell5.appendChild(deleteButton);
+
+				row.appendChild(cell1);
+				row.appendChild(cell2);
+				row.appendChild(cell3);
+				row.appendChild(cell4);
+				row.appendChild(cell5);
+
+				tableBody.appendChild(row);
+				updateTotal(row, price);
+				GiamGia.addEventListener("input", function () {
+					updateTotal(row, price);
+				});
+			}
+
+		}
+		function deleteElement(id) {
+			var row = document.getElementById('id');
+			row.remove();
+			updateTotal()
+		}
+		function updateTotal(row, price) {
+			let total = 0;
+			const rows = document.querySelectorAll("#table-body tr");
+			rows.forEach(function (row) {
+				const price = row.cells[2].innerText;
+				const quantity = row.cells[1].children[0].value;
+				row.cells[3].innerText = price * quantity;
+				total += price * quantity;
+			});
+			document.getElementById("total-price").innerText = total;
+			document.getElementById("TongTien").innerText = total;
+			document.getElementById("TienKhachTra").innerText = total - GiamGia.value / 100 * total;
+		}
+
+
+	</script>
 }

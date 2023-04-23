@@ -1,0 +1,18 @@
+﻿@model decimal;
+
+<div class="text-center">HÓA ĐƠN THANH TOÁN</div>
+<div class="TongTien">
+	<p>Tổng tiền</p>
+	<p id="TongTien">@((int)Model)</p>
+</div>
+<div class="GiamGia d-flex justify-content-between">
+	<p>Giảm giá(%)</p>
+	<input id="GiamGia" type="number" placeholder="%">
+</div>
+<div class="KhachCanTra">
+	<p>Khách cần trả</p>
+	<p id="TienKhachTra">@((int)Model)</p>
+</div>
+<div class="btnThanhToan">
+	<button id="payTheBill" onclick="PayTheBill()">Thanh toán</button>
+</div>

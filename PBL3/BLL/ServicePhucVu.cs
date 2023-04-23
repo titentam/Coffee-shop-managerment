@@ -50,6 +50,7 @@ namespace PBL3.BLL
                     db.Add(order);
                     db.SaveChanges();
 
+
                     int orderId = db.DonDatMons.AsNoTracking().ToList().MaxBy(x => x.DonDatMonId).DonDatMonId;
                     var item = new MonDonDatMon()
                     {
