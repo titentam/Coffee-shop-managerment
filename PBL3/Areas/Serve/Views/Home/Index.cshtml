@@ -16,8 +16,8 @@
 }
 <div class="myMenu_container">
 	<div class="text-center p-3">MENU</div>
-	<div class="d-flex justify-content-around ">
-		<form asp-area="Serve" asp-controller="Home" asp-action="index" method="get">
+	<div >
+		<form class="d-flex justify-content-around" asp-area="Serve" asp-controller="Home" asp-action="index" method="get">
 			<select name="cbbSortMon" class="mx-2 " id="" asp-items="@ViewBag.listLoaiMon">
 				<option value="-1">Tất cả</option>
 			</select>
@@ -48,10 +48,11 @@
 		<div class="d-flex justify-content-around">
 
 			<select name="banId" id="banSelected" asp-items="@ViewBag.listBan">
-				<option value="-1">Chọn bàn</option>
+				<option disabled selected value="-2">Chọn bàn</option>
+				<option value="-1">Khách mang đi</option>
 			</select>
 			<div class="btnThanhToan">
-				<a onclick="ChuyenPhaChe()"> Thông báo pha chế</a>
+				<button onclick="ChuyenPhaChe()"> Thông báo pha chế</button>
 			</div>
 
 		</div>
