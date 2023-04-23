@@ -1,0 +1,165 @@
+body {
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.95;
+    background-color: aqua;
+    font-family: 'Poppins', sans-serif;
+}
+
+input {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 4px 10px;
+    height: 50%;
+}
+a{
+    text-decoration: none
+}
+.text-center {
+    text-align: center;
+    font-size: 20px;
+}
+/* Định dạng header */
+header {
+    color: black;
+    padding: 10px;
+}
+
+.logo img {
+    width: 160px;
+    border-radius: 10%;
+}
+
+.title {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.show {
+    display: block !important;
+}
+
+
+.TaiKhoan_Detail {
+    position: absolute;
+    padding: 20px 10px 10px 10px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    top: 90px;
+    right: 70px;
+    background-color: #333;
+}
+
+
+.dangXuat span {
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    background-color: #d35400;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.2s ease-in-out;
+}
+
+.dangXuat span:hover {
+    background-color: #e67e22;
+}
+
+
+.align-items-center {
+    align-items: center!important;
+}
+.justify-content-center {
+    justify-content: center!important;
+}
+.justify-content-between {
+    justify-content: space-between!important;
+}
+.border-danger {
+    --bs-border-opacity: 1;
+    border-color: black!important;
+}
+
+.d-flex {
+    display: flex!important;
+}
+.title {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+
+.DanhSachMon {
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+    width: 48%;
+    background-color: #333;
+    color: #fff;
+    border-radius: 15px;
+    opacity: 1;
+}
+
+.justify-content-around {
+    justify-content: space-around!important;
+}
+
+.BartendFunctions {
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+    width: 48%;
+    background-color: #333;
+    color: #fff;
+    border-radius: 15px;
+    opacity: 1;
+}
+
+/* Style the tab */
+.tab {
+
+    width: 100%;
+    -webkit-border-top-left-radius: 15px;
+    -webkit-border-top-right-radius: 15px;
+    -moz-border-radius-topleft: 15px;
+    -moz-border-radius-topright: 15px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px; 
+  }
+  
+  /* Style the buttons that are used to open the tab content */
+  .tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    width: 33.3%;
+    -webkit-border-top-left-radius: 15px;
+    -webkit-border-top-right-radius: 15px;
+    -moz-border-radius-topleft: 15px;
+    -moz-border-radius-topright: 15px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px; 
+  }
+  
+  /* Change background color of buttons on hover */
+  .tab button:hover {
+    background-color:#3d3c3c;
+  }
+  
+  /* Create an active/current tablink class */
+  .tab button.active {
+    background-color: #ccc;
+  }
+  
+  /* Style the tab content */
+  .tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+  }
