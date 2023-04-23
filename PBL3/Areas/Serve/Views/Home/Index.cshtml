@@ -263,6 +263,7 @@
 				deleteButton.innerText = "Xóa";
 				deleteButton.classList.add("btn", "btn-danger");
 				deleteButton.addEventListener("click", function () {
+					DeleteItem(id);
 					row.remove();
 					updateTotal();
 				});
@@ -284,6 +285,7 @@
 
 		}
 		function deleteElement(id) {
+
 			var row = document.getElementById('id');
 			row.remove();
 			updateTotal()
@@ -300,6 +302,38 @@
 			document.getElementById("total-price").innerText = total;
 			document.getElementById("TongTien").innerText = total;
 			document.getElementById("TienKhachTra").innerText = total - GiamGia.value / 100 * total;
+		}
+		function DeleteItem(monId) {
+			// Lấy giá trị của select box
+			var banId = document.getElementById("banSelected").value;
+
+			// Tạo đối tượng XMLHttpRequest
+			var xhr = new XMLHttpRequest();
+
+			// Đặt phương thức và URL cho yêu cầu
+			xhr.open("POST", "/Serve/Home/DeleteItem?banId=" + encodeURIComponent(banId) + "&monId=" + encodeURIComponent(monId), true);
+
+			// Đặt tiêu đề Content-Type để đảm bảo rằng đối tượng được gửi dưới dạng JSON
+			xhr.setRequestHeader("Content-Type", "application/json");
+
+			// Đăng ký hàm xử lý khi yêu cầu hoàn thành
+			xhr.onload = function () {
+				if (xhr.status === 200) {
+					// Xử lý phản hồi từ server
+					console.log(xhr.responseText);
+				} else {
+					// Xử lý lỗi
+					console.log("Error: " + xhr.statusText);
+				}
+			};
+
+			// Đăng ký hàm xử lý khi yêu cầu thất bại
+			xhr.onerror = function () {
+				console.log("Error: " + xhr.statusText);
+			};
+
+			// Gửi yêu cầu POST với dữ liệu truyền vào là một đối tượng JSON
+			xhr.send();
 		}
 
 

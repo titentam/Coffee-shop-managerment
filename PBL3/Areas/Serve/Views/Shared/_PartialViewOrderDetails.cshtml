@@ -25,7 +25,7 @@
                 </td>
                 <td>@((int)(item.Item1.Gia.Value))</td>
                 <td>@((int)(item.Item1.Gia * item.Item2))</td>
-                <td><button onclick="deleteRow('hang_canXoa')" class="btn btn-danger">Xóa</button></td>
+                <td><button onclick="deleteRow('hang_canXoa',@item.Item1.MonId)" class="btn btn-danger">Xóa</button></td>
             </tr>
             
         }
@@ -40,12 +40,13 @@
 </tfoot>
 
 <script>
-    function deleteRow(id) {
+    function deleteRow(id, monId) {
+        DeleteItem(monId);
         var row = document.getElementById(id);
         if (row) {
             row.remove();
-            //updateTotal();
+            updateTotal();
         }
     }
-
+    
 </script>

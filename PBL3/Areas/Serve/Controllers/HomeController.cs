@@ -2,6 +2,7 @@
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using PBL3.BLL;
 using PBL3.Models;
@@ -172,7 +173,18 @@ namespace PBL3.Areas.Serve.Controllers
             }
             return BadRequest();
         }
+        [HttpPost]
+        public IActionResult DeleteItem(int banId, int monId)
+        {
+            var banDetails = BanDetails.Where(x => x.Item1 == banId).SingleOrDefault();
+            if (banDetails != null)
+            {
+                var orderId = banDetails.Item2;
+                ServicePhucVu.DeleteItem(orderId, monId);
+                return Ok();    
+            }
 
-
+            return BadRequest();
+        }
     }
 }

@@ -138,5 +138,17 @@ namespace PBL3.BLL
                 db.SaveChanges();
             }
         }
+        public static void DeleteItem(int orderId, int monId)
+        {
+            using (TamtentoiContext db = new TamtentoiContext())
+            {
+                var item = db.MonDonDatMons.Where(x=>x.MonId == monId && x.DonDatMonId==orderId).SingleOrDefault();
+                if (item != null)
+                {
+                    db.Remove(item);
+                    db.SaveChanges();
+                }
+            }
+        }
     }
 }
