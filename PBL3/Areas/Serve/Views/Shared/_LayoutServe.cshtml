@@ -36,8 +36,8 @@
             let detailTK = document.getElementById('TaiKhoan_Detail');
             if (detailTK.className === "TaiKhoan_Detail") {
                 detailTK.className += ' show';
-            } z
-            detailTK.className = "TaiKhoan_Detail";
+            } 
+            else detailTK.className = "TaiKhoan_Detail";
         }
     </script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -57,8 +57,7 @@
 
                 <div class="TaiKhoan ">
                     <a onclick="showTK()" id="My-user">
-                        <img class=" float-end rounded-pill " style="width:
-                                40px;" src="~/Adminassets/images/avatars/user.png" alt="">
+                        <img class=" float-end rounded-pill " style="width:40px;" src="~/Adminassets/images/avatars/user.png" alt="nhanvienIMG">
                     </a>
 
                     <div class="TaiKhoan_Detail" id="TaiKhoan_Detail">
