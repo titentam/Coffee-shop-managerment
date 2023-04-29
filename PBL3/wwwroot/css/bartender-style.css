@@ -5,7 +5,9 @@ body {
     background-color: aqua;
     font-family: 'Poppins', sans-serif;
 }
-
+ul,ol{
+    text-decoration: none !important;
+}
 input {
     border: 1px solid #ccc;
     border-radius: 4px;
