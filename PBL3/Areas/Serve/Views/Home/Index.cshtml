@@ -48,7 +48,7 @@
 		<div class="d-flex justify-content-around">
 
 			<select name="banId" id="banSelected" asp-items="@ViewBag.listBan">
-				<option disabled selected value="-2">Chọn bàn</option>
+				
 				<option value="-1">Khách mang đi</option>
 			</select>
 			<div class="btnThanhToan">
@@ -113,7 +113,13 @@
 
 		}
 		function PayTheBill() {
+			var GiamGiaBill = document.getElementById("GiamGia");
+
+			// Đặt giá trị của thẻ input là 0
+			GiamGiaBill.value = "0";
+
 			// Lấy giá trị của select box
+
 			var banId = document.getElementById("banSelected").value;
 
 			// Tạo đối tượng XMLHttpRequest
