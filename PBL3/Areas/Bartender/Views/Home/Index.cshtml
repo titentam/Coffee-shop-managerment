@@ -6,14 +6,11 @@
 
                 <div class="DanhSachMon">
                     <div class="text-center p-3 " style="text-decoration:none">Danh Sách Order
-                        @*@foreach(var i in Model)
+                        @foreach(var i in Model)
                         {
-                            <div><a>Bàn @i.BanId</a></div>
-                        }*@
-                        <div><a>ban 1</a></div>
-                        <div><a>ban 2</a></div>
-                        <div><a>ban 3</a></div>
-                        <div><a>ban 4</a></div>
+                            <div><a onclick="ShowDSMon(@i.DonDatMonId)"> @i.DonDatMonId</a></div>
+                        }
+                        
                     </div>      
                 </div>
                 <div class="BartendFunctions">
