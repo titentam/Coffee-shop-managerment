@@ -48,7 +48,9 @@
                     <li>
                         <a asp-area="Admin" asp-controller="LoaiMons" asp-action="index">Danh sách loại món</a>
                     </li>
-
+                    <li>
+                        <a asp-area="Admin" asp-controller="CongThucs" asp-action="index">Danh sách công thức</a>
+                    </li>
                 </ul>
             </li>       <!-- Quản lí món -->
             <li class="nav-item dropdown">
@@ -80,13 +82,10 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="form-elements.html">Thống kê theo tháng</a>
+                        <a href="form-elements.html">Thống kê ngày/tháng/năm</a>
                     </li>
                     <li>
-                        <a href="form-layouts.html">Thống kê theo năm</a>
-                    </li>
-                    <li>
-                        <a href="form-validation.html">Thống kê theo loại món</a>
+                        <a href="form-layouts.html">Thống kê loại món</a>
                     </li>
                 </ul>
             </li>       <!-- Quản lí doanh số -->
@@ -95,105 +94,39 @@
                     <span class="icon-holder">
                         <i class="anticon anticon-table"></i>
                     </span>
-                    <span class="title">Quản lí hệ thống</span>
+                    <span class="title">Quản lí nguyên liệu</span>
                     <span class="arrow">
                         <i class="arrow-icon"></i>
                     </span>
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a asp-area="Admin" asp-controller="AdminAccounts" asp-action="Index">Quản lí tài khoản</a>
+                        <a asp-area="Admin" asp-controller="NhaCungCaps" asp-action="Index">Danh sách nhà cung cấp</a>
                     </li>
                     <li>
-                        <a href="basic-table.html">Quản lí doanh mục</a>
+                        <a asp-area="Admin" asp-controller="NguyenLieus" asp-action="Index">Danh sách nguyên liệu</a>
                     </li>
                     <li>
-                        <a asp-area="Admin" asp-controller="AdminRoles" asp-action="Index">Quản lí quyền truy cập</a>
-                    </li>
-                    <li>
-                        <a href="data-table.html">Quản lí quyền Tỉnh/Thành</a>
+                        <a asp-area="Admin" asp-controller="DatHangs" asp-action="Index">Danh sách đặt hàng</a>
                     </li>
                 </ul>
-            </li>       <!-- Quản lí hệ thống -->
+            </li>       <!-- Quản lí nguyên liệu -->
             <li class="nav-item dropdown">
                 <a class="dropdown-toggle" href="javascript:void(0);">
                     <span class="icon-holder">
                         <i class="anticon anticon-pie-chart"></i>
                     </span>
-                    <span class="title">Quản lí tin tức</span>
+                    <span class="title">Quản lí hóa đơn</span>
                     <span class="arrow">
                         <i class="arrow-icon"></i>
                     </span>
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a asp-area="Admin" asp-controller="AdminTinDangs" asp-action="Index">Quản lí tin tức</a>
+                        <a asp-area="Admin" asp-controller="HoaDons" asp-action="Index">Danh sách hóa đơn</a>
                     </li>
                 </ul>
-            </li>       <!-- Quản lí tin tức -->
-            <li class="nav-item dropdown">
-                <a class="dropdown-toggle" href="javascript:void(0);">
-                    <span class="icon-holder">
-                        <i class="anticon anticon-lock"></i>
-                    </span>
-                    <span class="title">Quản lí Page</span>
-                    <span class="arrow">
-                        <i class="arrow-icon"></i>
-                    </span>
-                </a>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a asp-area="Admin" asp-controller="AdminPages" asp-action="Index">Danh sách Page</a>
-                    </li>
-                </ul>
-            </li>       <!-- Quản lí Page -->
-            <li class="nav-item dropdown">
-                <a class="dropdown-toggle" href="javascript:void(0);">
-                    <span class="icon-holder">
-                        <i class="anticon anticon-file"></i>
-                    </span>
-                    <span class="title">Quản lí Shipper</span>
-                    <span class="arrow">
-                        <i class="arrow-icon"></i>
-                    </span>
-                </a>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a href="profile.html">Profile</a>
-                    </li>
-                    <li>
-                        <a href="invoice.html">Invoice</a>
-                    </li>
-                    <li>
-                        <a href="members.html">Members</a>
-                    </li>
-                    <li>
-                        <a href="pricing.html">Pricing</a>
-                    </li>
-                    <li>
-                        <a href="setting.html">Setting</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a href="javascript:void(0);">
-                            <span>Blog</span>
-                            <span class="arrow">
-                                <i class="arrow-icon"></i>
-                            </span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="blog-grid.html">Blog Grid</a>
-                            </li>
-                            <li>
-                                <a href="blog-list.html">Blog List</a>
-                            </li>
-                            <li>
-                                <a href="blog-post.html">Blog Post</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>       <!-- Quản lí Shipper -->
+            </li>       <!-- Quản lí hóa đơn -->
         </ul>
     </div>
 </div>

@@ -1,0 +1,36 @@
+﻿@model PBL3.Models.CongThuc
+
+@{
+    ViewData["Title"] = "Thêm công thức";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="page-header">
+	<div class="header-sub-title">
+		<nav class="breadcrumb breadcrumb-dash">
+			<a asp-area="Admin" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+			<a class="breadcrumb-item" asp-area="Admin" asp-controller="CongThucs" asp-action="Index">Quản lí công thức</a>
+			<span class="breadcrumb-item active">Thêm công thức</span>
+		</nav>
+	</div>
+</div>
+<div class="card">
+	<div class="card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TenCongThuc" class="control-label">Tên công thức</label>
+                <input asp-for="TenCongThuc" class="form-control" />
+                <span asp-validation-for="TenCongThuc" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Thêm" class="btn btn-primary" />
+            </div>
+        </form>
+	</div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

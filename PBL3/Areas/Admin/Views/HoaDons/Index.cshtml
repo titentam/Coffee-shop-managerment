@@ -1,0 +1,103 @@
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<PBL3.Models.HoaDon>
+@{
+	ViewData["Title"] = "Danh sách hóa đơn";
+	Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="page-header">
+	<div class="header-sub-title">
+		<nav class="breadcrumb breadcrumb-dash">
+			<a asp-area="Admin" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+			<a class="breadcrumb-item" asp-area="Admin" asp-controller="HoaDons" asp-action="Index">Quản lí hóa đơn</a>
+			<span class="breadcrumb-item active">Danh sách hóa đơn</span>
+		</nav>
+	</div>
+</div>
+<div class="card">
+	<div class="card-header">
+		<h4 class="card-title">@ViewBag.InvoiceTitle</h4>
+	</div>
+	<div class="card-body">
+		<div class="row m-b-30">
+			<div class="col-lg-4">
+				<form method="get" asp-action="index" class="d-md-flex">
+					<div class="input-affix m-b-10 m-r-15">
+						<input type="date" step="1 day" class="form-control" value="@ViewBag.CurrentSearch" name="search">
+					</div>
+					<div class="m-b-10">
+						<input type="submit" value="Tìm kiếm" class="btn btn-info btn-tone" />
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="table-responsive">
+			<table class="table table-hover e-commerce-table">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Thời gian tạo</th>
+						<th>Tổng tiền</th>
+						<th>Trạng thái thanh toán</th>
+						<th>Nhân viên tạo</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>
+								<a asp-action="Details" asp-route-id="@item.HoaDonId">#@item.HoaDonId</a>
+							</td>
+							<td>@item.ThoiGianTao.Value.ToString("yyyy-MM-dd HH:mm") </td>
+							<td>@item.TongTien.Value.ToString("#,##0") VNĐ</td>
+							@if (item.TrangThaiThanhToan.Value)
+							{
+								<td>
+									<div class="d-flex align-items-center">
+										<div class="badge badge-success badge-dot m-r-10"></div>
+										<div>Đã thanh toán</div>
+									</div>
+								</td>
+							}
+							else
+							{
+								<td>
+									<div class="d-flex align-items-center">
+										<div class="badge badge-danger badge-dot m-r-10"></div>
+										<div>Chưa thanh toán</div>
+									</div>
+								</td>
+							}
+							@if (item.NhanVien != null)
+							{
+								<td>@item.NhanVien.TenNhanVien</td>
+							}
+							else
+							{
+								<td></td>
+							}
+							<td class="text-right">
+								<a asp-action="Edit" asp-route-id="@item.HoaDonId" class="btn btn-icon btn-hover btn-sm btn-rounded pull-right">
+									<i class="anticon anticon-edit"></i>
+								</a>
+								<a asp-action="Delete" asp-route-id="@item.HoaDonId" class="btn btn-icon btn-hover btn-sm btn-rounded">
+									<i class="anticon anticon-delete"></i>
+								</a>
+							</td>
+
+						</tr>
+					}
+				</tbody>
+			</table>
+			<div>
+				<pager class="page-container" list="@Model" asp-area="Admin" asp-controller="HoaDons" asp-action="Index"></pager>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+

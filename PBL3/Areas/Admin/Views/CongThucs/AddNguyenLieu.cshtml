@@ -1,0 +1,63 @@
+﻿@model List<PBL3.Models.NguyenLieu>
+@{
+	ViewData["Title"] = "Thêm nguyên liệu vào công thức";
+}
+
+<div class="page-header">
+	<div class="header-sub-title">
+		<nav class="breadcrumb breadcrumb-dash">
+			<a asp-area="Admin" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+			<a class="breadcrumb-item" asp-area="Admin" asp-controller="CongThucs" asp-action="Index">Quản lí công thức</a>
+			<a class="breadcrumb-item" asp-area="Admin" asp-controller="CongThucs" asp-action="Details" asp-route-id="@ViewBag.id">Chi tiết công thức #@ViewBag.id</a>
+			<span class="breadcrumb-item active">Thêm nguyên liệu vào công thức</span>
+		</nav>
+	</div>
+</div>
+<div class="card">
+	<div class="card-header">
+		<h4 class="card-title text-dark font-weight-semibold">Danh sách nguyên liệu sẵn có</h4>
+	</div>
+	<div class="card-body">
+		<div class="table-responsive">
+			<table class="table table-hover e-commerce-table">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Tên nguyên liệu</th>
+						<th>Đơn vị tính</th>
+						<th>Số lượng</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>
+								<a asp-action="Details" asp-route-id="@item.NguyenLieuId">#@item.NguyenLieuId</a>
+							</td>
+							<td>@item.TenNguyenLieu </td>
+							<td>@item.DonViTinh</td>
+							<td class="text-right">
+								<form asp-action="AddNguyenLieu" asp-route-nguyenLieuId="@item.NguyenLieuId" asp-route-id="@ViewBag.id" class="row">
+									<div class="col-lg-9">
+										<input name="soLuong" type="number" class="form-control" />
+									</div>
+									<div class="col-3">
+										<button type="submit" class="btn btn-icon btn-hover btn-sm btn-rounded pull-right"><i class="fas fa-plus-circle"></i></button>
+									</div>
+								</form>
+							</td>
+
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+
+
+
+

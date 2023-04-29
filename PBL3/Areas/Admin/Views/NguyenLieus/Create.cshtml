@@ -1,0 +1,52 @@
+﻿@model PBL3.Models.NguyenLieu
+
+@{
+    ViewData["Title"] = "Thêm nguyên liệu";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a class="breadcrumb-item" asp-area="Admin" asp-controller="NguyenLieus" asp-action="Index">Quản lí nguyên liệu</a>
+            <span class="breadcrumb-item active">Thêm nguyên liệu</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="SoLuong" class="form-control" value="0" />
+            <div class="form-group">
+                <label asp-for="TenNguyenLieu" class="control-label">Tên nguyên liệu</label>
+                <input asp-for="TenNguyenLieu" class="form-control" />
+                <span asp-validation-for="TenNguyenLieu" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gia" class="control-label">Giá</label>
+                <input asp-for="Gia" class="form-control" />
+                <span asp-validation-for="Gia" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DonViTinh" class="control-label">Đơn vị tính</label>
+                <select asp-for="DonViTinh" class="form-control" asp-items="ViewBag.DonViTinhh"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="NhaCungCapId" class="control-label">Nhà cung cấp</label>
+                <select asp-for="NhaCungCapId" class="form-control" asp-items="ViewBag.NhaCungCapId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,62 @@
+﻿@model NguyenLieu
+@{
+    ViewData["Title"] = "Điều chỉnh công thức";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var ctNl = ViewBag.ctNl;
+}
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a class="breadcrumb-item" asp-area="Admin" asp-controller="CongThucs" asp-action="Index">Quản lí công thức</a>
+            <a class="breadcrumb-item" asp-area="Admin" asp-controller="CongThucs" asp-action="details" asp-route-id="@ViewBag.congThucId">Chi tiết công thức</a>
+            <span class="breadcrumb-item active">Điều chỉnh nguyên liệu</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Thông tin cơ bản</h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="product-info-table m-t-20">
+                <tbody>
+                    <tr>
+                        <td>ID</td>
+                        <td class="text-dark font-weight-semibold">@Model.NguyenLieuId</td>
+                    </tr>
+                    <tr>
+                        <td>Tên nguyên liệu</td>
+                        <td class="text-dark font-weight-semibold">@Model.TenNguyenLieu</td>
+                    </tr>
+                    <tr>
+                        <td>Đơn vị tính</td>
+                        <td class="text-dark font-weight-semibold">@Model.DonViTinh</td>
+                    </tr>
+                    <tr>
+                        <td class="text-dark font-weight-semibold">
+                            <form asp-action="EditNguyenLieu" asp-route-congThucId="@ctNl.CongThucId" asp-route-nguyenLieuId="@Model.NguyenLieuId">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label class="control-label">Số lượng</label>
+                                    <input type="number" name="soLuong" class="form-control" min="1" value="@ctNl.SoLuong" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="Chỉnh sửa" class="btn btn-primary" />
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

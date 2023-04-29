@@ -1,0 +1,154 @@
+﻿@model List<Tuple<Mon,int>>
+
+@{
+	ViewData["Title"] = "Chi tiết hóa đơn";
+	Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+	var hoaDon = (HoaDon)ViewBag.hoaDon;
+	decimal totalPrice = 0;
+}
+
+<div class="page-header">
+	<div class="header-sub-title">
+		<nav class="breadcrumb breadcrumb-dash">
+			<a asp-area="Admin" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+			<a class="breadcrumb-item" asp-area="Admin" asp-controller="HoaDons" asp-action="Index">Quản lí hóa đơn</a>
+			<span class="breadcrumb-item active">Chi tiết hóa đơn #@hoaDon.HoaDonId</span>
+		</nav>
+	</div>
+</div>
+<div class="card">
+	<div class="card-body">
+		<div>
+			<div class="container-fluid">
+				<div class="tab-content m-t-15">
+					<div class="tab-pane fade show active" id="product-overview">
+						<div class="card">
+							<div class="card-header">
+								<h4 class="card-title">Thông tin cơ bản</h4>
+							</div>
+							<div class="card-body">	
+								<div class="table-responsive">
+									<table class="product-info-table m-t-20">
+										<tbody>
+											<tr>
+												<td>Thời gian tạo</td>
+												<td class="text-dark font-weight-semibold">@hoaDon.ThoiGianTao.Value.ToString("yyyy-MM-dd HH:mm")</td>
+											</tr>
+											<tr>
+												<td>Tổng tiền</td>
+												<td class="text-dark font-weight-semibold">@hoaDon.TongTien.Value.ToString("#,##0") VNĐ</td>
+											</tr>
+											<tr>
+												<td>Trạng thái thanh toán</td>
+												@if (hoaDon.TrangThaiThanhToan.Value)
+												{
+													<td>
+														<div class="d-flex align-items-center">
+															<div class="badge badge-success badge-dot m-r-10"></div>
+															<div>Đã thanh toán</div>
+														</div>
+													</td>
+												}
+												else
+												{
+													<td>
+														<div class="d-flex align-items-center">
+															<div class="badge badge-danger badge-dot m-r-10"></div>
+															<div>Chưa thanh toán</div>
+														</div>
+													</td>
+												}
+											</tr>
+											<tr>
+												<td>Nhân viên tạo</td>
+												@if (hoaDon.NhanVien != null)
+												{
+													<td>@hoaDon.NhanVien.TenNhanVien</td>
+												}
+												else
+												{
+													<td></td>
+												}
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="card">
+							<div class="card-header">
+								<h4 class="card-title">Danh sách món</h4>
+							</div>
+							<div class="card-body">
+								<div class="table-responsive">
+									<table class="table table-hover e-commerce-table">
+										<thead>
+											<tr>
+												<th>ID</th>
+												<th>Hình ảnh</th>
+												<th>Tên món</th>
+												<th>Số lượng</th>
+												<th>Đơn giá</th>
+												<th>Tổng cộng</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											@foreach (var item in Model)
+											{
+												decimal total = 0;
+												total += (item.Item1.Gia ?? 0) * item.Item2;
+												totalPrice += total;
+												<tr>
+													<td>@item.Item1.MonId </td>
+													<td>
+														<div class="d-flex align-items-center">
+															<img class="img-fluid rounded" src="~/images/mons/@item.Item1.HinhAnh" style="max-width: 60px" alt="@item.Item1.TenMon">
+														</div>
+													</td>
+													<td>@item.Item1.TenMon </td>
+													<td>@item.Item2</td>
+													<td>@item.Item1.Gia.Value.ToString("#,##0") VNĐ</td>
+													<td>@total.ToString("#,##0") VNĐ</td>
+													<td class="text-right">
+														<div class="row">
+															<div>
+																<form asp-action="EditHoaDon" method="get">
+																	<input name="hoaDonId" type="hidden" value="@hoaDon.HoaDonId" />
+																	<input name="monId" type="hidden" value="@item.Item1.MonId" />
+																	<button type="submit" class="btn btn-icon btn-hover btn-sm btn-rounded">
+																		<i class="anticon anticon-edit"></i>
+																	</button>
+																</form>
+															</div>
+															<div>
+																<form asp-action="DeleteHoaDon" asp-route-hoaDonId="@hoaDon.HoaDonId" asp-route-monId="@item.Item1.MonId">
+																	<button type="submit" class="btn btn-icon btn-hover btn-sm btn-rounded">
+																		<i class="anticon anticon-delete"></i>
+																	</button>
+																</form>
+															</div>
+														</div>
+													</td>
+												</tr>
+											}
+											<tr>
+												<td><mark>Tổng tiền</mark></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td>@totalPrice.ToString("#,##0") VNĐ</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

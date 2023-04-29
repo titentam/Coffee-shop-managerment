@@ -1,0 +1,139 @@
+﻿@model List<Tuple<NguyenLieu, int>>
+
+@{
+	ViewData["Title"] = "Tạo đơn đặt hàng";
+	Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+	decimal totalPrice = 0;
+	var listNguyenLieuChuaDat = (List<NguyenLieu>)ViewBag.NguyenLieuChuaDat;
+}
+
+<div class="page-header">
+	<div class="header-sub-title">
+		<nav class="breadcrumb breadcrumb-dash">
+			<a asp-area="Admin" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+			<a class="breadcrumb-item" asp-area="Admin" asp-controller="DatHangs" asp-action="Index">Quản lí đơn đặt hàng</a>
+			<span class="breadcrumb-item active">Tạo đơn đặt hàng</span>
+		</nav>
+	</div>
+</div>
+<div class="card">
+	<div class="card-header">
+		<h4 class="card-title">Danh sách nguyên liệu đang đặt</h4>
+		@if (TempData.ContainsKey("Empty"))
+		{
+			<h4 class="card-title text-danger">@TempData["Empty"]</h4>
+		}
+		
+	</div>
+	<div class="card-body">
+		<div class="table-responsive">
+			<table class="table table-hover e-commerce-table">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Tên nguyên liệu</th>
+						<th>Giá/Đơn vị tính</th>
+						<th>Số lượng</th>
+						<th>Tổng giá</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@if (Model != null)
+					{
+						foreach (var item in Model)
+						{
+							decimal total = (item.Item1.Gia ?? 0) * item.Item2;
+							totalPrice += total;
+							<tr>
+								<td>
+									<a asp-area="admin" asp-controller="nguyenlieus" asp-action="Details" asp-route-id="@item.Item1.NguyenLieuId">#@item.Item1.NguyenLieuId</a>
+								</td>
+								<td>@item.Item1.TenNguyenLieu</td>
+								<td>@item.Item1.Gia.Value.ToString("#,##0") VNĐ</td>
+								<td>@item.Item2</td>
+								<td>@total.ToString("#,##0") VNĐ</td>
+								<td class="text-right">
+									<a asp-action="DeleteNguyenLieu" asp-route-note="@TempData["note"]" asp-route-nguyenLieuid="@item.Item1.NguyenLieuId" class="btn btn-icon btn-hover btn-sm btn-rounded">
+										<i class="anticon anticon-delete"></i>
+									</a>
+								</td>
+
+							</tr>
+						}
+					}
+					<tr>
+						<td><mark>Tổng tiền</mark></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td>@totalPrice.ToString("#,##0") VNĐ</td>
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="card-footer">
+		<form asp-action="Create">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input type="hidden" name="NgayDat" class="form-control" />
+			<input type="hidden" name="NhanVienId" class="form-control" />
+			<div class="form-group">
+				<label for="GhiChu" class="control-label">Ghi chú</label>
+				<textarea name="GhiChu" id="GhiChu" class="form-control">@TempData["Note"]</textarea>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Đặt hàng" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
+</div>
+<div class="card">
+	<div class="card-header">
+		<h4 class="card-title">Danh sách nguyên liệu</h4>
+	</div>
+	<div class="card-body">
+		<div class="table-responsive">
+			@if (listNguyenLieuChuaDat != null)
+			{
+				<table class="product-info-table m-t-20">
+					<thead>
+						<tr>
+							<td>ID</td>
+							<td>Tên nguyên liệu</td>
+							<td>Đơn vị tính</td>
+							<td>Số lượng</td>
+						</tr>
+					</thead>
+					@foreach (var item in listNguyenLieuChuaDat)
+					{
+						<tbody>
+							<tr>
+								<td class="text-dark font-weight-semibold">@item.NguyenLieuId</td>
+								<td class="text-dark font-weight-semibold">@item.TenNguyenLieu</td>
+								<td class="text-dark font-weight-semibold">@item.DonViTinh</td>
+								<td class="text-dark font-weight-semibold">
+									<form asp-action="AddNguyenLieu" asp-route-nguyenLieuId="@item.NguyenLieuId" asp-route-note="@TempData["note"]" class="row">
+										<div class="col-6">
+											<div class="form-group">
+												<input type="number" name="soLuong" class="form-control" min="1" />
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="form-group">
+												<input type="submit" value="Thêm" class="btn btn-primary" />
+											</div>
+										</div>
+									</form>
+								</td>
+							</tr>
+						</tbody>
+					}
+				</table>
+			}
+		</div>
+	</div>
+</div>
+
+

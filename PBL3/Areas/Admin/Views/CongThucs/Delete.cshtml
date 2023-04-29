@@ -1,0 +1,56 @@
+﻿@model PBL3.Models.CongThuc
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a class="breadcrumb-item" asp-area="Admin" asp-controller="CongThucs" asp-action="Index">Quản lí công thức</a>
+            <span class="breadcrumb-item active">Chi tiết công thức</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+	<div class="card-body">
+		<div>
+			<div class="container-fluid">
+				<div class="tab-content m-t-15">
+					<div class="tab-pane fade show active" id="product-overview">
+						<div class="card">
+							<div  class="card-header">
+								<h4 class="card-title">Thông tin cơ bản</h4>
+							</div>
+							<div class="card-body">
+								<div class="table-responsive">
+									<table class="product-info-table m-t-20">
+										<tbody>
+											<tr>
+												<td>ID</td>
+												<td class="text-dark font-weight-semibold">@Model.CongThucId</td>
+											</tr>
+											<tr>
+												<td>Tên công thức</td>
+												<td class="text-dark font-weight-semibold">@Model.TenCongThuc</td>
+											</tr>
+											<tr>
+												<td>
+													<form asp-action="Delete">
+														<input type="hidden" asp-for="CongThucId" />
+														<input type="submit" value="Xóa" class="btn btn-danger" />
+													</form>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
