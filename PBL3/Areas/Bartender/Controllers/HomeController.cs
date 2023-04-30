@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PBL3.Models;
-using System.Web;
 
 namespace PBL3.Areas.Bartender.Controllers
 {
@@ -20,9 +19,25 @@ namespace PBL3.Areas.Bartender.Controllers
 
         public IActionResult Index()
         {
-           var list= _context.DonDatMons.ToList();
+            var list = _context.DonDatMons.Where(x=>x.TinhTrang==false).ToList();
+
+            return View(list);
+        }
+        [HttpPost]
+        public IActionResult ShowDanhSach(int id)
+        {
             
-            return View( list);
+            var listOrderDetail = _context.MonDonDatMons.Where(x=>x.DonDatMonId==id).ToList();
+            List<Tuple<Mon, int>> listItem = new List<Tuple<Mon, int>>();
+            foreach(var item in listOrderDetail)
+            {
+                var mon = _context.Mons.Find(item.MonId);
+                if(mon!=null)
+                {
+                    listItem.Add(new Tuple<Mon,int>(mon,(int)item.SoLuong));
+                }
+            }
+            return PartialView("_PartialViewDanhSachMon", listItem);
         }
 
     }

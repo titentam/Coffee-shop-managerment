@@ -1,0 +1,107 @@
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<PBL3.Models.NguyenLieu>
+@{
+	ViewData["Title"] = "Danh sách nguyên liệu";
+	Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="page-header">
+	<div class="header-sub-title">
+		<nav class="breadcrumb breadcrumb-dash">
+			<a asp-area="Admin" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+			<a class="breadcrumb-item" asp-area="Admin" asp-controller="NguyenLieus" asp-action="Index">Quản lí nguyên liệu</a>
+			<span class="breadcrumb-item active">Danh sách nguyên liệu</span>
+		</nav>
+	</div>
+</div>
+<div class="card">
+	<div class="card-body">
+		<div class="row m-b-30">
+			<div class="col-lg-8">
+				<form method="get" asp-action="index" class="d-md-flex">
+					<div class="m-b-10 m-r-15">
+						<select asp-items="@ViewBag.DsNhaCungCap" class="custom-select" style="min-width: 180px;" name="option">
+							<option value="-1" disabled selected>Chọn nhà cung cấp</option>
+							<option value="0" selected>Tất cả</option>
+						</select>
+					</div>
+					<div class="m-b-10 m-r-30">
+						<button class="btn btn-info btn-tone m-r-5">Lọc</button>
+					</div>
+					<div class="input-affix m-b-10 m-r-15">
+						<input type="text" class="form-control" placeholder="Tìm theo tên" value="@ViewBag.CurrentSearch" name="search">
+					</div>
+					<div class="m-b-10">
+						<input type="submit" value="Tìm kiếm" class="btn btn-info btn-tone" />
+					</div>
+				</form>
+			</div>
+			<div class="col-lg-4 text-right">
+				<a asp-area="Admin" asp-controller="NguyenLieus" asp-action="Create" class="btn btn-primary">
+					<i class="anticon anticon-plus-circle m-r-5"></i>
+					<span>Thêm nguyên liệu</span>
+				</a>
+			</div>
+		</div>
+		<div class="table-responsive">
+			<table class="table table-hover e-commerce-table">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Tên nguyên liệu</th>
+						<th>Số lượng</th>
+						<th>Giá/Đơn vị tính</th>
+						<th>Đơn vị tính</th>
+						<th>Nhà cung cấp</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>
+								<a asp-action="Details" asp-route-id="@item.NguyenLieuId">#@item.NguyenLieuId</a>
+							</td>
+							<td>@item.TenNguyenLieu </td>
+							<td>@item.SoLuong</td>
+							@if (item.Gia != null)
+							{
+								<td>@item.Gia.Value.ToString("#,##0") VNĐ</td>
+							}
+							else
+							{
+								<td class="text-dark font-weight-semibold"></td>
+							}
+							<td>@item.DonViTinh</td>
+							@if (item.NhaCungCap != null)
+							{
+								<td>@item.NhaCungCap.TenNhaCungCap</td>
+							}
+							else
+							{
+								<td></td>
+							}
+							<td class="text-right">
+								<a asp-action="Edit" asp-route-id="@item.NguyenLieuId" class="btn btn-icon btn-hover btn-sm btn-rounded pull-right">
+									<i class="anticon anticon-edit"></i>
+								</a>
+								<a asp-action="Delete" asp-route-id="@item.NguyenLieuId" class="btn btn-icon btn-hover btn-sm btn-rounded">
+									<i class="anticon anticon-delete"></i>
+								</a>
+							</td>
+
+						</tr>
+					}
+				</tbody>
+			</table>
+			<div>
+				<pager class="page-container" list="@Model" asp-area="Admin" asp-controller="NguyenLieus" asp-action="Index"></pager>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+

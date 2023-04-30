@@ -1,0 +1,127 @@
+﻿@model List<Tuple<NguyenLieu, int>>
+
+@{
+	ViewData["Title"] = "Chi tiết đơn đặt hàng";
+	Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+	decimal totalPrice = 0;
+	var orderDetails = (List<DatHangNguyenLieu>)ViewBag.ListOrderDetail;
+	var dathang = (DatHang)ViewBag.datHang;
+}
+
+<div class="page-header">
+	<div class="header-sub-title">
+		<nav class="breadcrumb breadcrumb-dash">
+			<a asp-area="Admin" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+			<a class="breadcrumb-item" asp-area="Admin" asp-controller="DatHangs" asp-action="Index">Quản lí đơn đặt hàng</a>
+			<span class="breadcrumb-item active">Chi tiết đơn đặt hàng</span>
+		</nav>
+	</div>
+</div>
+<div class="card">
+	<div class="card-header">
+		<h4 class="card-title">Thông tin cơ bản</h4>
+	</div>
+	<div class="card-body">
+		<div class="table-responsive">
+			<table class="product-info-table m-t-20">
+				<tbody>
+					<tr>
+						<td>ID</td>
+						<td class="text-dark font-weight-semibold">@dathang.DathangId</td>
+					</tr>
+					<tr>
+						<td>Thời gian tạo</td>
+						<td class="text-dark font-weight-semibold">@dathang.NgayDat</td>
+					</tr>
+					<tr>
+						<td>Nhân viên tạo</td>
+						<td class="text-dark font-weight-semibold">@dathang.NhanVien.TenNhanVien</td>
+					</tr>
+					<tr>
+						<td>Tình trạng xác nhận</td>
+						<td>
+							@if (dathang.TinhTrangXacNhan != true)
+							{
+								<div class="d-flex align-items-center">
+									<div class="badge badge-danger badge-dot m-r-10"></div>
+									<div>Chưa xác nhận</div>
+								</div>
+							}
+							else
+							{
+								<div class="d-flex align-items-center">
+									<div class="badge badge-success badge-dot m-r-10"></div>
+									<div>Đã xác nhận</div>
+								</div>
+							}
+						</td>
+					</tr>
+					<tr>
+						<td>Ghi chú</td>
+						<td class="text-dark font-weight-semibold">@dathang.GhiChu</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<div class="card">
+	<div class="card-header">
+		<h4 class="card-title">Danh sách nguyên liệu</h4>
+	</div>
+	<div class="card-body">
+		<div class="table-responsive">
+			<table class="table table-hover e-commerce-table">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Tên nguyên liệu</th>
+						<th>Giá/Đơn vị tính</th>
+						<th>Số lượng</th>
+						<th>Tổng giá</th>
+					</tr>
+				</thead>
+				<tbody>
+					@if (Model != null)
+					{
+						int i = 0;
+						foreach (var item in Model)
+						{
+							decimal total = orderDetails[i].TongGia??0;
+							totalPrice += total;
+							<tr>
+								<td>
+									<a asp-area="admin" asp-controller="nguyenlieus" asp-action="Details" asp-route-id="@item.Item1.NguyenLieuId">#@item.Item1.NguyenLieuId</a>
+								</td>
+								<td>@item.Item1.TenNguyenLieu</td>
+								<td>@item.Item1.Gia.Value.ToString("#,##0") VNĐ</td>
+								<td>@item.Item2</td>
+								<td>@total.ToString("#,##0") VNĐ</td>
+							</tr>
+						}
+					}
+					<tr>
+						<td><mark>Tổng tiền</mark></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td>@totalPrice.ToString("#,##0") VNĐ</td>
+					</tr>
+					@if (dathang.TinhTrangXacNhan != true)
+					{
+						<tr>
+							<td>
+								<form asp-action="ConfirmOrder" asp-route-id="@dathang.DathangId">
+									<input type="submit" value="Xác nhận" class="btn btn-primary" />
+								</form>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+
+

@@ -1,0 +1,143 @@
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<PBL3.Models.CongThucNguyenLieu>
+
+@{
+	ViewData["Title"] = "Chi tiết công thức";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+	var congThuc = ViewBag.congThuc;
+	decimal totalCost = 0;
+}
+
+<div class="page-header">
+	<div class="header-sub-title">
+		<nav class="breadcrumb breadcrumb-dash">
+			<a asp-area="Admin" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+			<a class="breadcrumb-item" asp-area="Admin" asp-controller="CongThucs" asp-action="Index">Quản lí công thức</a>
+			<span class="breadcrumb-item active">Chi tiết công thức</span>
+		</nav>
+	</div>
+</div>
+<div class="card">
+	<div class="card-body">
+		<div>
+			<div class="container-fluid">
+				<div class="tab-content m-t-15">
+					<div class="tab-pane fade show active" id="product-overview">
+						<div class="card">
+							<div class="card-body">
+								<h4 class="card-title">Thông tin cơ bản</h4>
+								<div class="table-responsive">
+									<table class="product-info-table m-t-20">
+										<tbody>
+											<tr>
+												<td>ID</td>
+												<td class="text-dark font-weight-semibold">@congThuc.CongThucId</td>
+											</tr>
+											<tr>
+												<td>Tên công thức</td>
+												<td class="text-dark font-weight-semibold">@congThuc.TenCongThuc</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+
+						<div class="card">
+							<div class="card-header">
+								<h4 class="card-title">Danh sách nguyên liệu</h4>
+							</div>
+							<div class="card-body">
+								<div class="row m-b-30">
+									<div class="col-lg-8">
+										<form method="get" asp-action="details" class="d-md-flex">
+											<div class="input-affix m-b-10 m-r-15">
+												<input type="text" class="form-control" placeholder="Tìm theo tên" value="@ViewBag.CurrentSearch" name="search">
+											</div>
+											<div class="m-b-10">
+												<input type="submit" value="Tìm kiếm" class="btn btn-info btn-tone" />
+											</div>
+										</form>
+									</div>
+									<div class="col-lg-4 text-right">
+										<a asp-area="Admin" asp-controller="CongThucs" asp-action="AddNguyenLieu" asp-route-id="@congThuc.CongThucId" class="btn btn-primary">
+											<i class="anticon anticon-plus-circle m-r-5"></i>
+											<span>Thêm nguyên liệu</span>
+										</a>
+									</div>
+								</div>
+								<div class="table-responsive">
+									<table class="table table-hover e-commerce-table">
+										<thead>
+											<tr>
+												<th>ID</th>
+												<th>Tên nguyên liệu</th>
+												<th>Số lượng</th>
+												<th>Đơn vị tính</th>
+												<th>Giá</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											@foreach (var item in Model)
+											{
+												<tr>
+													<td>
+														<a asp-area="admin" asp-controller="NguyenLieus" asp-action="Details" asp-route-id="@item.NguyenLieuId">#@item.NguyenLieuId</a>
+													</td>
+													<td>@item.NguyenLieu.TenNguyenLieu </td>
+													<td>@item.SoLuong</td>
+													<td>@item.NguyenLieu.DonViTinh</td>
+													@if (item.NguyenLieu.Gia != null)
+													{
+														decimal cost = (item.NguyenLieu.Gia??0) * item.SoLuong??0;
+														totalCost += cost;
+														<td>@(cost.ToString("#,##0")) VNĐ</td>
+													}
+													else
+													{
+														<td class="text-dark font-weight-semibold"></td>
+													}
+													<td class="text-right">
+														<div class="row">
+															<div>
+																<form asp-action="EditNguyenLieu" method="get">
+																	<input name="congThucId" type="hidden" value="@congThuc.CongThucId" />
+																	<input name="nguyenLieuId" type="hidden" value="@item.NguyenLieuId" />
+																	<button type="submit" class="btn btn-icon btn-hover btn-sm btn-rounded">
+																		<i class="anticon anticon-edit"></i>
+																	</button>
+																</form>
+															</div>
+															<div>
+																<form asp-action="DeleteNguyenLieu" asp-route-congThucId="@congThuc.CongThucId" asp-route-nguyenLieuId="@item.NguyenLieuId">
+																	<button type="submit" class="btn btn-icon btn-hover btn-sm btn-rounded">
+																		<i class="anticon anticon-delete"></i>
+																	</button>
+																</form>
+															</div>
+														</div>
+													</td>
+												</tr>
+											}
+											<tr>
+												<td><mark>Tổng chi phí</mark></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td>@(totalCost.ToString("#,##0")) VNĐ</td>
+											</tr>
+										</tbody>
+									</table>
+									<div>
+										<pager class="page-container" list="@Model" asp-area="Admin" asp-controller="CongThucs" asp-action="details"></pager>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

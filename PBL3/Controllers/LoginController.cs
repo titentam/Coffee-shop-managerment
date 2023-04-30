@@ -58,7 +58,7 @@ namespace PBL3.Controllers
                     HttpContext.Session.SetInt32("user", (int)id);
                     return RedirectToAction("index", "Home", new { area = "Serve" });
                 }
-				if (role.TenLoai=="Pha chế")
+				if (role.TenLoai == "Pha chế")
 				{
 					var id = _context.TaiKhoans.Find(acc.TaiKhoan1).NhanVienId;
 					HttpContext.Session.SetInt32("user", (int)id);
