@@ -1,0 +1,28 @@
+﻿@model List<PBL3.Models.NguyenLieu>
+<p class="text-center">Danh sách và số lượng nguyên liệu còn trong kho</p>
+<table>
+    <thead>
+    <th>
+        Tên nguyên liệu
+    </th>
+    <th>Số lượng</th>
+    <th>Đơn vị tính</th>
+    </thead>
+    <tbody>
+        @if(Model !=null)
+        {
+            foreach(var i in Model)
+            {
+                <tr>
+                    <td>@i.TenNguyenLieu</td>
+                    <td>@i.SoLuong</td>
+                    <td>@i.DonViTinh</td>
+                </tr>
+            }
+        }
+        
+    </tbody>
+</table>
+<div class="d-flex justify-content-center">
+    <button class="btn btn-lg btn-success m-1 align-self-center "> Báo cáo số liệu</button>
+</div>
