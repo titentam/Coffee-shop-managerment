@@ -1,21 +1,23 @@
 ﻿@model List<PBL3.Models.DonDatMon>
-<div class="DanhSachMon">
+<div class="DanhSachMon " style="width:39% ">
     <div class="text-center p-3 " style="text-decoration:none">
         Danh Sách Order
         @if (Model != null)
         {
             foreach(var item in Model)
             {
-                <div><a onclick="ShowDs(@item.DonDatMonId)">#@item.DonDatMonId</a></div>
+                <div><a onclick="ShowDs(@item.DonDatMonId)"> Đơn số #@item.DonDatMonId  </a>
+                   
+                </div>
             }
         }
     </div>
 </div>
-<div class="BartendFunctions">
+<div class="BartendFunctions " style="width: 58% ">
     <div class="tab">
         <button class="tablinks active" id="order-tab" onclick="openTab(event, 'Status')" style="color: white;">Danh sách món</button>
         <button class="tablinks" id="recipes-tab" onclick="openTab(event, 'Recipes')" style="color: white;">Công thức</button>
-        <button class="tablinks" onclick="openTab(event, 'Igredients')" style="color: white;">Nguyên liệu</button>
+        <button class="tablinks" id="Igredients-tab" onclick="openTab(event, 'Igredients')" style="color: white;">Nguyên liệu</button>
 
     </div>
 
@@ -74,9 +76,18 @@
         evt.currentTarget.className += " active";
         if (tabName == "Recipes") {
             document.getElementById("recipes-tab").className += " active";
+            document.getElementById("order-tab").className -= " active";
+            document.getElementById("Igredients-tab").className -= " active";
         }
         if (tabName == "Status") {
             document.getElementById("order-tab").className += " active";
+            document.getElementById("recipes-tab").className -= " active";
+            document.getElementById("Igredients-tab").className -= " active";
+        }
+        if (tabName == "Igredients") {
+            document.getElementById("order-tab").className -= " active";
+            document.getElementById("recipes-tab").className -= " active";
+            document.getElementById("Igredients-tab").className += " active";
         }
     }
     function ShowDs(id) {

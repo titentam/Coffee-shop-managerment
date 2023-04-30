@@ -1,8 +1,11 @@
 ﻿@model List<Tuple<NguyenLieu, int>>
-   <p>Công thức món đang làm</p>
+   <p class="text-center">Công thức món đang làm</p>
    <table>
        <thead>
-           <th>Tên nguyên liệu</th><th>Số lượng</th><th>Đơn vị tính</th>
+            <th>Tên nguyên liệu</th>
+            <th>Số lượng cần</th>
+            <th>Số lượng còn</th>
+            <th>Đơn vị tính</th>
        </thead>
        <tbody>
         @if (Model != null)
@@ -12,6 +15,7 @@
                 <tr>
                     <td>@i.Item1.TenNguyenLieu</td>
                     <td>@i.Item2</td>
+                    <td>@i.Item1.SoLuong</td>
                     <td>@i.Item1.DonViTinh</td>
                 </tr>
             }
@@ -19,4 +23,5 @@
         }
        </tbody>
    </table>   
+   
 

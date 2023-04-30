@@ -1,25 +1,40 @@
 ﻿@model List<Tuple<Mon, int>>
-<p>Danh sách món</p>
-<div >
+<p class="text-center">Danh sách món</p>
+    <table>
+        <thead>
+        <th>Hình ảnh</th>
+        <th>Tên Món</th>
+        <th>Số lượng </th>
+        
+        <th></th>
+       
+        </thead>
+        <tbody>
     @if (Model != null)
     {
         foreach (var item in Model)
         {
-            <div class=" d-flex justify-content-between m-1">
-                <div class="d-flex justify-content-around">
-                    <div class="text-center col-3"> </div>
-                    <div class="text-center col-2">@item.Item2 </div>
-                </div>
-                <div class="d-flex justify-content-around">
-                    <button class="btn btn-sm btn-danger">Hủy đơn</button>
-                    <button class="btn btn-sm btn-success mx-2">Hoàn thành</button>
-                    <button class="btn btn-sm btn-warning" onclick="ShowCongThuc(@item.Item1.MonId)">Xem công thức</button>
+				<tr>
+                    <td><img class="img-fluid rounded" style="max-width: 60px;" src="~/images/mons/@item.Item1.HinhAnh" /></td>
+                    <td>@item.Item1.TenMon</td>
+                    <td>@item.Item2</td>
+                    
+                    <td>
+                        <div class="d-flex justify-content-around">
+                            <button class="btn btn-sm btn-danger">Hủy đơn</button>
+                            <button class="btn btn-sm btn-success mx-2">Hoàn thành</button>
+                            <button class="btn btn-sm btn-warning" onclick="ShowCongThuc(@item.Item1.MonId)">Xem công thức</button>
 
-                </div>
-            </div>
-                
-                
-          
+                        </div>
+                       
+                    </td>
+                </tr>
         }
     }
-</div>
+    </tbody>
+    </table>
+        <div class="d-flex justify-content-center m-1 ">
+            <button class="btn btn-success ">
+                Hoàn thành
+            </button>
+        </div>
