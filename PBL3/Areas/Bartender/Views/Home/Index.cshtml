@@ -13,7 +13,7 @@
 </div>
 <div class="BartendFunctions">
     <div class="tab">
-        <button class="tablinks active" onclick="openTab(event, 'Status')" style="color: white;">Danh sách món</button>
+        <button class="tablinks active" id="order-tab" onclick="openTab(event, 'Status')" style="color: white;">Danh sách món</button>
         <button class="tablinks" id="recipes-tab" onclick="openTab(event, 'Recipes')" style="color: white;">Công thức</button>
         <button class="tablinks" onclick="openTab(event, 'Igredients')" style="color: white;">Nguyên liệu</button>
 
@@ -24,28 +24,7 @@
         
     </div>
     <div id="Recipes" class="tabcontent">
-        <p>Công thức món đang làm</p>
-        <table>
-            <thead>
-            <th>
-                Tên nguyên liệu
-            </th>
-            <th>Số lượng</th>
-            <th>Đơn vị tính</th>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>cà phê</td>
-                    <td>50</td>
-                    <td>gram</td>
-                </tr>
-                <tr>
-                    <td>đường</td>
-                    <td>1000</td>
-                    <td>gram</td>
-                </tr>
-            </tbody>
-        </table>
+        
     </div>
     <div id="Igredients" class="tabcontent">
         <p>Danh sách và số lượng nguyên liệu còn trong kho</p>
@@ -96,15 +75,43 @@
         if (tabName == "Recipes") {
             document.getElementById("recipes-tab").className += " active";
         }
+        if (tabName == "Status") {
+            document.getElementById("order-tab").className += " active";
+        }
     }
-    function ShowDs(id){
+    function ShowDs(id) {
+        openTab(event, 'Status');
         $.ajax({
             url: `/bartender/home/ShowDanhSach/${id}`,
             type: "POST",
             success: function (result) {
                 // Đưa kết quả trả về vào một thẻ <div> có id là "result-container"
                 $("#Status").html(result);
+
+
             }
         });
+    }
+    function ShowCongThuc(id){
+        openTab(event, 'Recipes');
+        // update the content of the "Recipes" tab with the recipe data
+        $.ajax({
+            url: `/bartender/home/ShowCongThuc/${id}`,
+            type: "GET",
+            success: function (recipes) {
+               
+                $("#Recipes").html(recipes);
+            }
+        });
+
+        // update the active tab to be "Status" tab again
+        //var tablinks = document.getElementsByClassName("tablinks");
+        //for (var i = 0; i < tablinks.length; i++) {
+        //    if (tablinks[i].id == "recipes-tab") {
+        //        tablinks[i].classList.remove("active");
+        //        break;
+        //    }
+        //}
+        //document.getElementById("Status").style.display = "block";
     }
 </script>

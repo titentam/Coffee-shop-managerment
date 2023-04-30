@@ -39,6 +39,23 @@ namespace PBL3.Areas.Bartender.Controllers
             }
             return PartialView("_PartialViewDanhSachMon", listItem);
         }
+        public IActionResult ShowCongThuc(int id)
+        {
+
+            var mon = _context.Mons.Find(id);
+            List<Tuple<NguyenLieu, int>> listCTDetails = new List<Tuple<NguyenLieu, int>>();
+            if (mon!=null)
+            {
+                var ListCT = _context.CongThucNguyenLieus.Where(x => x.CongThucId==mon.CongThucId).ToList();
+                
+                foreach (var item in ListCT)
+                {
+                    var nguyenLieu=_context.NguyenLieus.Find(item.NguyenLieuId);
+                    listCTDetails.Add(new Tuple<NguyenLieu, int>(nguyenLieu, (int)item.SoLuong));
+                }
+            }    
+            return PartialView("_PartialViewShowCongThuc", listCTDetails);
+        }
 
     }
 }
