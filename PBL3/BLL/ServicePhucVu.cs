@@ -62,10 +62,11 @@ namespace PBL3.BLL
             using (TamtentoiContext db = new TamtentoiContext())
             {
                 List<Tuple<Mon,int>> res = new List<Tuple<Mon,int>>();  
+                
                 var items = db.MonDonDatMons.AsNoTracking()
                     .Where(item=>item.DonDatMonId ==orderId).ToList();
                 foreach(var item in items)
-                {
+                {   
                     var mon = db.Mons.AsNoTracking()
                         .Where(x=>x.MonId ==item.MonId).SingleOrDefault();
                     int quantity = item.SoLuong ?? 0;

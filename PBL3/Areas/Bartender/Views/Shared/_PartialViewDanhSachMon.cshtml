@@ -29,23 +29,23 @@
 			{
 				bool isHoanThanh = listOrderDetail[i].TinhTrang == true;
 				bool isHuyDon = listOrderDetail[i].TinhTrang == false;
-
+				bool isChuaLam = listOrderDetail[i].TinhTrang == null;
 				<tr data-monid="@item.Item1.MonId" class="@(isHoanThanh ? "bg-hoan-thanh" : isHuyDon ? "bg-danger" : "")">
 					<td><img class="img-fluid rounded" style="max-width: 60px;" src="~/images/mons/@item.Item1.HinhAnh" /></td>
 					<td>@item.Item1.TenMon</td>
 					<td>@item.Item2</td>
 					<td>
 						<div class="d-flex justify-content-around">
-							<button class="btn btn-sm btn-danger btnHuyDon">Hủy đơn</button>
-							<button class="btn btn-sm btn-success mx-2 btnHoanThanh">Hoàn thành</button>
+							<button class="btn btn-sm btn-danger btnHuyDon @(isChuaLam ? "" : "disabled")" >Hủy đơn</button>
+							<button class="btn btn-sm btn-success mx-2 btnHoanThanh @(isChuaLam ? "" : "disabled")">Hoàn thành</button>
 							<button class="btn btn-sm btn-warning  btnXemCongThuc" onclick="ShowCongThuc(@item.Item1.MonId)">Xem công thức</button>
 						</div>
 					</td>
 				</tr>
-
 				i++;
 			}
 		}
+
 	</tbody>
 </table>
 <div class="d-flex justify-content-center m-1 ">

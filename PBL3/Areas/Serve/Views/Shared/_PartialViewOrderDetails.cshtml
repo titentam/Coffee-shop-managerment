@@ -22,6 +22,7 @@
             totalPrice += (item.Item1.Gia ?? 0) * item.Item2;
             bool isHoanThanh = listOrderDetail[i].TinhTrang == true;
             bool isHuyDon = listOrderDetail[i].TinhTrang == false;
+            bool isChuaLam = listOrderDetail[i].TinhTrang == null;
             <tr id="hang_canXoa@(i)" class="@(isHoanThanh ? "bg-hoan-thanh" : isHuyDon ? "bg-danger" : "")">
                 <td>@item.Item1.TenMon</td>
                 <td>
@@ -29,12 +30,14 @@
                 </td>
                 <td>@((int)(item.Item1.Gia.Value))</td>
                 <td>@((int)(item.Item1.Gia * item.Item2))</td>
-                <td><button onclick="deleteRow('hang_canXoa@(i)',@item.Item1.MonId)" class="btn btn-danger">Xóa</button></td>
+                <td>
+                    <button onclick="deleteRow('hang_canXoa@(i)',@item.Item1.MonId)" class="btn btn-danger @(isChuaLam ? "" : "disabled")">Xóa</button>
+                </td>
             </tr>
             i++;
-            
         }
     }
+
 </tbody>
 <tfoot>
     <tr>
