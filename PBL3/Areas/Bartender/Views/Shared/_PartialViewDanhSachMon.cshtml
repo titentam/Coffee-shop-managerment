@@ -49,9 +49,12 @@
 	</tbody>
 </table>
 <div class="d-flex justify-content-center m-1 ">
-	<button class="btn btn-success ">
-		Hoàn thành
-	</button>
+	<form asp-action="ThongBaoPhucVu" asp-route-orderId="@ViewBag.OrderId">
+		<button type="submit" class="btn btn-success ">
+			Hoàn thành
+		</button>
+	</form>
+	
 </div>
 <script>
 	$(document).ready(function () {
