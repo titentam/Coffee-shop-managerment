@@ -9,32 +9,6 @@ namespace PBL3.BLL
 {
     public static class ServicePhucVu
     {
-        public static void ChuyenPhaChe(int banId, int nvId, List<MonDonDatMon> listItem)
-        {
-            using(TamtentoiContext db = new TamtentoiContext())
-            {
-                var order = new DonDatMon();
-                order.HoaDonId = null;
-                order.BanId = banId<=0? null:banId;
-                order.NhanVienId = nvId;
-                order.TinhTrang = false;
-
-                db.Add(order);
-                db.SaveChanges();
-
-				int orderId = db.DonDatMons.AsNoTracking().ToList().MaxBy(x => x.DonDatMonId).DonDatMonId;
-				foreach (var item in listItem)
-                {
-                    
-                    item.DonDatMonId = orderId;
-                }
-
-                db.AddRange(listItem);
-                db.SaveChanges();
-
-            }
-        }
-
         public static int AddToCart(int idItem, int banId, int nvId, int orderIdCurrent = 0 )
         {
             using (TamtentoiContext db = new TamtentoiContext())
@@ -45,7 +19,7 @@ namespace PBL3.BLL
                     order.HoaDonId = null;
                     order.BanId = banId <= 0 ? null : banId;
                     order.NhanVienId = nvId;
-                    order.TinhTrang = false;
+                    order.TinhTrang = null;
 
                     db.Add(order);
                     db.SaveChanges();

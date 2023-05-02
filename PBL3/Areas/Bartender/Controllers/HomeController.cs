@@ -19,22 +19,22 @@ namespace PBL3.Areas.Bartender.Controllers
 
         public IActionResult Index()
         {
-            var list = _context.DonDatMons.Where(x=>x.TinhTrang==false ).ToList(); // false: chưa làm, null: hủy
+            var list = _context.DonDatMons.Where(x => x.TinhTrang == false).ToList(); // false: chưa làm, null: hủy
 
             return View(list);
         }
         [HttpPost]
         public IActionResult ShowDanhSach(int id)
         {
-            
-            var listOrderDetail = _context.MonDonDatMons.Where(x=>x.DonDatMonId==id ).ToList();
+
+            var listOrderDetail = _context.MonDonDatMons.Where(x => x.DonDatMonId == id).ToList();
             List<Tuple<Mon, int>> listItem = new List<Tuple<Mon, int>>();
-            foreach(var item in listOrderDetail)
+            foreach (var item in listOrderDetail)
             {
                 var mon = _context.Mons.Find(item.MonId);
-                if(mon!=null)
+                if (mon != null)
                 {
-                    listItem.Add(new Tuple<Mon,int>(mon,(int)item.SoLuong));
+                    listItem.Add(new Tuple<Mon, int>(mon, (int)item.SoLuong));
                 }
             }
             ViewBag.OrderId = id;
@@ -46,41 +46,41 @@ namespace PBL3.Areas.Bartender.Controllers
 
             var mon = _context.Mons.Find(id);
             List<Tuple<NguyenLieu, int>> listCTDetails = new List<Tuple<NguyenLieu, int>>();
-            if (mon!=null)
+            if (mon != null)
             {
-                var ListCT = _context.CongThucNguyenLieus.Where(x => x.CongThucId==mon.CongThucId).ToList();
-                
+                var ListCT = _context.CongThucNguyenLieus.Where(x => x.CongThucId == mon.CongThucId).ToList();
+
                 foreach (var item in ListCT)
                 {
-                    var nguyenLieu=_context.NguyenLieus.Find(item.NguyenLieuId);
+                    var nguyenLieu = _context.NguyenLieus.Find(item.NguyenLieuId);
                     listCTDetails.Add(new Tuple<NguyenLieu, int>(nguyenLieu, (int)item.SoLuong));
                 }
-            }    
+            }
             return PartialView("_PartialViewShowCongThuc", listCTDetails);
         }
         public IActionResult ShowNguyenLieu()
         {
 
-            var listNguyenLieu= _context.NguyenLieus.ToList();
+            var listNguyenLieu = _context.NguyenLieus.ToList();
             return PartialView("_PartialViewShowNguyenLieu", listNguyenLieu);
         }
         [HttpPost]
         public IActionResult HoanThanhDonHang(int monId, int orderId)
         {
-            
+
             var mon = _context.Mons.Find(monId);
             string thongBao = "Thành công!";
             bool check = true;
-            if (mon!=null)
+            if (mon != null)
             {
-                var ListCT = _context.CongThucNguyenLieus.Where(x => x.CongThucId==mon.CongThucId).ToList();
+                var ListCT = _context.CongThucNguyenLieus.Where(x => x.CongThucId == mon.CongThucId).ToList();
                 var orderDetail = _context.MonDonDatMons.Where(x => x.DonDatMonId == orderId && x.MonId == monId).SingleOrDefault();
-                
+
                 foreach (var ctNl in ListCT)
                 {
                     var nguyenLieuTrongKho = _context.NguyenLieus
                         .FirstOrDefault(x => x.NguyenLieuId == ctNl.NguyenLieuId);
-                    if (nguyenLieuTrongKho != null&& nguyenLieuTrongKho.SoLuong>=orderDetail.SoLuong* ctNl.SoLuong)
+                    if (nguyenLieuTrongKho != null && nguyenLieuTrongKho.SoLuong >= orderDetail.SoLuong * ctNl.SoLuong)
                     {
                         nguyenLieuTrongKho.SoLuong -= orderDetail.SoLuong * ctNl.SoLuong;
                         orderDetail.TinhTrang = true;
@@ -98,14 +98,25 @@ namespace PBL3.Areas.Bartender.Controllers
         }
         public IActionResult HuyDonHang(int monId, int orderId)
         {
-            var orderDetail = _context.MonDonDatMons.Where(x=>x.MonId==monId&& x.DonDatMonId==orderId).FirstOrDefault();
-            if(orderDetail != null)
+            var orderDetail = _context.MonDonDatMons.Where(x => x.MonId == monId && x.DonDatMonId == orderId).FirstOrDefault();
+            if (orderDetail != null)
             {
                 orderDetail.TinhTrang = false;
                 _context.SaveChanges();
             }
-            return Json(new {});
+            return Json(new { });
+        }
+        public IActionResult ThongBaoPhucVu(int orderId)
+        {
+            var order = _context.DonDatMons.Find(orderId);
+            if(order != null)
+            {
+                order.TinhTrang = true;
+                _context.SaveChanges();
+            }
+            return RedirectToAction("index");
         }
 
-    }
+
+	}
 }

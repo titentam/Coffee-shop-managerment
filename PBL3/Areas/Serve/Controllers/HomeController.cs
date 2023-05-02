@@ -105,11 +105,28 @@ namespace PBL3.Areas.Serve.Controllers
             return Ok(new { id = id });
         }
 
-        public IActionResult ChuyenPhaChe(int banId, int nvId)
+		[Route("api/ChuyenPhaChe")]
+		public IActionResult ChuyenPhaChe(int banId)
         {
-
-            
-            return RedirectToAction("index");
+            var banDetail = _BanDetails.Where(x => x.Item1 == banId).SingleOrDefault();
+            if (banDetail != null)
+            {
+				var orderId = banDetail.Item2;
+				var order = _context.DonDatMons.Find(orderId);
+				var listOrderDetail = _context.MonDonDatMons.Where(x=>x.DonDatMonId==orderId).ToList();
+                if (listOrderDetail.Count == 0)
+                {  
+                    _context.Remove(order);
+                    
+                }
+                else
+                {
+                    order.TinhTrang = false;
+                }
+				_context.SaveChanges();
+			}
+            _notifyService.Success("Thông báo thành công!");
+			return RedirectToAction("index");
 
         }
 
@@ -133,6 +150,7 @@ namespace PBL3.Areas.Serve.Controllers
             int orderId = banDetail.Item2;
 
             var items = ServicePhucVu.GetOrderDetails(orderId);
+            ViewBag.ListOrderDetail = _context.MonDonDatMons.Where(x=>x.DonDatMonId== orderId).ToList();
             return PartialView("_PartialViewOrderDetails", items);
         }
 
