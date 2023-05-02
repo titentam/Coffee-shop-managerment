@@ -1,101 +1,108 @@
 ﻿@model List<Tuple<Mon, int>>
+@{
+	var listOrderDetail = (List<MonDonDatMon>)ViewBag.ListOrderDetail;
+}
 <style>
-    .bg-hoan-thanh {
-        background-color: #28a745 !important;
-    }
+	.bg-hoan-thanh {
+		background-color: #28a745 !important;
+	}
 
-    .bg-hoan-thanh td ,.bg-danger td {
-            background-color:unset;
-    }
-    
-
+		.bg-hoan-thanh td, .bg-danger td {
+			background-color: unset;
+		}
 </style>
-<p class="text-center">Danh sách món</p>
-    <table>
-        <thead>
-        <th>Hình ảnh</th>
-        <th>Tên Món</th>
-        <th>Số lượng </th>
-        
-        <th></th>
-       
-        </thead>
-        <tbody>
-    @if (Model != null)
-    {
-        foreach (var item in Model)
-        {
-                <tr data-monid="@item.Item1.MonId">
-                    <td><img class="img-fluid rounded" style="max-width: 60px;" src="~/images/mons/@item.Item1.HinhAnh" /></td>
-                    <td>@item.Item1.TenMon</td>
-                    <td>@item.Item2</td>
-                    <td>
-                        <div class="d-flex justify-content-around">
-                            <button class="btn btn-sm btn-danger btnHuyDon">Hủy đơn</button>
-                            <button class="btn btn-sm btn-success mx-2 btnHoanThanh">Hoàn thành</button>
-                            <button class="btn btn-sm btn-warning  btnXemCongThuc" onclick="ShowCongThuc(@item.Item1.MonId)">Xem công thức</button>
-                        </div>
-                    </td>
-                </tr>
+<p class="text-center">Danh sách món đơn: @ViewBag.OrderId</p>
+<table>
+	<thead>
+	<th>Hình ảnh</th>
+	<th>Tên Món</th>
+	<th>Số lượng </th>
 
-        }
-    }
-        </tbody>
-    </table>
-    <div class="d-flex justify-content-center m-1 ">
-            <button class="btn btn-success ">
-                Hoàn thành
-            </button>
-    </div>
+	<th></th>
+
+	</thead>
+	<tbody>
+		@if (Model != null)
+		{
+			int i = 0;
+			foreach (var item in Model)
+			{
+				bool isHoanThanh = listOrderDetail[i].TinhTrang == true;
+				bool isHuyDon = listOrderDetail[i].TinhTrang == false;
+
+				<tr data-monid="@item.Item1.MonId" class="@(isHoanThanh ? "bg-hoan-thanh" : isHuyDon ? "bg-danger" : "")">
+					<td><img class="img-fluid rounded" style="max-width: 60px;" src="~/images/mons/@item.Item1.HinhAnh" /></td>
+					<td>@item.Item1.TenMon</td>
+					<td>@item.Item2</td>
+					<td>
+						<div class="d-flex justify-content-around">
+							<button class="btn btn-sm btn-danger btnHuyDon">Hủy đơn</button>
+							<button class="btn btn-sm btn-success mx-2 btnHoanThanh">Hoàn thành</button>
+							<button class="btn btn-sm btn-warning  btnXemCongThuc" onclick="ShowCongThuc(@item.Item1.MonId)">Xem công thức</button>
+						</div>
+					</td>
+				</tr>
+
+				i++;
+			}
+		}
+	</tbody>
+</table>
+<div class="d-flex justify-content-center m-1 ">
+	<button class="btn btn-success ">
+		Hoàn thành
+	</button>
+</div>
 <script>
-      $(document).ready(function() {
-        // Lấy danh sách các nút "Hoàn thành"
-        var btnHoanThanhList = $(".btnHoanThanh");
-        // Đăng ký sự kiện "click" cho từng nút "Hoàn thành"
-        btnHoanThanhList.click(function() {
-          var trItem = $(this).closest("tr"); // Lấy phần tử tr cha của nút "Hoàn thành"
-          var monId = trItem.data("monid"); // Lấy mã món từ thuộc tính data
-          // Gửi yêu cầu đến máy chủ để xử lý hoàn thành đơn hàng
-          $.ajax({
-            type: "POST",
-                url: "/bartender/home/HoanThanhDonHang", // Đường dẫn đến action xử lý hoàn thành đơn hàng trên máy chủ
-            data: { monId: monId },
-            success: function(response) {
-              // Xử lý kết quả trả về từ máy chủ sau khi hoàn thành đơn hàng thành công
-              trItem.addClass("bg-hoan-thanh"); // Thêm CSS class để đổi màu nền của hàng chứa món
-                    trItem.find("button").not(".btnXemCongThuc").prop("disabled", true); // Vô hiệu hóa các button trong hàng chứa món
-              // Cập nhật số lượng nguyên liệu trong kho
-              var soLuongNguyenLieuConLai = response.soLuongNguyenLieuConLai;
-              $("#soLuongNguyenLieuConLai").text(soLuongNguyenLieuConLai);
-            },
-            error: function() {
-              // Xử lý trường hợp gửi yêu cầu xử lý hoàn thành đơn hàng không thành công
-              // ...
-            },
-          });
-        });
+	$(document).ready(function () {
+		// Lấy danh sách các nút "Hoàn thành"
+		var btnHoanThanhList = $(".btnHoanThanh");
+		// Đăng ký sự kiện "click" cho từng nút "Hoàn thành"
+		btnHoanThanhList.click(function () {
+			var trItem = $(this).closest("tr"); // Lấy phần tử tr cha của nút "Hoàn thành"
+			var monId = trItem.data("monid"); // Lấy mã món từ thuộc tính data
+			// Gửi yêu cầu đến máy chủ để xử lý hoàn thành đơn hàng
+			$.ajax({
+				type: "POST",
+				url: "/bartender/home/HoanThanhDonHang", // Đường dẫn đến action xử lý hoàn thành đơn hàng trên máy chủ
+				data: { monId: monId, orderId: @ViewBag.OrderId },
+				success: function (response) {
+					// Xử lý kết quả trả về từ máy chủ sau khi hoàn thành đơn hàng thành công
+					if (response.check) {
+						trItem.addClass("bg-hoan-thanh"); // Thêm CSS class để đổi màu nền của hàng chứa món
+						trItem.find("button").not(".btnXemCongThuc").prop("disabled", true); // Vô hiệu hóa các button trong hàng chứa món
+					}
+					alert(`${response.thongBao}`)
+				},
+				error: function () {
+					// Xử lý trường hợp gửi yêu cầu xử lý hoàn thành đơn hàng không thành công
+					// ...
+				},
+			});
+		});
 
-    // Tương tự, đăng ký sự kiện "click" cho từng nút "Hủy đơn"
-        // Đăng ký sự kiện "click" cho từng nút "Hủy đơn"
-        var btnHuyDonList = $(".btnHuyDon");
-        btnHuyDonList.click(function () {
-            var trItem = $(this).closest("tr"); // Lấy phần tử tr cha của nút "Hủy đơn"
-            var monId = trItem.data("monid"); // Lấy mã món từ thuộc tính data
-            // Gửi yêu cầu đến máy chủ để xử lý hủy đơn hàng
-            $.ajax({
-                type: "POST",
-                url: "/bartender/home/HuyDonHang", // Đường dẫn đến action xử lý hủy đơn hàng trên máy chủ
-                data: { monId: monId },
-                success: function (response) {
-                    // Xử lý kết quả trả về từ máy chủ sau khi hủy đơn hàng thành công
-                    trItem.addClass("bg-danger"); // Thêm CSS class để đổi màu nền của hàng chứa món
-                    trItem.find("button").not(".btnXemCongThuc").prop("disabled", true); // Vô hiệu hóa các button trong hàng chứa món
-                },
-                error: function () {
-                    // ...
-                },
-            });
-        });
+		// Tương tự, đăng ký sự kiện "click" cho từng nút "Hủy đơn"
+		// Đăng ký sự kiện "click" cho từng nút "Hủy đơn"
+		var btnHuyDonList = $(".btnHuyDon");
+		btnHuyDonList.click(function () {
+			var trItem = $(this).closest("tr"); // Lấy phần tử tr cha của nút "Hủy đơn"
+			var monId = trItem.data("monid"); // Lấy mã món từ thuộc tính data
+			// Gửi yêu cầu đến máy chủ để xử lý hủy đơn hàng
+			$.ajax({
+				type: "POST",
+				url: "/bartender/home/HuyDonHang", // Đường dẫn đến action xử lý hủy đơn hàng trên máy chủ
+				data: { monId: monId, orderId: @ViewBag.OrderId },
+				success: function (response) {
+					// Xử lý kết quả trả về từ máy chủ sau khi hủy đơn hàng thành công
+					trItem.addClass("bg-danger"); // Thêm CSS class để đổi màu nền của hàng chứa món
+					trItem.find("button").not(".btnXemCongThuc").prop("disabled", true); // Vô hiệu hóa các button trong hàng chứa món
+				},
+				error: function () {
+					// ...
+				},
+			});
+		});
 
-    });
+	});
 </script>
+
