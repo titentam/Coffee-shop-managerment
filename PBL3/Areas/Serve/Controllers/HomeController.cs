@@ -153,32 +153,47 @@ namespace PBL3.Areas.Serve.Controllers
             ViewBag.ListOrderDetail = _context.MonDonDatMons.Where(x=>x.DonDatMonId== orderId).ToList();
             return PartialView("_PartialViewOrderDetails", items);
         }
+		[HttpPost]
+		[Route("api/LoadInvoice")]
+		public IActionResult LoadInvoice([FromBody] BanSelected model)
+		{
+			if (model == null)
+			{
+				return BadRequest("Invalid data");
+			}
 
-        [HttpPost]
-        [Route("api/LoadInvoice")]
-        public IActionResult LoadInvoice([FromBody] BanSelected model)
-        {
-            if (model == null)
-            {
-                return BadRequest("Invalid data");
-            }
+			int banId = model.BanId;
+			decimal totalPrice = 0;
+			var banDetail = BanDetails.FirstOrDefault(x => x.Item1 == banId);
+			if (banDetail != null)
+			{
+				int orderId = banDetail.Item2;
+				var items = ServicePhucVu.GetOrderDetails(orderId);
 
-            int banId = model.BanId;
-            decimal totalPrice = 0;
-            var banDetail = BanDetails.FirstOrDefault(x => x.Item1 == banId);
-            if (banDetail != null)
-            {
-                int orderId = banDetail.Item2;
-                var items = ServicePhucVu.GetOrderDetails(orderId);
+				foreach (var item in items)
+				{
+					if (item.Item1.TenMon != null)
+					{
+						bool isPaid = true;
+						var monDonDatMon = _context.MonDonDatMons.FirstOrDefault(m => m.MonId == item.Item1.MonId && m.DonDatMonId == orderId);
 
-                foreach (var item in items)
-                {
-                    totalPrice += (item.Item1.Gia ?? 0) * item.Item2;
-                }
-            }  
-            return PartialView("_PartialViewLoadReceive", totalPrice);
-        }
-        [HttpPost]
+						if (monDonDatMon != null && monDonDatMon.TinhTrang != null)  // Kiểm tra trạng thái đặt món
+						{
+							isPaid = (bool)monDonDatMon.TinhTrang;
+						}
+
+						if (isPaid)
+						{
+							totalPrice += (item.Item1.Gia ?? 0) * item.Item2;
+						}
+					}
+				}
+			}
+
+			return PartialView("_PartialViewLoadReceive", totalPrice);
+		}
+
+		[HttpPost]
         public IActionResult PayTheBill(int banId, int nvId)
         {
             var banDetail = BanDetails?.SingleOrDefault(x => x.Item1 == banId);

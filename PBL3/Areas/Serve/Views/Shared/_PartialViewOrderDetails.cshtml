@@ -19,10 +19,14 @@
         int i = 0;
         foreach (var item in Model)
         {
-            totalPrice += (item.Item1.Gia ?? 0) * item.Item2;
+            
             bool isHoanThanh = listOrderDetail[i].TinhTrang == true;
             bool isHuyDon = listOrderDetail[i].TinhTrang == false;
             bool isChuaLam = listOrderDetail[i].TinhTrang == null;
+            if(!isHuyDon)
+            {
+                totalPrice += (item.Item1.Gia ?? 0) * item.Item2;
+            }
             <tr id="hang_canXoa@(i)" class="@(isHoanThanh ? "bg-hoan-thanh" : isHuyDon ? "bg-danger" : "")">
                 <td>@item.Item1.TenMon</td>
                 <td>
