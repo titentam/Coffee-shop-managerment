@@ -27,9 +27,9 @@
 			int i = 0;
 			foreach (var item in Model)
 			{
-				bool isHoanThanh = listOrderDetail[i].TinhTrang == true;
-				bool isHuyDon = listOrderDetail[i].TinhTrang == false;
-				bool isChuaLam = listOrderDetail[i].TinhTrang == null;
+				bool isHoanThanh = listOrderDetail[i].TinhTrang == 1;
+				bool isHuyDon = listOrderDetail[i].TinhTrang == 2;
+				bool isChuaLam = listOrderDetail[i].TinhTrang == 0;
 				<tr data-monid="@item.Item1.MonId" class="@(isHoanThanh ? "bg-hoan-thanh" : isHuyDon ? "bg-danger" : "")">
 					<td><img class="img-fluid rounded" style="max-width: 60px;" src="~/images/mons/@item.Item1.HinhAnh" /></td>
 					<td>@item.Item1.TenMon</td>
@@ -75,7 +75,9 @@
 						trItem.addClass("bg-hoan-thanh"); // Thêm CSS class để đổi màu nền của hàng chứa món
 						trItem.find("button").not(".btnXemCongThuc").prop("disabled", true); // Vô hiệu hóa các button trong hàng chứa món
 					}
-					alert(`${response.thongBao}`)
+					else{
+						alert(`${response.thongBao}`)
+					}
 				},
 				error: function () {
 					// Xử lý trường hợp gửi yêu cầu xử lý hoàn thành đơn hàng không thành công

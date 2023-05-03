@@ -125,6 +125,13 @@
 
 		}
 		function PayTheBill() {
+			var listTr = document.querySelectorAll('#table-body tr');
+			for(let tr of listTr ){
+				if(!tr.classList.contains('bg-hoan-thanh')&&!tr.classList.contains('bg-danger')){
+					alert('Chưa hoàn thành các món!');
+					return;
+				}
+			}
 			var GiamGiaBill = document.getElementById("GiamGia");
 
 			// Đặt giá trị của thẻ input là 0
@@ -217,24 +224,26 @@
 
 			// Kiểm tra xem món đã có trong bảng hay chưa
 			rows.forEach(function (row) {
-				if (row.cells[0].innerText === name) {
-					const quantityInput = row.cells[1].children[0];
-					let quantity = parseInt(quantityInput.value) + 1;
-					quantityInput.value = quantity;
-					updateTotal(row, price * quantity);
-					isNewItem = false;
+				if (row.cells[0].innerText === name ) {
+					if (!row.classList.contains('bg-hoan-thanh') && !row.classList.contains('bg-danger')){
+						const quantityInput = row.cells[1].children[0];
+						let quantity = parseInt(quantityInput.value) + 1;
+						quantityInput.value = quantity;
+						updateTotal(row, price * quantity);
+						isNewItem = false;
 
-					// Tạo request HTTP đến endpoint để thêm id vào listItem
-					fetch("/api/UpdateToCart", {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json"
-						},
-						body: JSON.stringify({ id: id, banId: banSelected })
-					})
-						.then(response => response.json())
-						.then(data => console.log("ID added to cart: ", data.id))
-						.catch(error => console.error("Error adding ID to cart: ", error));
+						// Tạo request HTTP đến endpoint để thêm id vào listItem
+						fetch("/api/UpdateToCart", {
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json"
+							},
+							body: JSON.stringify({ id: id, banId: banSelected })
+						})
+							.then(response => response.json())
+							.then(data => console.log("ID added to cart: ", data.id))
+							.catch(error => console.error("Error adding ID to cart: ", error));
+					}
 				}
 				
 			});
@@ -314,10 +323,12 @@
 			let total = 0;
 			const rows = document.querySelectorAll("#table-body tr");
 			rows.forEach(function (row) {
-				const price = row.cells[2].innerText;
+				if(!row.classList.contains('bg-danger')){
+					const price = row.cells[2].innerText;
 				const quantity = row.cells[1].children[0].value;
 				row.cells[3].innerText = price * quantity;
 				total += price * quantity;
+				}
 			});
 			document.getElementById("total-price").innerText = total;
 			document.getElementById("TongTien").innerText = total;

@@ -34,7 +34,14 @@
 </div>
 
 <script src="~/Adminassets/js/tabs.js"></script>
+
 <script>
+    
+    window.addEventListener('load', function () {
+        if (@(ViewBag.OrderId)!= 0) {
+            ShowDs(@(ViewBag.OrderId));
+        }
+    });
     function openTab(evt, tabName) {
         var i, tabcontent, tablinks;
         // ẩn tất cả các nội dung tab

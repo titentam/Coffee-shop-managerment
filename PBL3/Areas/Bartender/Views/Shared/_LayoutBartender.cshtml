@@ -93,6 +93,8 @@
         </div>
     </div>
     <script src="~/Adminassets/js/tabs.js"></script>
+    @await Component.InvokeAsync("Notyf")
+    @await RenderSectionAsync("Scripts",required:false)
 </body>
 
 </html>

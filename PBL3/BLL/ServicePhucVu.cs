@@ -24,13 +24,13 @@ namespace PBL3.BLL
                     db.Add(order);
                     db.SaveChanges();
 
-
                     int orderId = db.DonDatMons.AsNoTracking().ToList().MaxBy(x => x.DonDatMonId).DonDatMonId;
                     var item = new MonDonDatMon()
                     {
                         MonId = idItem,
                         SoLuong = 1,
-                        DonDatMonId = orderId
+                        DonDatMonId = orderId,
+                        TinhTrang = 0     
                     };
                     db.Add(item);
                     db.SaveChanges();
@@ -52,16 +52,16 @@ namespace PBL3.BLL
         {
             using (TamtentoiContext db = new TamtentoiContext())
             {
-               var item = db.MonDonDatMons.Where(x=>x.DonDatMonId == orderId && x.MonId == idItem).FirstOrDefault();
+                var item = db.MonDonDatMons.Where(x=>x.DonDatMonId == orderId && x.MonId == idItem&&x.TinhTrang==0).FirstOrDefault();
                 item.SoLuong += 1;
                 db.SaveChanges();
             }
         }
-        public static List<Tuple<Mon, int>> GetOrderDetails(int orderId)
+        public static List<Tuple<Mon, int, int>> GetOrderDetails(int orderId)
         {
             using (TamtentoiContext db = new TamtentoiContext())
             {
-                List<Tuple<Mon,int>> res = new List<Tuple<Mon,int>>();  
+                List<Tuple<Mon,int, int>> res = new List<Tuple<Mon,int, int>>();  
                 
                 var items = db.MonDonDatMons.AsNoTracking()
                     .Where(item=>item.DonDatMonId ==orderId).ToList();
@@ -72,7 +72,7 @@ namespace PBL3.BLL
                     int quantity = item.SoLuong ?? 0;
                     if (mon!= null)
                     {
-                        res.Add(new Tuple<Mon,int>(mon,quantity));
+                        res.Add(new Tuple<Mon, int, int>(mon,quantity, item.TinhTrang));
                     }
                 }
                 return res;
@@ -90,7 +90,7 @@ namespace PBL3.BLL
                     var mon = db.Mons.AsNoTracking()
                         .Where(x => x.MonId == item.MonId).SingleOrDefault();
                     int quantity = item.SoLuong ?? 0;
-                    if (mon != null)
+                    if (mon != null && item.TinhTrang==1)
                     {
                         total += (mon.Gia??0) * quantity; 
                     }
@@ -117,7 +117,7 @@ namespace PBL3.BLL
         {
             using (TamtentoiContext db = new TamtentoiContext())
             {
-                var item = db.MonDonDatMons.Where(x=>x.MonId == monId && x.DonDatMonId==orderId).SingleOrDefault();
+                var item = db.MonDonDatMons.Where(x=>x.MonId == monId && x.DonDatMonId==orderId && x.TinhTrang==0).SingleOrDefault();
                 if (item != null)
                 {
                     db.Remove(item);

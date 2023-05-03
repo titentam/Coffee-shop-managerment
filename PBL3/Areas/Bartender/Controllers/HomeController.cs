@@ -1,6 +1,7 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PBL3.BLL;
 using PBL3.Models;
 
 namespace PBL3.Areas.Bartender.Controllers
@@ -17,10 +18,10 @@ namespace PBL3.Areas.Bartender.Controllers
             _notifyService = notifyService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int id =0)
         {
             var list = _context.DonDatMons.Where(x => x.TinhTrang == false).ToList(); // false: chưa làm, null: hủy
-
+            ViewBag.OrderId = id;
             return View(list);
         }
         [HttpPost]
@@ -74,7 +75,7 @@ namespace PBL3.Areas.Bartender.Controllers
             if (mon != null)
             {
                 var ListCT = _context.CongThucNguyenLieus.Where(x => x.CongThucId == mon.CongThucId).ToList();
-                var orderDetail = _context.MonDonDatMons.Where(x => x.DonDatMonId == orderId && x.MonId == monId).SingleOrDefault();
+                var orderDetail = _context.MonDonDatMons.Where(x => x.DonDatMonId == orderId && x.MonId == monId && x.TinhTrang == 0).SingleOrDefault();
 
                 foreach (var ctNl in ListCT)
                 {
@@ -83,7 +84,7 @@ namespace PBL3.Areas.Bartender.Controllers
                     if (nguyenLieuTrongKho != null && nguyenLieuTrongKho.SoLuong >= orderDetail.SoLuong * ctNl.SoLuong)
                     {
                         nguyenLieuTrongKho.SoLuong -= orderDetail.SoLuong * ctNl.SoLuong;
-                        orderDetail.TinhTrang = true;
+                        orderDetail.TinhTrang = 1;
                     }
                     else
                     {
@@ -98,25 +99,33 @@ namespace PBL3.Areas.Bartender.Controllers
         }
         public IActionResult HuyDonHang(int monId, int orderId)
         {
-            var orderDetail = _context.MonDonDatMons.Where(x => x.MonId == monId && x.DonDatMonId == orderId).FirstOrDefault();
+            var orderDetail = _context.MonDonDatMons.Where(x => x.MonId == monId && x.DonDatMonId == orderId && x.TinhTrang == 0).FirstOrDefault();
             if (orderDetail != null)
             {
-                orderDetail.TinhTrang = false;
+                orderDetail.TinhTrang = 2;
                 _context.SaveChanges();
             }
             return Json(new { });
         }
         public IActionResult ThongBaoPhucVu(int orderId)
         {
-            var order = _context.DonDatMons.Find(orderId);
-            if(order != null)
+            if (ServicePhucVu.GetOrderDetails(orderId).Any(item => item.Item3 == 0))
             {
-                order.TinhTrang = true;
-                _context.SaveChanges();
+                _notifyService.Warning("Vui lòng xử lí tất cả các món!");
+                return RedirectToAction("index", new { id = orderId });
             }
-            return RedirectToAction("index");
+            else
+            {
+                var order = _context.DonDatMons.Find(orderId);
+                if (order != null)
+                {
+                    order.TinhTrang = true;
+                    _context.SaveChanges();
+                }
+            }
+			_notifyService.Success("Thông báo thành công");
+			return RedirectToAction("index");
+
         }
-
-
-	}
+    }
 }

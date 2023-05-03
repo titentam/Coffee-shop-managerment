@@ -11,7 +11,7 @@ namespace PBL3.Models
         }
 
         public int MonId { get; set; }
-        public string? TenMon { get; set; }
+        public string? TenMon { get; set; } = null!;
         public decimal? Gia { get; set; }
         public int? LoaiMonId { get; set; }
         public int? CongThucId { get; set; }
