@@ -11,40 +11,62 @@ namespace PBL3.Areas.Admin.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public IActionResult Index(int sttByYear = 0)
+        {
+            if (HttpContext.Session.GetInt32("user") == null) return RedirectToAction("index", "Login", new { area = "" });
+            if (sttByYear==0)
+            {
+                var statistic = _context.StatisticByMonth().Where(x => x.Year == 2023).ToList();
+                ViewBag.Data = statistic;
+                ViewBag.Option = 2;
+                ViewBag.LabelString = "Tháng trong năm nay";
+            }
+            else
+            {
+                var statistic = _context.StatisticByYear();
+                ViewBag.Data = statistic;
+                ViewBag.Option = 3;
+                ViewBag.LabelString = $"Các năm gần đây";
+            }
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Index([Bind("Day,Month,Year")]Date d)
         {
             if (HttpContext.Session.GetInt32("user") == null) return RedirectToAction("index", "Login", new { area = "" });
 
-            var statistic = _context.StatisticByMonth().Where(x => x.Year == 2023).ToList();
-
-            var currentRevenue = _context.StatisticByMonth()
-                .Where(x => x.Month == DateTime.Now.Month && x.Year == DateTime.Now.Year)
-                .SingleOrDefault();
-
-            ViewBag.currentRevenue = "0";
-            if (currentRevenue != null)
+            // thống kê tháng trong năm 
+            if (d.Month == null && d.Year != null)
             {
-                ViewBag.currentRevenue = currentRevenue.Total.ToString("#,##0");
+                var statistic = _context.StatisticByMonth().Where(x => x.Year == d.Year).ToList();
+                ViewBag.Data = statistic;
+                ViewBag.Option = 2;
+                ViewBag.LabelString = $"Tháng trong năm {d.Year}";
+            }
+            // thống kê ngày trong tháng trong năm hiện tại
+            else if (d.Month != null && d.Year == null)
+            {
+                var statistic = _context.StatisticByDay((int)d.Month, DateTime.Now.Year);
+                ViewBag.Data = statistic;
+                ViewBag.Option = 1;
+                ViewBag.LabelString = $"Ngày trong tháng {d.Month}/{DateTime.Now.Year}";
+            }
+            // thống kê ngày trong tháng trong năm 
+            else if (d.Month != null && d.Year != null)
+            {
+                var statistic = _context.StatisticByDay((int)d.Month, (int)d.Year);
+                ViewBag.Data = statistic;
+                ViewBag.Option = 1;
+                ViewBag.LabelString = $"Ngày trong tháng {d.Month}/{d.Year}";
+            } 
+            else
+            {
+                return RedirectToAction("index");
             }
 
-            ViewBag.totalItem = _context.Mons.Count();
-            ViewBag.totalStaff = _context.NhanViens.Count();
-
-            var listLoaiMon = _context.LoaiMons.Select(x => new { TenLoaiMon = x.TenLoaiMon, Count = x.Mons.Count }).ToList();
-            List<string> tenLoaiMon = new List<string>();
-            List<int> soLuong = new List<int>();
-
-            foreach (var mon in listLoaiMon)
-            {
-                tenLoaiMon.Add(mon.TenLoaiMon == null ? "" : mon.TenLoaiMon);
-                soLuong.Add(mon.Count);
-            }
-
-            ViewBag.tenLoaiMon = tenLoaiMon;
-            ViewBag.soLuong = soLuong;
-
-            return View(statistic);
+            return View(d);
         }
-        
+
     }
 }

@@ -3,8 +3,7 @@
 
 @{
     ViewData["Title"] = "Thống kê";
-    var data = ViewBag.Data;
-    var option = (int)ViewBag.Option;
+    var data =ViewBag.Data;
 
 }
 <body>
@@ -22,13 +21,7 @@
                 <span asp-validation-for="Year" class="text-danger"></span>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary btn-submit">Lọc</button>  
-    </form>
-    <form asp-action="Index" method="get">
-        <input type="hidden" name="sttByYear" value="1" />
-        <button type="submit" class="btn btn-primary btn-submit">
-            Thống kê các năm gần đây
-        </button>
+        <button type="submit" class="btn btn-primary btn-submit">Lọc</button>
     </form>
     <div class="line-chart-container">
         <div class="line-chart" style="width:70%">
@@ -46,26 +39,14 @@
         {
             foreach (var item in data)
             {
-                if (option == 1)
-                {
-                    @:years.push('@item.Day');
-                }
-                if (option == 2)
-                {
-                    @:years.push('@item.Month');
-                }
-                if (option == 3)
-                {
-                    @:years.push('@item.Year');
-                }
-                
+                @:years.push('@item.Day');
                 @:yearData.push('@item.Total');
 
                 decimal von = item.Total * (decimal)0.3;
                 @:yearFund.push('@von');
             }
         }
-        var ctx = document.getElementById('myLineChart').getContext('2d');
+                var ctx = document.getElementById('myLineChart').getContext('2d');
         var myChart = new Chart(ctx, {
             type: 'line',
             data: {
@@ -85,8 +66,8 @@
                 }]
             },
             options: {
-                
-                scales: { 
+
+                scales: {
                     yAxes: [{
                         ticks: {
                             beginAtZero: true,
@@ -105,7 +86,7 @@
                         },
                         scaleLabel: {
                             display: true,
-                            labelString: `@Html.Raw(HttpUtility.JavaScriptStringEncode(ViewBag.LabelString))`
+                            labelString: `Tháng ${@data[0].Month} năm ${@data[0].Year}`
                         }
                     }]
                 }
@@ -113,5 +94,3 @@
         });
     </script>
 }
-
-                            

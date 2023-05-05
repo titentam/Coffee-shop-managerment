@@ -23,8 +23,12 @@ namespace PBL3.Models
 		{
 			return this.SpMonths.FromSqlRaw("exec StatisticByMonth").ToList();
 		}
-
-		public virtual DbSet<SpMonth> SpMonths { get; set; } = null!;
+        public List<SpDay> StatisticByDay(int month, int year)
+        {
+            return this.SpDays.FromSqlRaw($"exec StatisticByDay @month = {month}, @year = {year}").ToList();
+        }
+        public virtual DbSet<SpDay> SpDays { get; set; } = null!;
+        public virtual DbSet<SpMonth> SpMonths { get; set; } = null!;
 		public virtual DbSet<SpYear> SpYears { get; set; } = null!;
 
 		public virtual DbSet<Ban> Bans { get; set; } = null!;
