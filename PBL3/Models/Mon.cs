@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace PBL3.Models
 {
@@ -11,8 +12,10 @@ namespace PBL3.Models
         }
 
         public int MonId { get; set; }
-        public string? TenMon { get; set; } = null!;
-        public decimal? Gia { get; set; }
+        public string? TenMon { get; set; }
+		[Required(AllowEmptyStrings = false, ErrorMessage = "Vui lòng nhập giá")]
+        [Display(Name = "Giá")]
+		public decimal? Gia { get; set; }
         public int? LoaiMonId { get; set; }
         public int? CongThucId { get; set; }
         public string? HinhAnh { get; set; }
