@@ -53,7 +53,7 @@ namespace PBL3.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=msi\\sqlexpress01;Database=Tamtentoi;Trusted_Connection=True;Integrated Security=True;");
+                optionsBuilder.UseSqlServer("Server=LAPTOP-CUA-DUY\\SQLEXPRESS02;Database=tamtentoiDB;Trusted_Connection=True;Integrated Security=True;");
             }
         }
 
