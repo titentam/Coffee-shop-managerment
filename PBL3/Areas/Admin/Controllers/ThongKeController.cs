@@ -16,10 +16,11 @@ namespace PBL3.Areas.Admin.Controllers
             if (HttpContext.Session.GetInt32("user") == null) return RedirectToAction("index", "Login", new { area = "" });
             if (sttByYear==0)
             {
-                var statistic = _context.StatisticByMonth().Where(x => x.Year == 2023).ToList();
+                var d = DateTime.Today;
+                var statistic = _context.StatisticByDay(d.Month,d.Year);
                 ViewBag.Data = statistic;
-                ViewBag.Option = 2;
-                ViewBag.LabelString = "Tháng trong năm nay";
+                ViewBag.Option = 1;
+                ViewBag.LabelString = $"Ngày trong tháng {d.Month}/{d.Year}";
             }
             else
             {
@@ -67,6 +68,35 @@ namespace PBL3.Areas.Admin.Controllers
 
             return View(d);
         }
-
+        
+        public IActionResult ThongKeTheoLoaiMon(int option = 0)
+        {
+            int month = DateTime.Today.Month, year =DateTime.Today.Year;
+            if (option == 1)// thang truoc
+            {
+                if(month == 1)
+                {
+                    month = 12;
+                    year -= 1;
+                }
+                else
+                    month -= 1;
+            }
+            var listLoaiMonId = _context.StatisticByLoaiMonId(month, year);
+            if(listLoaiMonId != null)
+            {
+                List<Tuple<string, int>> model = new List<Tuple<string, int>>();
+                foreach(var item in listLoaiMonId)
+                {
+                    var loaiMon = _context.LoaiMons.Find(item.LoaiMonId);
+                    if (loaiMon != null)
+                    {
+                        model.Add(new Tuple<string, int>(loaiMon.TenLoaiMon, item.SoLuong));
+                    }
+                }
+                return View(model);
+            }
+            return View(null);
+        }
     }
 }

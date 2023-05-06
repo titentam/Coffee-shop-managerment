@@ -1,0 +1,87 @@
+﻿@using System.Web;
+@model List<Tuple<string,int>>
+
+@{
+    ViewData["Title"] = "Thống kê";
+   
+
+}
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a class="breadcrumb-item" asp-area="Admin" asp-controller="ThongKe" asp-action="ThongketheoLoaiMon">Quản lí thống kê</a>
+            <span class="breadcrumb-item active">Thống kê theo loại món</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30">
+            <div class="col-lg-4">
+                <a asp-action="ThongketheoLoaiMon" asp-route-option="1" method="get" class="btn btn-primary">
+                    <span>Tháng trước</span>
+                </a>
+            </div>
+            <div class="col-lg-4">
+                <a asp-action="ThongketheoLoaiMon" asp-route-option="0" method="get" class="btn btn-primary">
+                    <span>Tháng hiện tại</span>
+                </a>
+            </div>
+            
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <p class="font-weight-bold text-center" style="font-size:1.5rem">Biểu đồ loại món ưa thích</p>
+            </div>
+            <div class="card-body">
+                <div class="bar-chart-container">
+                    <div class="bar-chart" style="width:70%">
+                        <canvas id="myBarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        var tenLoaiMon = [];
+        var soLuong = [];
+        @if (Model!=null)
+        {
+            foreach (var item in Model)
+            {
+
+                @:tenLoaiMon.push(`@Html.Raw(HttpUtility.JavaScriptStringEncode(item.Item1))`);
+                @:soLuong.push('@item.Item2');   
+            }
+        }
+
+                var data = {
+            labels: tenLoaiMon,
+            datasets: [{
+                label: 'Số lượng',
+                data: soLuong,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        var config = {
+            type: 'bar',
+            data: data,
+            options: {
+                scales: {
+                }
+            }
+        };
+
+        var chart = new Chart(document.getElementById('myBarChart'), config);
+    </script>
+}
+
+

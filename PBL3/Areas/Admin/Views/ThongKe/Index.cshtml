@@ -7,36 +7,55 @@
     var option = (int)ViewBag.Option;
 
 }
-<body>
-    <form asp-controller="ThongKe" asp-action="Index">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="row">
-            <div class="form-group col-4">
-                <label asp-for="Month"></label>
-                <input asp-for="Month" />
-                <span asp-validation-for="Month" class="text-danger"></span>
-            </div>
-            <div class="form-group col-4">
-                <label asp-for="Year"></label>
-                <input asp-for="Year" />
-                <span asp-validation-for="Year" class="text-danger"></span>
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary btn-submit">Lọc</button>  
-    </form>
-    <form asp-action="Index" method="get">
-        <input type="hidden" name="sttByYear" value="1" />
-        <button type="submit" class="btn btn-primary btn-submit">
-            Thống kê các năm gần đây
-        </button>
-    </form>
-    <div class="line-chart-container">
-        <div class="line-chart" style="width:70%">
-            <h2 class="text-center">Biểu đồ lợi nhuận</h2>
-            <canvas id="myLineChart"></canvas>
-        </div>
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a class="breadcrumb-item" asp-area="Admin" asp-controller="ThongKe" asp-action="Index">Quản lí thống kê</a>
+            <span class="breadcrumb-item active">Thống kê theo tháng hiện tại</span>
+        </nav>
     </div>
-</body>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30">
+            <div class="col-lg-8">
+                <form asp-action="index" class="d-md-flex row">
+                    <div class="input-affix m-b-10 col-5">
+                        <input asp-for="Month" placeholder="Tháng" class="form-control" />
+                        <span asp-validation-for="Month" class="text-danger"></span>
+                    </div>
+                    <div class="input-affix m-b-10 col-5">
+                        <input asp-for="Year" placeholder="Năm" class="form-control" />
+                        <span asp-validation-for="Year" class="text-danger"></span>
+                    </div>
+                    <div class="m-b-10 col-2">
+                        <input type="submit" value="Lọc" class="btn btn-info m-r-5" />
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-4 text-right">
+                <a asp-action="Index" asp-route-sttByYear="1" method="get" class="btn btn-primary">
+                    <span>Thống kê các năm gần đây</span>
+                </a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <p class="font-weight-bold text-center" style="font-size:1.5rem">Biểu đồ doanh số</p>
+            </div>
+            <div class="card-body">
+                <div class="line-chart-container">
+                    <div class="line-chart" style="width:70%">
+                        <canvas id="myLineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
 @section Scripts{
     <script>
         var years = [];
@@ -95,8 +114,7 @@
                             }
                         },
                         scaleLabel: {
-                            display: true,
-                            labelString: 'Doanh thu (triệu VNĐ)'
+                            display: true
                         }
                     }],
                     xAxes: [{

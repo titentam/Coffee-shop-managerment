@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Threading.Tasks;
+using AspNetCore;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -169,6 +170,8 @@ namespace PBL3.Areas.Admin.Controllers
             var hoaDon = await _context.HoaDons.FindAsync(id);
             if (hoaDon != null)
             {
+                var listOrder = _context.DonDatMons.Where(x => x.HoaDonId == hoaDon.HoaDonId);
+                _context.DonDatMons.RemoveRange(listOrder);
                 _context.HoaDons.Remove(hoaDon);
             }
             
