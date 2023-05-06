@@ -3,7 +3,8 @@
 
 @{
     ViewData["Title"] = "Thống kê";
-   
+    var random = new Random();
+    int count = Model.Count();
 
 }
 <div class="page-header">
@@ -18,12 +19,12 @@
 <div class="card">
     <div class="card-body">
         <div class="row m-b-30">
-            <div class="col-lg-4">
+            <div class="col-lg-6 text-center">
                 <a asp-action="ThongketheoLoaiMon" asp-route-option="1" method="get" class="btn btn-primary">
                     <span>Tháng trước</span>
                 </a>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-6 text-center">
                 <a asp-action="ThongketheoLoaiMon" asp-route-option="0" method="get" class="btn btn-primary">
                     <span>Tháng hiện tại</span>
                 </a>
@@ -35,8 +36,8 @@
                 <p class="font-weight-bold text-center" style="font-size:1.5rem">Biểu đồ loại món ưa thích</p>
             </div>
             <div class="card-body">
-                <div class="bar-chart-container">
-                    <div class="bar-chart" style="width:70%">
+                <div class=" d-flex justify-content-center">
+                    <div class="bar-chart text-center" style="width:70%;scale:1.2">
                         <canvas id="myBarChart"></canvas>
                     </div>
                 </div>
@@ -50,6 +51,7 @@
     <script>
         var tenLoaiMon = [];
         var soLuong = [];
+        var bgColor=[];
         @if (Model!=null)
         {
             foreach (var item in Model)
@@ -58,6 +60,14 @@
                 @:tenLoaiMon.push(`@Html.Raw(HttpUtility.JavaScriptStringEncode(item.Item1))`);
                 @:soLuong.push('@item.Item2');   
             }
+            for (int i = 0; i < count; i++)
+            {
+                int red = random.Next(0, 256);
+                int green = random.Next(0, 256);
+                int blue = random.Next(0, 256);
+
+                @:bgColor.push('rgb(@red, @green, @blue)');
+            }
         }
 
                 var data = {
@@ -65,7 +75,7 @@
             datasets: [{
                 label: 'Số lượng',
                 data: soLuong,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                backgroundColor: bgColor,
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1
             }]
@@ -76,6 +86,11 @@
             data: data,
             options: {
                 scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
                 }
             }
         };
