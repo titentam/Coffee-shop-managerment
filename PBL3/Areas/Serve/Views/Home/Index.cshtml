@@ -308,11 +308,19 @@
 			}
 
 		}
-		function UpdateGiamGia(){
-			var giamgiahaha = document.getElementById('GiamGia');
-			var tongtienn = document.getElementById('TongTien').innerText;
-			document.getElementById("TienKhachTra").innerText = tongtienn - giamgiahaha.value / 100 * tongtienn;
+		function UpdateGiamGia() {
+			const giamGiaInput = document.getElementById('GiamGia');
+			const tongTien = document.getElementById('TongTien').innerText
+			//const tongTienValue = parseInt(tongTienElement.innerText);
+			const giamGiaValue = parseInt(giamGiaInput.value);
+			if (giamGiaValue <= 0 || giamGiaValue >= 100) {
+				alert("Vui lòng nhập giá trị nằm trong khoảng từ 1 đến 99");
+				giamGiaInput.value = '';
+				return;
+			}
+			document.getElementById("TienKhachTra").innerText = tongTien - giamGiaValue / 100 * tongTien;;
 		}
+
 		function deleteElement(id) {
 
 			var row = document.getElementById('id');
