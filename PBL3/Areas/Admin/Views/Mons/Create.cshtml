@@ -24,10 +24,25 @@
                 <input asp-for="TenMon" class="form-control" />
                 <span asp-validation-for="TenMon" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Gia" class="control-label">Giá bán</label>
-                <input asp-for="Gia" class="form-control" />
-                <span asp-validation-for="Gia" class="text-danger"></span>
+            <div class="form-row">
+                <div class="form-group col-md-5">
+                    <label class="control-label" >Giá gốc</label>
+                    <input name="GiaGoc"class="form-control" value="0" disabled />
+                </div>
+                <div class="form-group col-md-5">
+                    <label asp-for="Gia" class="control-label">Giá bán</label>
+                    <input asp-for="Gia" class="form-control" />
+                    <span asp-validation-for="Gia" class="text-danger"></span>
+                </div>  
+                <div class="form-group col-md-2">
+                    <label for="inputState">Tăng</label>
+                    <select id="inputState" class="form-control">
+                        <option selected value="0">Chọn lựa chọn</option>
+                        <option value="1">50%</option>
+                        <option value="2">100%</option>
+                        <option value="3">200%</option>
+                    </select>
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="LoaiMonId" class="control-label">Loại món</label>
@@ -35,7 +50,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="CongThucId" class="control-label">Công thức</label>
-                <select asp-for="CongThucId" class="form-control" asp-items="ViewBag.CongThucId"></select>
+                <select asp-for="CongThucId" class="form-control" asp-items="ViewBag.CongThucId">
+                    <option value="0">Chọn công thức</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="HinhAnh" class="control-label">Hình ảnh</label>
@@ -48,6 +65,60 @@
         </form>
     </div>
 </div>
+
+@section scripts{
+    <script>
+        // Lấy phần tử select
+        var congThucSelect = document.querySelector('select[name="CongThucId"]');
+
+        // Lắng nghe sự kiện thay đổi giá trị của select
+        congThucSelect.addEventListener('change', function () {
+            // Lấy giá trị mới được chọn
+            var selectedValue = this.value;
+            // Lấy phần tử input
+            var giaInput = document.querySelector('input[name="GiaGoc"]');
+
+            // Gửi yêu cầu AJAX để lấy giá trị
+            fetch(`/Api/GetGia?congThucId=${selectedValue}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Cập nhật giá trị của input với dữ liệu lấy được từ controller
+                    giaInput.value = data.gia;
+                })
+                .catch(error => {
+                    // Xử lý lỗi nếu có
+                    console.error('Error:', error);
+                });
+        });
+
+        // Lấy phần tử select
+        var inputState = document.getElementById('inputState');
+
+        // Lắng nghe sự kiện thay đổi giá trị của select
+        inputState.addEventListener('change', function () {
+            // Lấy giá trị mới được chọn
+            var selectedValue = this.value;
+
+            // Xử lý tăng giá trị dựa trên giá trị mới được chọn
+            var giaInput = document.querySelector('input[name="GiaGoc"]');
+            var giaGoc = parseFloat(giaInput.value);
+            var giaTang = 0;
+
+            if (selectedValue == '1') {
+                giaTang = giaGoc * 0.5;
+            } else if (selectedValue == '2') {
+                giaTang = giaGoc;
+            } else if (selectedValue == '3') {
+                giaTang = giaGoc * 2;
+            }
+
+            // Cập nhật giá trị của input với giá trị mới
+            var giaSauKhiTang = giaGoc + giaTang;
+            var giaBan = document.querySelector('input[name="Gia"]')
+            giaBan.value = giaSauKhiTang;
+        });
+    </script>
+}
 
 
 

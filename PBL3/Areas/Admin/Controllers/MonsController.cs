@@ -116,6 +116,7 @@ namespace PBL3.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Cost = GetGiaItem(mon.CongThucId??0);
             ViewData["CongThucId"] = new SelectList(_context.CongThucs, "CongThucId", "TenCongThuc", mon.CongThucId);
             ViewData["LoaiMonId"] = new SelectList(_context.LoaiMons, "LoaiMonId", "TenLoaiMon", mon.LoaiMonId);
             return View(mon);
@@ -218,6 +219,32 @@ namespace PBL3.Areas.Admin.Controllers
         private bool MonExists(int id)
         {
           return (_context.Mons?.Any(e => e.MonId == id)).GetValueOrDefault();
+        }
+        [Route("api/GetGia")]
+        public IActionResult GetGia(int congThucId)
+        {
+            // Xử lý yêu cầu để lấy giá trị dựa trên congThucId
+            decimal cost = GetGiaItem(congThucId);
+            // Tạo đối tượng JSON để trả về
+            var result = new { gia = cost };
+
+            // Trả về đối tượng JSON
+            return Json(result);
+        }
+
+        public decimal GetGiaItem(int congThucId)
+        {
+            decimal cost = 0;
+            var listNguyenLieu = _context.CongThucNguyenLieus.Include(x => x.NguyenLieu)
+                .Where(x => x.CongThucId == congThucId).ToList();
+            if (listNguyenLieu != null)
+            {
+                foreach (var item in listNguyenLieu)
+                {
+                    cost += (item.NguyenLieu.Gia ?? 0) * (item.SoLuong ?? 0);
+                }
+            }
+            return cost;
         }
     }
 }

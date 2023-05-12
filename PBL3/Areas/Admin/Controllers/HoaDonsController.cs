@@ -73,7 +73,7 @@ namespace PBL3.Areas.Admin.Controllers
             var order = _context.DonDatMons.Where(x => x.HoaDonId == id).SingleOrDefault();
             if(order!= null)
             {
-                var orderDetails = _context.MonDonDatMons.Where(x => x.DonDatMonId == order.DonDatMonId).ToList();
+                var orderDetails = _context.MonDonDatMons.Where(x => x.DonDatMonId == order.DonDatMonId && x.TinhTrang == 1).ToList();
                 foreach(var orderDetail in orderDetails)
                 {
                     var item = _context.Mons.Find(orderDetail.MonId);
