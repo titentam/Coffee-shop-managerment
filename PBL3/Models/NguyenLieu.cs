@@ -17,7 +17,6 @@ namespace PBL3.Models
         [Required(ErrorMessage = "Vui lòng nhập tên nguyên liệu")]
         [Display(Name = "Tên nguyên liệu")]
         public string? TenNguyenLieu { get; set; }
-        [Display(Name = "Tên món")]
         public int? SoLuong { get; set; }
         [Required(ErrorMessage = "Vui lòng nhập giá")]
         [Display(Name = "Giá")]
