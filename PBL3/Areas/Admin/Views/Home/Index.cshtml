@@ -9,6 +9,7 @@
     int count = ((List<int>)ViewBag.soLuong).Count();
     var random = new Random();
 
+    var listMon = (List<Tuple<Mon, int, int>>)ViewBag.ListMon;
 }
 <body>
 
@@ -58,8 +59,7 @@
                 </div>
             </div>
         </div>
-    </div>
-    
+    </div>   
     <div style="display: flex;">
         <div class="line-chart-container">
             <div class="line-chart" style="width:100%">
@@ -71,6 +71,89 @@
             <div class="line-chart" style="width:100%">
                 <h2 class="text-center">Tỉ lệ các loại món ăn</h2>
                 <canvas id="myDonutChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5>Top món bán chạy trong tuần</h5>
+                        <div>
+                            <a href="javascript:void(0);" class="btn btn-sm btn-default">View All</a>
+                        </div>
+                    </div>
+                    <div class="m-t-30">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Món</th>
+                                        <th>Bán được</th>
+                                        <th>Kiếm được</th>
+                                        <th style="max-width: 70px">Ước lượng còn</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+									
+                                    @if (listMon != null)
+                                    {
+                                        foreach(var item in listMon)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <div class="media align-items-center">
+                                                        <div class="avatar avatar-image rounded">
+                                                            <img src="~/images/mons/@item.Item1.HinhAnh" alt="@item.Item1.TenMon"/>
+                                                        </div>
+                                                        <div class="m-l-10">
+                                                            <span>@item.Item1.TenMon</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>@item.Item2</td>
+                                                @{
+                                                    decimal total = (item.Item1.Gia ?? 0) * item.Item2;
+                                                    <td>@total.ToString("#,##0") VNĐ</td>
+                                                }
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="progress progress-sm w-100 m-b-0">
+                                                            @if (item.Item3 == 0)
+                                                            {
+                                                                <div class="progress-bar bg-danger" style="width: 5%"></div>
+                                                            }
+                                                            else if (item.Item3 < 50)
+                                                            {
+                                                                <div class="progress-bar bg-danger" style="width: 25%"></div>
+                                                            }
+                                                            else if (item.Item3 < 100)
+                                                            {
+                                                                <div class="progress-bar bg-warning" style="width: 50%"></div>
+                                                            }
+                                                            else if (item.Item3 < 200)
+                                                            {
+                                                                <div class="progress-bar bg-info" style="width: 75%"></div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="progress-bar bg-success" style="width: 100%"></div>
+                                                            }
+                                                        </div>
+                                                        <div class="m-l-10">
+                                                            @item.Item3
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
