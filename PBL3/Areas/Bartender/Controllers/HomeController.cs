@@ -76,7 +76,7 @@ namespace PBL3.Areas.Bartender.Controllers
             {
                 var ListCT = _context.CongThucNguyenLieus.Where(x => x.CongThucId == mon.CongThucId).ToList();
                 var orderDetail = _context.MonDonDatMons.Where(x => x.DonDatMonId == orderId && x.MonId == monId && x.TinhTrang == 0).SingleOrDefault();
-
+                orderDetail.TinhTrang = 1;
                 foreach (var ctNl in ListCT)
                 {
                     var nguyenLieuTrongKho = _context.NguyenLieus
@@ -84,15 +84,17 @@ namespace PBL3.Areas.Bartender.Controllers
                     if (nguyenLieuTrongKho != null && nguyenLieuTrongKho.SoLuong >= orderDetail.SoLuong * ctNl.SoLuong)
                     {
                         nguyenLieuTrongKho.SoLuong -= orderDetail.SoLuong * ctNl.SoLuong;
-                        orderDetail.TinhTrang = 1;
+                        
                     }
-                    else
+                    else 
                     {
                         thongBao = "Nguyên liệu không đủ!";
+                        orderDetail.TinhTrang = 0;
                         check = false;
                         break;
                     }
                 }
+               
                 _context.SaveChanges();
             }
             return Json(new { thongBao, check });

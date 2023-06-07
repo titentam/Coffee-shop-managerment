@@ -71,7 +71,8 @@ namespace PBL3.Areas.Admin.Controllers
                             var nguyenLieu = _context.NguyenLieus.Find(itemNguyenLieu.NguyenLieuId);
                             if (nguyenLieu != null)
                             {
-                                soLuongCon = Math.Min(soLuongCon, nguyenLieu.SoLuong ?? 0 / itemNguyenLieu.SoLuong ?? 1);
+                                int sl = (nguyenLieu.SoLuong ?? 0) / (itemNguyenLieu.SoLuong??1);
+                                soLuongCon = Math.Min(soLuongCon, sl);
                             }
                             else
                             {
